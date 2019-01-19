@@ -14,6 +14,7 @@ import edu.wpi.first.networktables.EntryListenerFlags;
 
 public class VisionCommand extends Command {
   public VisionCommand() {
+    requires(Robot.vision);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
