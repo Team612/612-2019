@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,8 +33,8 @@ public class Robot extends TimedRobot {
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-  public static NetworkTableInstance inst;
-  public static NetworkTable table;
+
+  public static VisionSubsystem vision = new VisionSubsystem();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -45,8 +46,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
-    inst = NetworkTableInstance.getDefault();
-    table = inst.getTable("SmartDashboard");
+
   }
 
   /**
@@ -128,32 +128,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    System.out.println("oof");
-    NetworkTableEntry angleEntry = table.getEntry("angle");
-    NetworkTableEntry p1_offset = table.getEntry("p1_offset");
-    NetworkTableEntry p2_offset = table.getEntry("p2_offset");
-    inst.startClientTeam(612);
-
-    table.addEntryListener("angle", (table, key, entry, value, flags) -> {
-      System.out.println("Angle: " + value.getValue());
-    }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
-    
-    p1_offset.addListener(event -> {
-      System.out.println("Point 1 Offset: " + p1_offset);
-    }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
-
-    p2_offset.addListener(event -> {
-      System.out.println("Point 2 Offset: " + p2_offset);
-    }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
-
-    try {
-      Thread.sleep(100000);
-    } catch (InterruptedException ex) {
-      System.out.println("Interrupted!");
-      return;
-    }
-    System.out.println("--------------");
-
   }
 
   /**
