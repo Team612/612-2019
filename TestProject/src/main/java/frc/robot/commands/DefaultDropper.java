@@ -7,14 +7,14 @@
 
 package frc.robot.commands;
 
-import frc.robot.Robot;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.EntryListenerFlags;
+import frc.robot.OI;
+import frc.robot.Robot;
 
-public class VisionCommand extends Command {
-  public VisionCommand() {
-    requires(Robot.vision);
+public class DefaultDropper extends Command {
+  public DefaultDropper() {
+    requires(Robot.dropper);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -27,16 +27,12 @@ public class VisionCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
-    NetworkTableEntry angleEntry = Robot.vision.table.getEntry("angle");
-    Robot.vision.inst.startClientTeam(612);
-
-    Robot.vision.table.addEntryListener("angle", (table, key, entry, value, flags) -> {
-      System.out.println("Angle: " + value.getValue());
-    }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
-    
-    System.out.println("--------------");
-
+    if (OI.DropperPosition){
+      Robot.dropper.getSolenoid().set(Value.kReverse);
+    }
+    else{
+      Robot.dropper.getSolenoid().set(Value.kForward);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

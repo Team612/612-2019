@@ -6,19 +6,24 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import com.ctre.phoenix.CANifier;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.subsystems.AutoAlignSub;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Dropper;
+import frc.robot.subsystems.Grabber;
+import frc.robot.subsystems.Lift;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,13 +33,17 @@ import frc.robot.subsystems.VisionSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
+  public static Lift lift = new Lift();
+  public static Drivetrain drivetrain = new Drivetrain();
+  public static Dropper dropper = new Dropper();
+  public static Grabber grabber = new Grabber();
   public static OI m_oi;
-
+  public static Compressor compressor=new Compressor(0);
+  //public static ReadVision read=new ReadVision();
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-
-  public static VisionSubsystem vision = new VisionSubsystem();
+  VisionListen vision_network = new VisionListen();
+  public static AutoAlignSub auto_align = new AutoAlignSub();
 
   /**
    * This function is run when the robot is first started up and should be
@@ -43,10 +52,22 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
+
+    vision_network.read_vision();
+    /*
+    Thread t = new Thread(() -> {
+      while(!Thread.interrupted()) {
+        
+        Timer.delay(1);
+      }
+    });
+    t.start();
+    */
+
+    //m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
-
+    compressor.setClosedLoopControl(true);
   }
 
   /**
@@ -128,6 +149,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    //System.out.println(table.getKeys());
+
   }
 
   /**

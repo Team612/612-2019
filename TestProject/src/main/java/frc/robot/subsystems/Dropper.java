@@ -7,25 +7,24 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.VisionCommand;
+import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
  */
-public class VisionSubsystem extends Subsystem {
-
-  public static NetworkTableInstance inst = NetworkTableInstance.getDefault();
-  public static NetworkTable table = inst.getTable("SmartDashboard");
-
+public class Dropper extends Subsystem {
+  DoubleSolenoid DropperSolenoid = new DoubleSolenoid(RobotMap.PCM_solenoid_D, RobotMap.Grabber_Solenoid_1, RobotMap.Grabber_Solenoid_2);
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new VisionCommand());
+    // setDefaultCommand(new MySpecialCommand());
+  }
+  public DoubleSolenoid getSolenoid(){
+    return DropperSolenoid;
   }
 }
