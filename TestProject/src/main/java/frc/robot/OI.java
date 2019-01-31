@@ -45,7 +45,7 @@ public class OI {
     public static JoystickButton gunner_button_RJ   	= new JoystickButton(gunner,10);
 
   public OI(){
-    //driver_button_Y.whenPressed(new AutoAlign());
+    driver_button_A.whileHeld(new AutoAlign());
 
   }
 

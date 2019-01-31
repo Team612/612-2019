@@ -38,4 +38,11 @@ public class VisionListen {
 
     }
 
+    /*
+    public void execute_raspberry() {
+        JSch jsch = new JSch();
+        String script = "pbrun su - user; cd /home/scripts;./sample_script.sh";
+    }
+    */
+
 }
