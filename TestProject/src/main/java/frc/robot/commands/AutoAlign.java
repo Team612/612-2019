@@ -7,10 +7,7 @@
 
 package frc.robot.commands;
 
-import java.util.Arrays;
-
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.VisionListen;
@@ -28,8 +25,8 @@ public class AutoAlign extends Command {
 
   static Joystick joy = new Joystick(0);
 
-  static boolean angle_check = false;
-  static boolean position_check = false;
+  static boolean angle_check;
+  static boolean position_check;
 
   public AutoAlign() {
     requires(Robot.auto_align);
@@ -41,6 +38,8 @@ public class AutoAlign extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    angle_check = false;
+    position_check = false;
   }
 
   static void align_angle() {
@@ -118,8 +117,11 @@ public class AutoAlign extends Command {
     //System.out.println(drive_magnitude + " " + drive_angle);
     System.out.println(drive_magnitude +" , "+ drive_angle +" , "+ drive_rotation);
     //if (joy.getRawButton(1)) {
-      Robot.drivetrain.getDriveTrain().drivePolar(drive_magnitude, drive_angle, drive_rotation);
-   // }
+    Robot.drivetrain.getDriveTrain().drivePolar(drive_magnitude, drive_angle, drive_rotation);
+    if (angle_check && position_check) {
+      System.out.println("Aligned!");
+    }
+      // }
     /*
     if (joy.getRawButton(1)) {
       align_position();
