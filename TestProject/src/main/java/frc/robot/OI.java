@@ -18,6 +18,7 @@ import frc.robot.commands.AutoAlign;
 public class OI {
   public static boolean DropperPosition = false;
   public static boolean GrabberPosition = false;
+  public static boolean LIFT_PID = true;
 
   public static XboxController driver = new XboxController(RobotMap.driver_port);
   public static XboxController gunner = new XboxController(RobotMap.gunner_port);
