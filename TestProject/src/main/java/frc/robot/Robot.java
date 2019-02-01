@@ -19,11 +19,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.AutoAlignSub;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Dropper;
 import frc.robot.subsystems.Grabber;
-import frc.robot.subsystems.Lift;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,7 +33,7 @@ import frc.robot.subsystems.Lift;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static Lift lift = new Lift();
+  public static Arm arm = new Arm();
   public static Drivetrain drivetrain = new Drivetrain();
   public static Dropper dropper = new Dropper();
   public static Grabber grabber = new Grabber();
