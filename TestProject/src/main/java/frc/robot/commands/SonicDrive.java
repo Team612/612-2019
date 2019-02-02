@@ -11,20 +11,26 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class SonicDrive extends Command {
+
+  public static double distance;
+
   public SonicDrive() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(Robot.Ultra);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.Ultra.ultrasonic.setAutomaticMode(true);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    System.out.println(Robot.ultra.getUltrasonic().getRangeInches());
+    //System.out.println("We made it here");
+    distance = Robot.Ultra.ultrasonic.getRangeInches();
   }
 
   // Make this return true when this Command no longer needs to run execute()

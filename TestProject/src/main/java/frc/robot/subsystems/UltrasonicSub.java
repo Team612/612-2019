@@ -10,20 +10,19 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.SonicDrive;
 
 /**
  * Add your docs here.
  */
-public class ultra extends Subsystem {
+public class UltrasonicSub extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-Ultrasonic ultrasonic = new Ultrasonic(RobotMap.pingChannel, RobotMap.echoChannel);
+public Ultrasonic ultrasonic = new Ultrasonic(RobotMap.pingChannel, RobotMap.echoChannel);
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new SonicDrive());
   }
-  public Ultrasonic getUltrasonic(){
-    return ultrasonic;
-  }
+
 }

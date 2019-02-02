@@ -16,6 +16,8 @@ public class AutoAlign extends Command {
 
   static int ANGLE_DEADBAND = 1;
   static int LOCATION_DEADBAND = 10;
+  static int DISTANCE_DEADBAND = 2;
+
   static double KP_POSITION = .015;
   static double KP_ANGLE = .015;
 
@@ -27,6 +29,7 @@ public class AutoAlign extends Command {
 
   static boolean angle_check;
   static boolean position_check;
+  static boolean drive_forward;
 
   public AutoAlign() {
     requires(Robot.auto_align);
@@ -40,6 +43,7 @@ public class AutoAlign extends Command {
   protected void initialize() {
     angle_check = false;
     position_check = false;
+    drive_forward = false;
   }
 
   static void align_angle() {
@@ -112,14 +116,30 @@ public class AutoAlign extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    align_position();
-    align_angle();
-    //System.out.println(drive_magnitude + " " + drive_angle);
-    System.out.println(drive_magnitude +" , "+ drive_angle +" , "+ drive_rotation);
-    //if (joy.getRawButton(1)) {
-    Robot.drivetrain.getDriveTrain().drivePolar(drive_magnitude, drive_angle, drive_rotation);
-    if (angle_check && position_check) {
-      System.out.println("Aligned!");
+    System.out.println("Sensor: " + SonicDrive.distance);
+    System.out.println(drive_forward +  " | "  + angle_check + " , " + position_check);
+    if (!drive_forward) {
+      align_angle();
+      //System.out.println(drive_magnitude + " " + drive_angle);
+      System.out.println(drive_magnitude +" , "+ drive_angle +" , "+ drive_rotation);
+      //if (joy.getRawButton(1)) {
+      Robot.drivetrain.getDriveTrain().drivePolar(drive_magnitude, drive_angle, drive_rotation);
+      if (angle_check && position_check) {
+        System.out.println("Aligned!");
+        drive_forward = true;
+      }
+    } else {
+      System.out.println("The sensor is: " + SonicDrive.distance + " | Drive until " + DISTANCE_DEADBAND);
+      if (SonicDrive.distance > DISTANCE_DEADBAND) {
+        Robot.drivetrain.getDriveTrain().drivePolar(.75, 0, 0);
+      } else {
+        Robot.drivetrain.getDriveTrain().drivePolar(0, 0, 0);
+        drive_forward = false;
+        System.out.println("----------------------");
+        System.out.println("Aligned and driven!");
+        System.out.println("----------------------");
+      }
+
     }
       // }
     /*

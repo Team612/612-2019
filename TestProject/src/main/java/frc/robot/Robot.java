@@ -24,7 +24,7 @@ import frc.robot.subsystems.AutoAlignSub;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Dropper;
 import frc.robot.subsystems.Grabber;
-import frc.robot.subsystems.ultra;
+import frc.robot.subsystems.UltrasonicSub;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -34,7 +34,7 @@ import frc.robot.subsystems.ultra;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static ultra ultra =new ultra();
+  public static UltrasonicSub Ultra =new UltrasonicSub();
   public static Arm arm = new Arm();
   public static Drivetrain drivetrain = new Drivetrain();
   public static Dropper dropper = new Dropper();
