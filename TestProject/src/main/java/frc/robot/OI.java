@@ -9,9 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.AutoAlign;
-import frc.robot.commands.AutoDrive;
-import frc.robot.commands.DefaultDrive;
+import frc.robot.commands.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -26,7 +24,7 @@ public class OI {
   public static XboxController gunner = new XboxController(RobotMap.gunner_port);
 
     public static JoystickButton driver_button_A    	= new JoystickButton(driver,1);
-    public static JoystickButton driver_button_B 		= new JoystickButton(driver,2);
+    public static JoystickButton driver_button_B 		  = new JoystickButton(driver,2);
     public static JoystickButton driver_button_X    	= new JoystickButton(driver,3);
     public static JoystickButton driver_button_Y    	= new JoystickButton(driver,4);
     public static JoystickButton driver_button_LB   	= new JoystickButton(driver,5);
@@ -48,6 +46,12 @@ public class OI {
     public static JoystickButton gunner_button_RJ   	= new JoystickButton(gunner,10);
 
   public OI(){
+    gunner_button_BCK.whenPressed(new DefaultDropper());
+    gunner_button_BCK.whenReleased(new DisableDropper());
+    gunner_button_RB.whenPressed(new openGrabber());
+    gunner_button_RB.whenReleased(new DisableGrabber());
+    gunner_button_LB.whenPressed(new closeGrabber());
+    gunner_button_LB.whenReleased(new DisableGrabber());
     driver_button_A.whileHeld(new AutoAlign());
     driver_button_B.whenPressed(new AutoDrive());
   }
