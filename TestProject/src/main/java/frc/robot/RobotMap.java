@@ -28,6 +28,9 @@ public class RobotMap {
   public static int PCM_solenoid_G =1;
   public static int Dropper_Solenoid_1 =0;
   public static int Dropper_Solenoid_2 =1;
+  public static int pingChannel =0;
+  public static int echoChannel =1;
+  
 
 
   // For example to map the left and right motors, you could define the

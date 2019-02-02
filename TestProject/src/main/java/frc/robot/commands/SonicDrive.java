@@ -7,12 +7,11 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class DisableDropper extends Command {
-  public DisableDropper() {
+public class SonicDrive extends Command {
+  public SonicDrive() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -25,13 +24,13 @@ public class DisableDropper extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.grabber.getSolenoid().set(Value.kOff);
+    System.out.println(Robot.ultra.getUltrasonic().getRangeInches());
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return false;
   }
 
   // Called once after isFinished returns true
