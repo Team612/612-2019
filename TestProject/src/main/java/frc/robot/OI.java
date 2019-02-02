@@ -10,6 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.AutoAlign;
+import frc.robot.commands.AutoDrive;
+import frc.robot.commands.DefaultDrive;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -47,7 +49,7 @@ public class OI {
 
   public OI(){
     driver_button_A.whileHeld(new AutoAlign());
-
+    driver_button_B.whenPressed(new AutoDrive());
   }
 
   //// CREATING BUTTONS
