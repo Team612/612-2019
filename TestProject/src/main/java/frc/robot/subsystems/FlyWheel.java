@@ -7,40 +7,24 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.ArmMover;
 
 /**
  * Add your docs here.
  */
-public class Arm extends Subsystem {
-  WPI_TalonSRX talon_arm=new WPI_TalonSRX(RobotMap.TALON_PORT_ARM);
-  public static double target =0;
-
+public class FlyWheel extends Subsystem {
+  WPI_TalonSRX flyer = new WPI_TalonSRX(RobotMap.TALON_PORT_FLY);
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-
+  public WPI_TalonSRX getTalon(){
+    return flyer;
+  }
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new ArmMover());
-    talon_arm.setNeutralMode(NeutralMode.Brake);
-    talon_arm.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 300);
-    talon_arm.selectProfileSlot(0, 0);
-    talon_arm.config_kF(0, 0.2, 100); //The 100 is the time out 
-    talon_arm.config_kP(0, 1.3, 100);//for setting  the configuration.(in milliseconds).
-    talon_arm.config_kI(0, 0, 100);
-    talon_arm.config_kD(0, 0,100);
-
-   
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-  }
-  public WPI_TalonSRX getTalon(){
-    return talon_arm;
   }
 }

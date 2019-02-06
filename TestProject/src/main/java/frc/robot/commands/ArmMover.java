@@ -13,6 +13,7 @@ import frc.robot.Robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 public class ArmMover extends Command {
@@ -35,36 +36,24 @@ public class ArmMover extends Command {
   @Override
   protected void execute() {
     if(OI.LIFT_PID) {
-      if(Math.abs(Robot.m_oi.gunner.getY(Hand.kLeft)) > 0.1 ){
-        if (Robot.arm.getTalon().getSensorCollection().isFwdLimitSwitchClosed() || Robot.arm.getTalon().getSensorCollection().isRevLimitSwitchClosed()) {
-          if(Robot.arm.getTalon().getSensorCollection().isFwdLimitSwitchClosed() && Robot.m_oi.gunner.getY(Hand.kLeft) > 0) {
-              Robot.arm.target = 0;
-              Robot.arm.getTalon().getSensorCollection().setQuadraturePosition(0, 0);
-          }
-          else if(Robot.arm.getTalon().getSensorCollection().isRevLimitSwitchClosed() && Robot.m_oi.gunner.getY(Hand.kLeft) < 0) {
-              
-            Robot.arm.target = Robot.arm.target;
-          }
-          else {
-            Robot.arm.target += (Robot.m_oi.gunner.getY(Hand.kLeft)*320) ;
-            //Robot.lift.target += (Robot.oi.gunner.getY(Hand.kLeft)*200) * Robot.encoder_multi;
-          }
-          }
-        else {
-          Robot.arm.target += (Robot.m_oi.gunner.getY(Hand.kLeft)*320);
-          //Robot.lift.target += (Robot.oi.gunner.getY(Hand.kLeft)*200) * Robot.encoder_multi;
-        }
-      } else {
-        Robot.arm.target = Robot.arm.target;
+      if(Math.abs(Robot.m_oi.gunner.getY(Hand.kLeft)) > 0.1){
+      Robot.arm.target += (Robot.m_oi.gunner.getY(Hand.kLeft)*50);
       }
-      
-      if(Math.abs(Robot.arm.getTalon().getSelectedSensorPosition(0) - Robot.arm.target) > DEADZONE) {
-        Robot.arm.getTalon().set(ControlMode.Position, Robot.arm.target);
-      } else {
-        Robot.arm.getTalon().set(ControlMode.Position, Robot.arm.getTalon().getSelectedSensorPosition(0));
-      
-    }
+      Robot.arm.getTalon().set(ControlMode.Position, Robot.arm.target);
+      //Robot.arm.target =Robot.arm.getTalon().getSelectedSensorPosition(0);
+      /*if(Robot.arm.target > Robot.arm.getTalon().getSelectedSensorPosition(0) ){
+        Robot.arm.getTalon().set(ControlMode.PercentOutput, -1);
+
+      }
+      else if(Robot.arm.target < Robot.arm.getTalon().getSelectedSensorPosition(0)){
+        Robot.arm.getTalon().set(ControlMode.PercentOutput, 1);
+
+      }
+      else{
+        Robot.arm.getTalon().set(ControlMode.PercentOutput, 0);
+      }*/
     }else {
+      System.out.println(Robot.arm.getTalon().getSelectedSensorPosition(0));
       Robot.arm.getTalon().set(ControlMode.PercentOutput, OI.gunner.getY( Hand.kLeft));
     }
     // Check if motor is stalled
