@@ -20,6 +20,9 @@ public class RobotMap {
   public static int TALON_PORT_BR=3;
   public static int TALON_PORT_ARM =8;
   public static int TALON_PORT_FLY =7;
+  public static int talon_ball =5;
+  public static int lift_talonFront =6;
+  public static int lift_talonBack =7;
   public static int driver_port  =0;
   public static int gunner_port = 1;
   public static int PCM_solenoid_D =0;

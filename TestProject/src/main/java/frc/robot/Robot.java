@@ -28,6 +28,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Dropper;
 import frc.robot.subsystems.FlyWheel;
 import frc.robot.subsystems.Grabber;
+import frc.robot.subsystems.Lift;
 import frc.robot.subsystems.UltrasonicSub;
 
 /**
@@ -45,6 +46,7 @@ public class Robot extends TimedRobot {
   public static Dropper dropper = new Dropper();
   public static Grabber grabber = new Grabber();
   public static OI m_oi;
+  public static Lift lift=new Lift();
   public static CameraTurn cameraTurn = new CameraTurn();
   public static Compressor compressor=new Compressor(0);
   //public static ReadVision read=new ReadVision();

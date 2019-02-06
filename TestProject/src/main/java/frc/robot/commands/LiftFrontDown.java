@@ -6,12 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-import frc.robot.Robot;
-import frc.robot.subsystems.CameraTurn;
+
 import edu.wpi.first.wpilibj.command.Command;
 
-public class TurnY extends Command {
-  public TurnY() {
+public class LiftFrontDown extends Command {
+  public LiftFrontDown() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -24,13 +23,12 @@ public class TurnY extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.cameraTurn.getServo().setAngle(0);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true; 
+    return false;
   }
 
   // Called once after isFinished returns true
@@ -43,6 +41,4 @@ public class TurnY extends Command {
   @Override
   protected void interrupted() {
   }
-
-  
 }

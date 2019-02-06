@@ -52,6 +52,13 @@ public class OI {
     gunner_button_RB.whenReleased(new DisableGrabber());
     gunner_button_LB.whenPressed(new closeGrabber());
     gunner_button_LB.whenReleased(new DisableGrabber());
+    gunner_button_X.whenPressed(new TurnX());
+    gunner_button_Y.whenPressed(new TurnY());
+    driver_button_LB.whenPressed(new LiftBackUp());
+    driver_button_LJ.whenPressed(new LiftBackDown());
+    driver_button_RB.whenPressed(new LiftFrontUp());
+    driver_button_RJ.whenPressed(new LiftBackDown());
+
     //driver_button_A.whileHeld(new AutoAlign());
 
   }
