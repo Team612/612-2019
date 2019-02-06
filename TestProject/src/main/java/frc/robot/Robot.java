@@ -17,12 +17,16 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.AutoAlignSub;
+import frc.robot.subsystems.CameraTurn;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Dropper;
+import frc.robot.subsystems.FlyWheel;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.UltrasonicSub;
 
@@ -34,17 +38,19 @@ import frc.robot.subsystems.UltrasonicSub;
  * project.
  */
 public class Robot extends TimedRobot {
+  public static FlyWheel flyWheel = new FlyWheel();
   public static UltrasonicSub Ultra =new UltrasonicSub();
   public static Arm arm = new Arm();
   public static Drivetrain drivetrain = new Drivetrain();
   public static Dropper dropper = new Dropper();
   public static Grabber grabber = new Grabber();
   public static OI m_oi;
+  public static CameraTurn cameraTurn = new CameraTurn();
   public static Compressor compressor=new Compressor(0);
   //public static ReadVision read=new ReadVision();
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-  VisionListen vision_network = new VisionListen();
+  //VisionListen vision_network = new VisionListen();
   public static AutoAlignSub auto_align = new AutoAlignSub();
 
   
@@ -57,7 +63,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_oi = new OI();
 
-    vision_network.read_vision();
+    //vision_network.read_vision();
     /*
     Thread t = new Thread(() -> {
       while(!Thread.interrupted()) {
@@ -138,6 +144,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    //Shuffleboard.addEventMarker("encoder_value", EventImportance.kCritical);
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -152,6 +159,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    SmartDashboard.putNumber("Encoder Value", Robot.arm.getTalon().getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("taret", Robot.arm.target);
     Scheduler.getInstance().run();
     //System.out.println(table.getKeys());
 

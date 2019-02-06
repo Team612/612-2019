@@ -18,7 +18,7 @@ import frc.robot.commands.*;
 public class OI {
   public static boolean DropperPosition = false;
   public static boolean GrabberPosition = false;
-  public static boolean LIFT_PID = true;
+  public static boolean LIFT_PID = true ;
 
   public static XboxController driver = new XboxController(RobotMap.driver_port);
   public static XboxController gunner = new XboxController(RobotMap.gunner_port);
@@ -52,7 +52,7 @@ public class OI {
     gunner_button_RB.whenReleased(new DisableGrabber());
     gunner_button_LB.whenPressed(new closeGrabber());
     gunner_button_LB.whenReleased(new DisableGrabber());
-    driver_button_A.whileHeld(new AutoAlign());
+    //driver_button_A.whileHeld(new AutoAlign());
 
   }
 

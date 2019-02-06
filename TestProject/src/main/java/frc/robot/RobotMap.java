@@ -18,8 +18,8 @@ public class RobotMap {
   public static int TALON_PORT_FR=1;
   public static int TALON_PORT_BL=4;
   public static int TALON_PORT_BR=3;
-  public static int talon_ball =5;
-  public static int talon_lift =55;
+  public static int TALON_PORT_ARM =8;
+  public static int TALON_PORT_FLY =7;
   public static int driver_port  =0;
   public static int gunner_port = 1;
   public static int PCM_solenoid_D =0;
@@ -30,7 +30,7 @@ public class RobotMap {
   public static int Dropper_Solenoid_2 =1;
   public static int pingChannel =0;
   public static int echoChannel =1;
-  
+  public static int servo_angle =0;
 
 
   // For example to map the left and right motors, you could define the
