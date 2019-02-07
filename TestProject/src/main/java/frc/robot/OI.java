@@ -53,7 +53,8 @@ public class OI {
     driver_button_RB.whenPressed(new LiftFrontUp());
     driver_button_RJ.whenPressed(new LiftFrontDown());
     driver_button_A.whileHeld(new AutoAlign());
-
+    driver_button_STRT.whenPressed(new ClimbServoFront());
+    driver_button_BCK.whenPressed(new ClimbServoBack());
   }
 
   //// CREATING BUTTONS
