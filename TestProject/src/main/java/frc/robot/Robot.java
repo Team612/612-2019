@@ -25,9 +25,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.AutoAlignSub;
 import frc.robot.subsystems.CameraTurn;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Dropper;
 import frc.robot.subsystems.FlyWheel;
-import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Lift;
 import frc.robot.subsystems.UltrasonicSub;
 
@@ -43,8 +41,6 @@ public class Robot extends TimedRobot {
   public static UltrasonicSub Ultra =new UltrasonicSub();
   public static Arm arm = new Arm();
   public static Drivetrain drivetrain = new Drivetrain();
-  public static Dropper dropper = new Dropper();
-  public static Grabber grabber = new Grabber();
   public static OI m_oi;
   public static Lift lift=new Lift();
   public static CameraTurn cameraTurn = new CameraTurn();

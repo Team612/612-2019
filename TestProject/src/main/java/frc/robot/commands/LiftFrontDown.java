@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
 public class LiftFrontDown extends Command {
   public LiftFrontDown() {
@@ -23,6 +24,8 @@ public class LiftFrontDown extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Robot.lift.getlift_talonFront().set(-.75);;
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()
