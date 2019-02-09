@@ -18,9 +18,7 @@ import frc.robot.commands.*;
 public class OI {
 
   // Booleans
-  public static boolean DropperPosition             = false;
-  public static boolean GrabberPosition             = false;
-  public static boolean LIFT_PID                    = true;
+  public static boolean LIFT_PID                    = false;
   public static boolean TOGGLE_SERVO_CLIMB_F        = true;
   public static boolean TOGGLE_SERVO_CLIMB_B        = true;
 
@@ -54,6 +52,7 @@ public class OI {
 
   public OI() {
     driver_button_STRT.whileHeld(new AutoAlign());  // Run auto align on button press
+    driver_button_BCK.whenPressed(new DefaultInvert());
   }
 
 }

@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -106,6 +107,7 @@ public class Robot extends TimedRobot {
     // ShuffleBoard Data
     SmartDashboard.putNumber("Encoder Value", Robot.arm.talon_arm.getSelectedSensorPosition(0));
     SmartDashboard.putNumber("Target", Arm.target);
+    SmartDashboard.putNumber("Deadzone", OI.driver.getY(Hand.kLeft));
     
     Scheduler.getInstance().run();
 
@@ -115,5 +117,5 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
-  
+
 }

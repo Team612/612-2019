@@ -9,14 +9,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.POVConvert;
+
+public class DefaultInvert extends Command {
 
 
-public class DefaultDriverCamera extends Command {
 
-
-  public DefaultDriverCamera() {
-    requires(Robot.drivercamera);
+  public DefaultInvert() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
   }
 
   // Called just before this Command runs the first time
@@ -28,18 +28,14 @@ public class DefaultDriverCamera extends Command {
   @Override
   protected void execute() {
 
-    if(Robot.dPov.getCardinal() == POVConvert.POV_UP) {  // If the value from the D-Pad is up
-      Robot.drivercamera.camera_servo.set(0);
-    } else if(Robot.dPov.getCardinal() == POVConvert.POV_DOWN) {  // If the value from the D-Pad is down
-      Robot.drivercamera.camera_servo.set(180);
-    } 
+    DefaultDrive.invert_robot = !DefaultDrive.invert_robot;
 
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true
@@ -52,5 +48,4 @@ public class DefaultDriverCamera extends Command {
   @Override
   protected void interrupted() {
   }
-  
 }

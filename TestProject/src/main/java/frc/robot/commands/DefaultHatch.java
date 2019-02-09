@@ -29,9 +29,9 @@ public class DefaultHatch extends Command {
   @Override
   protected void execute() {
 
-    if(Robot.gPov.getCardinal() == POVConvert.POV_UP) {  // If the value from the D-Pad is up
+    if (Robot.gPov.getCardinal() == POVConvert.POV_UP) {  // If the value from the D-Pad is up
       Robot.hatch.hatchTalon.set(HATCH_TALON_SPEED);  // Set the talon to .5 speed
-    } else if(Robot.gPov.getCardinal() == POVConvert.POV_DOWN){
+    } else if (Robot.gPov.getCardinal() == POVConvert.POV_DOWN){
       Robot.hatch.hatchTalon.set(HATCH_TALON_SPEED * -1);  // Set the talon to .5 speed in opposite direction
     } else {
       Robot.hatch.hatchTalon.set(0);  // Else, set the talon speed to 0

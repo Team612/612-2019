@@ -76,7 +76,11 @@ public class DefaultArm extends Command {
 
     } else {
       System.out.println(Robot.arm.talon_arm.getSelectedSensorPosition(0));
-      Robot.arm.talon_arm.set(ControlMode.PercentOutput, OI.gunner.getY(Hand.kLeft));
+      if(Math.abs(OI.gunner.getY(Hand.kLeft)) < DEADZONE){  // Filter out the DEADZONE
+        Robot.arm.talon_arm.set(0);
+      } else {  // Else, apply the the normal Joystick value
+        Robot.arm.talon_arm.set(ControlMode.PercentOutput, OI.gunner.getY(Hand.kLeft));
+      }
     }
   }
 

@@ -20,7 +20,7 @@ public class Arm extends Subsystem {
 
   public WPI_TalonSRX talon_arm = new WPI_TalonSRX(RobotMap.TALON_PORT_ARM);  // Create the ARM talon object
   public static double target = 0;  // Define the target position of the arm
-
+  
   // Variables to PID values
   private double kF = 0.2;
   private double kP = 1.3;

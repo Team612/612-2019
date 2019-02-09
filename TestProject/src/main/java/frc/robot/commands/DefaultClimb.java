@@ -29,20 +29,25 @@ public class DefaultClimb extends Command {
   protected void execute() {
 
     // Control the front climb system
-    if(OI.driver_button_RB.get()){
-      if(OI.TOGGLE_SERVO_CLIMB_F){
+    if (OI.driver_button_RB.get()) {
+
+      if (OI.TOGGLE_SERVO_CLIMB_F) {
         Robot.climb.servo_front.setAngle(0);
-      }else{
-        Robot.climb.servo_front.setAngle(180);
+      } else {
+        Robot.climb.servo_front.setAngle(0);
       }
-     OI.TOGGLE_SERVO_CLIMB_F = !OI.TOGGLE_SERVO_CLIMB_F;
-    }else if(OI.driver_button_RB.get()){
-      if(OI.TOGGLE_SERVO_CLIMB_B){
-        Robot.climb.servo_back.setAngle(0);
-      }else{
+      OI.TOGGLE_SERVO_CLIMB_F = !OI.TOGGLE_SERVO_CLIMB_F;
+
+    } else if(OI.driver_button_RB.get()) {
+
+      if (OI.TOGGLE_SERVO_CLIMB_B) {
+        Robot.climb.servo_back.setAngle(180);
+      } else {
         Robot.climb.servo_back.setAngle(180);
       }
-    }else{
+
+    } else {
+
       if (OI.driver_button_Y.get()) {  // Up (Front)
         Robot.climb.lift_talonFront.set(CLIMB_SPEED);
       } else if (OI.driver_button_B.get()) {  // Down (Front)
@@ -53,11 +58,11 @@ public class DefaultClimb extends Command {
 
       // Control the back climb system
       if (OI.driver_button_X.get()) {  // Up (Back)
-        Robot.climb.lift_talonFront.set(CLIMB_SPEED);
+        Robot.climb.lift_talonBack.set(CLIMB_SPEED);
       } else if (OI.driver_button_A.get()) {  // Down (Back)
-        Robot.climb.lift_talonFront.set(CLIMB_SPEED * -1);
+        Robot.climb.lift_talonBack.set(CLIMB_SPEED * -1);
       } else {
-        Robot.climb.lift_talonFront.set(0);
+        Robot.climb.lift_talonBack.set(0);
       }
     }
 
