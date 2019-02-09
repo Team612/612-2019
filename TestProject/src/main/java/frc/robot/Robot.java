@@ -6,30 +6,13 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
-import com.ctre.phoenix.CANifier;
 
-import edu.wpi.first.networktables.EntryListenerFlags;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.AutoAlignSub;
-import frc.robot.subsystems.CameraTurn;
-import frc.robot.subsystems.ClimbServo;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.FlyWheel;
-import frc.robot.subsystems.Hatch;
-import frc.robot.subsystems.Lift;
-import frc.robot.subsystems.UltrasonicSub;
+import frc.robot.subsystems.*;
 import frc.robot.POVConvert;
 
 
@@ -42,15 +25,12 @@ import frc.robot.POVConvert;
  */
 public class Robot extends TimedRobot {
   public static FlyWheel flyWheel = new FlyWheel();
-  public static UltrasonicSub Ultra =new UltrasonicSub();
   public static Arm arm = new Arm();
   public static Drivetrain drivetrain = new Drivetrain();
   public static OI m_oi;
-  public static Lift lift=new Lift();
-  public static ClimbServo climbServo=new ClimbServo();
+  public static Climb climb=new Climb();
   public static Hatch hatch =new Hatch();
   public static CameraTurn cameraTurn = new CameraTurn();
-  public static Compressor compressor=new Compressor(0);
   //public static ReadVision read=new ReadVision();
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -58,6 +38,7 @@ public class Robot extends TimedRobot {
   public static AutoAlignSub auto_align = new AutoAlignSub();
   public static POVConvert dPov=new POVConvert(OI.driver, true);
   public static POVConvert gPov=new POVConvert(OI.gunner, true);
+  public static LineTracker linetracker = new LineTracker();
   
 
   /**
@@ -67,10 +48,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-
+    //Thread t = new Thread
     //vision_network.read_vision();
-    /*
-    Thread t = new Thread(() -> {
+    
+   /* Thread t = new Thread(() -> {
       while(!Thread.interrupted()) {
         
         Timer.delay(1);
@@ -78,11 +59,11 @@ public class Robot extends TimedRobot {
     });
     t.start();
     */
+    
 
     //m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
-    compressor.setClosedLoopControl(true);
   }
 
   /**
@@ -164,8 +145,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putNumber("Encoder Value", Robot.arm.getTalon().getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("taret", Robot.arm.target);
+    SmartDashboard.putNumber("Encoder Value", Robot.arm.talon_arm.getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("taret", Arm.target);
     Scheduler.getInstance().run();
     //System.out.println(table.getKeys());
 

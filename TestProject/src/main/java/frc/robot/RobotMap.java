@@ -14,38 +14,35 @@ package frc.robot;
  * floating around.
  */
 public class RobotMap {
-public static int TALON_PORT_HATCH = 10;
-public static int TALON_PORT_FL=2;
-  public static int TALON_PORT_FR=1;
-  public static int TALON_PORT_BL=4;
-  public static int TALON_PORT_BR=3;
-  public static int TALON_PORT_ARM =8;
-  public static int TALON_PORT_FLY =7;
-  public static int talon_ball =5;
-  public static int lift_talonFront =6;
-  public static int lift_talonBack =7;
-  public static int talon_hatch =9;
 
+  // Drive Talons
+  public static int TALON_PORT_FL = 7;
+  public static int TALON_PORT_FR = 2;
+  public static int TALON_PORT_BL = 6;
+  public static int TALON_PORT_BR = 3;
+  public static int TALON_PORT_LIFT_F = 4;
+  public static int TALON_PORT_LIFT_B = 8;
+
+  // Gunner Talons
+  public static int TALON_PORT_ARM = 5;
+  public static int TALON_PORT_HATCH = 9;
+  public static int TALON_PORT_FLY = 1;
+
+  // Line tracker ports
+  public static int leftLineTracker_port = 0;
+  public static int centerLineTracker_port = 1;
+  public static int rightLineTracker_port = 2;
+
+  // MISC
   public static int driver_port  =0;
   public static int gunner_port = 1;
-  public static int PCM_solenoid_D =0;
-  public static int Grabber_Solenoid_1 =0;
-  public static int Grabber_Solenoid_2 =1;
-  public static int PCM_solenoid_G =1;
-  public static int Dropper_Solenoid_1 =0;
-  public static int Dropper_Solenoid_2 =1;
+
   public static int pingChannel =0;
   public static int echoChannel =1;
+
   public static int servo_angle =0;
   public static int servo_front =1;
   public static int servo_back =2;
-  // For example to map the left and right motors, you could define the
-  // following variables to use with your drivetrain subsystem.
-  // public static int leftMotor = 1;
-  // public static int rightMotor = 2;
 
-  // If you are using multiple modules, make sure to define both the port
-  // number and the module. For example you with a rangefinder:
-  // public static int rangefinderPort = 1;
-  // public static int rangefinderModule = 1;
+  
 }

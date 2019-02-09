@@ -7,22 +7,26 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.SonicDrive;
 
 /**
  * Add your docs here.
  */
-public class UltrasonicSub extends Subsystem {
+public class LineTracker extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-public Ultrasonic ultrasonic = new Ultrasonic(RobotMap.pingChannel, RobotMap.echoChannel);
+
+  public AnalogInput leftLineTracker = new AnalogInput(RobotMap.leftLineTracker_port);
+  public AnalogInput centerLineTracker = new AnalogInput(RobotMap.centerLineTracker_port);
+  public AnalogInput rightLineTracker = new AnalogInput(RobotMap.rightLineTracker_port);
+  public Ultrasonic ultrasonic = new Ultrasonic(RobotMap.pingChannel, RobotMap.echoChannel);
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new SonicDrive());
+    // setDefaultCommand(new MySpecialCommand());
   }
-
 }

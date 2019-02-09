@@ -11,12 +11,16 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.DefaultFly;
 
 /**
  * Add your docs here.
  */
 public class FlyWheel extends Subsystem {
   WPI_TalonSRX flyer = new WPI_TalonSRX(RobotMap.TALON_PORT_FLY);
+  public FlyWheel(){
+    flyer.setInverted(true);
+  }
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   public WPI_TalonSRX getTalon(){
@@ -24,6 +28,7 @@ public class FlyWheel extends Subsystem {
   }
   @Override
   public void initDefaultCommand() {
+    setDefaultCommand(new DefaultFly());
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
