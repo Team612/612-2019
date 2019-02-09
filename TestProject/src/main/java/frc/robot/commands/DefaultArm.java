@@ -13,14 +13,13 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Arm;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 
 public class DefaultArm extends Command {
 
   public static int MAX_POSITION = 500;  // Define to count at end of range of motion degrees
-  private double MOTOR_DEADZONE = 0.1;  // Define the joystick deadzone of the gunner
+  private double DEADZONE = 0.1;  // Define the joystick deadzone of the gunner
   private double MAX_ANGLE = 90;  // Degree value for unit conversion
   private double ARM_SPEED = 25;
 
@@ -69,7 +68,7 @@ public class DefaultArm extends Command {
 
         }
 
-      } else if(Math.abs(OI.gunner.getY(Hand.kLeft)) > MOTOR_DEADZONE) {  // Filter out the DEADZONE
+      } else if(Math.abs(OI.gunner.getY(Hand.kLeft)) > DEADZONE) {  // Filter out the DEADZONE
         Arm.target += (OI.gunner.getY(Hand.kLeft)*ARM_SPEED);  // Increase the PID target value
       }
 

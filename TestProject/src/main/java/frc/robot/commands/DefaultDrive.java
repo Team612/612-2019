@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 public class DefaultDrive extends Command {
 
 
-  final double DEADZONE = 0.15;  // Define controller deadzone
+  final double DEADZONE = 0.1;  // Define controller deadzone
 
   // Variables for mechanum drive
   public static double magnitude;  // The power the of the drive system

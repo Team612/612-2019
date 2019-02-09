@@ -12,11 +12,13 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
 
+
 public class DefaultFly extends Command {
+
+  private final double  DEADZONE = 0.1;  // Define the controller DEADZONE
+
   public DefaultFly() {
-    requires(Robot.flyWheel);
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+    requires(Robot.flyWheel);  // Requires FlyWheel Object
   }
 
   // Called just before this Command runs the first time
@@ -27,7 +29,13 @@ public class DefaultFly extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight));
+
+    if(Math.abs(OI.gunner.getY(Hand.kRight)) < DEADZONE){  // Filter out the DEADZONE
+      Robot.flyWheel.flyer.set(0);
+    } else {  // Else, apply the the normal Joystick value
+      Robot.flyWheel.flyer.set(OI.gunner.getY(Hand.kRight));
+    }
+
   }
 
   // Make this return true when this Command no longer needs to run execute()

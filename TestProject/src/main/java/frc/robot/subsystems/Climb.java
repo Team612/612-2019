@@ -17,9 +17,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.DefaultClimb;
 import frc.robot.RobotMap;
 
-/**
- * Add your docs here.
- */
+
 public class Climb extends Subsystem {
 
   // Define the lift talons (front & back)

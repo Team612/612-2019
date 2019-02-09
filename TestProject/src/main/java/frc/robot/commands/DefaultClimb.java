@@ -16,7 +16,7 @@ public class DefaultClimb extends Command {
   private final static double CLIMB_SPEED = 0.75;
 
   public DefaultClimb() {
-    requires(Robot.climb);
+    requires(Robot.climb);  // Require the climb object
   }
 
   // Called just before this Command runs the first time
@@ -27,6 +27,7 @@ public class DefaultClimb extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+
     // Control the front climb system
     if(OI.driver_button_RB.get()){
       if(OI.TOGGLE_SERVO_CLIMB_F){

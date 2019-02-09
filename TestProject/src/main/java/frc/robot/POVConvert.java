@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.XboxController;
  * Add your docs here.
  */
 public class POVConvert {
+    
     public static final int POV_UP=0;
     public static final int POV_UR_DIAG=1;
     public static final int POV_RIGHT=2;

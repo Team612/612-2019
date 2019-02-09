@@ -12,12 +12,11 @@ import frc.robot.Robot;
 import frc.robot.POVConvert;
 
 
-public class HatchControl extends Command {
-  
-  private final double HATCH_TALON_SPEED = 0.5; // Set the speed of the talon
+public class DefaultDriverCamera extends Command {
 
-  public HatchControl() {
-    requires(Robot.hatch);  // Require the Hatch object
+
+  public DefaultDriverCamera() {
+    requires(Robot.drivercamera);
   }
 
   // Called just before this Command runs the first time
@@ -29,14 +28,12 @@ public class HatchControl extends Command {
   @Override
   protected void execute() {
 
-    if(Robot.gPov.getCardinal() == POVConvert.POV_UP) {  // If the value from the D-Pad is up
-      Robot.hatch.hatchTalon.set(HATCH_TALON_SPEED);  // Set the talon to .5 speed
-    } else if(Robot.gPov.getCardinal() == POVConvert.POV_DOWN){
-      Robot.hatch.hatchTalon.set(HATCH_TALON_SPEED * -1);  // Set the talon to .5 speed in opposite direction
-    } else {
-      Robot.hatch.hatchTalon.set(0);  // Else, set the talon speed to 0
-    }
-    
+    if(Robot.dPov.getCardinal() == POVConvert.POV_UP) {  // If the value from the D-Pad is up
+      Robot.drivercamera.camera_servo.set(0);
+    } else if(Robot.dPov.getCardinal() == POVConvert.POV_DOWN){  // If the value from the D-Pad is down
+      Robot.drivercamera.camera_servo.set(180);
+    } 
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -55,5 +52,5 @@ public class HatchControl extends Command {
   @Override
   protected void interrupted() {
   }
-
+  
 }

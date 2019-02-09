@@ -13,23 +13,17 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.DefaultFly;
 
-/**
- * Add your docs here.
- */
 public class FlyWheel extends Subsystem {
-  WPI_TalonSRX flyer = new WPI_TalonSRX(RobotMap.TALON_PORT_FLY);
+
+  public WPI_TalonSRX flyer = new WPI_TalonSRX(RobotMap.TALON_PORT_FLY);  // Create flywheel talon
+  
   public FlyWheel(){
-    flyer.setInverted(true);
+    flyer.setInverted(true);  // Set the talon to run to reverse direction
   }
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-  public WPI_TalonSRX getTalon(){
-    return flyer;
-  }
+
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new DefaultFly());
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new DefaultFly());  // Set the flywheel as a default command
   }
+
 }

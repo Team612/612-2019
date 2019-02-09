@@ -85,7 +85,6 @@ public class AutoAlign extends Command {
 
   public AutoAlign() {
     
-    requires(Robot.auto_align);  // Require the AutoAlign Subsystem
     requires(Robot.linetracker);  // Require the line tracker
     requires(Robot.drivetrain);  // Require the Drivetrain
     position_timer.start();

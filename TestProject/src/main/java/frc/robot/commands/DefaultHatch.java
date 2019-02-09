@@ -6,13 +6,18 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-import frc.robot.Robot;
-import edu.wpi.first.wpilibj.command.Command;
 
-public class TurnY extends Command {
-  public TurnY() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
+import frc.robot.POVConvert;
+
+
+public class DefaultHatch extends Command {
+  
+  private final double HATCH_TALON_SPEED = 0.5; // Set the speed of the talon
+
+  public DefaultHatch() {
+    requires(Robot.hatch);  // Require the Hatch object
   }
 
   // Called just before this Command runs the first time
@@ -23,13 +28,21 @@ public class TurnY extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.cameraTurn.getServo().setAngle(0);
+
+    if(Robot.gPov.getCardinal() == POVConvert.POV_UP) {  // If the value from the D-Pad is up
+      Robot.hatch.hatchTalon.set(HATCH_TALON_SPEED);  // Set the talon to .5 speed
+    } else if(Robot.gPov.getCardinal() == POVConvert.POV_DOWN){
+      Robot.hatch.hatchTalon.set(HATCH_TALON_SPEED * -1);  // Set the talon to .5 speed in opposite direction
+    } else {
+      Robot.hatch.hatchTalon.set(0);  // Else, set the talon speed to 0
+    }
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true; 
+    return false;
   }
 
   // Called once after isFinished returns true
@@ -43,5 +56,4 @@ public class TurnY extends Command {
   protected void interrupted() {
   }
 
-  
 }

@@ -16,13 +16,19 @@ import frc.robot.commands.*;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-  public static boolean DropperPosition = false;
-  public static boolean GrabberPosition = false;
-  public static boolean LIFT_PID = true ;
 
-  public static XboxController driver = new XboxController(RobotMap.driver_port);
-  public static XboxController gunner = new XboxController(RobotMap.gunner_port);
+  // Booleans
+  public static boolean DropperPosition             = false;
+  public static boolean GrabberPosition             = false;
+  public static boolean LIFT_PID                    = true;
+  public static boolean TOGGLE_SERVO_CLIMB_F        = true;
+  public static boolean TOGGLE_SERVO_CLIMB_B        = true;
 
+  // Controllers
+  public static XboxController driver               = new XboxController(RobotMap.driver_port);
+  public static XboxController gunner               = new XboxController(RobotMap.gunner_port);
+
+  // Driver buttons
   public static JoystickButton driver_button_A    	= new JoystickButton(driver,1);
   public static JoystickButton driver_button_B 		  = new JoystickButton(driver,2);
   public static JoystickButton driver_button_X    	= new JoystickButton(driver,3);
@@ -34,6 +40,7 @@ public class OI {
   public static JoystickButton driver_button_LJ   	= new JoystickButton(driver,9);
   public static JoystickButton driver_button_RJ   	= new JoystickButton(driver,10);
 
+  // Gunner buttons
   public static JoystickButton gunner_button_A    	= new JoystickButton(gunner, 1);
   public static JoystickButton gunner_button_B    	= new JoystickButton(gunner, 2);
   public static JoystickButton gunner_button_X    	= new JoystickButton(gunner,3);
@@ -46,10 +53,7 @@ public class OI {
   public static JoystickButton gunner_button_RJ   	= new JoystickButton(gunner,10);
 
   public OI() {
-
-    gunner_button_X.whenPressed(new TurnX());
-    gunner_button_Y.whenPressed(new TurnY());
-    driver_button_STRT.whileHeld(new AutoAlign());
+    driver_button_STRT.whileHeld(new AutoAlign());  // Run auto align on button press
   }
 
 }

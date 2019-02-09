@@ -10,7 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.HatchControl;
+import frc.robot.commands.DefaultHatch;;
 
 
 public class Hatch extends Subsystem {
@@ -19,7 +19,7 @@ public class Hatch extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new HatchControl());
+    setDefaultCommand(new DefaultHatch());
   }
   
 }
