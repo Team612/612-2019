@@ -8,27 +8,18 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.HatchControl;
 
-/**
- * Add your docs here.
- */
-public class Hatch extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-  private WPI_TalonSRX hatchTalon=new WPI_TalonSRX(RobotMap.TALON_PORT_HATCH);
 
-  public WPI_TalonSRX getTalon(){
-    return hatchTalon;
-  }
+public class Hatch extends Subsystem {
+
+  public WPI_TalonSRX hatchTalon = new WPI_TalonSRX(RobotMap.TALON_PORT_HATCH);  // Creates the Hatch Talon Object
 
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new HatchControl());
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
   }
+  
 }

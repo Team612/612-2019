@@ -13,6 +13,8 @@ public class VisionListen {
     NetworkTableEntry p2Entry;
     public static double vision_array[] = new double[3];
 
+    public static boolean calculate_delta = false;
+
     VisionListen() {
         System.out.println("We here");
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -24,16 +26,19 @@ public class VisionListen {
     }
 
     public void read_vision() {
+        
         angleEntry.addListener(event -> {
             vision_array[0] = (double) event.value.getValue();
         }, EntryListenerFlags.kUpdate);
 
         p1Entry.addListener(event -> {
             vision_array[1] = (double) event.value.getValue();
+            calculate_delta = true;
         }, EntryListenerFlags.kUpdate);
 
         p2Entry.addListener(event -> {
             vision_array[2] = (double) event.value.getValue();
+            calculate_delta = true;
         }, EntryListenerFlags.kUpdate);
 
     }

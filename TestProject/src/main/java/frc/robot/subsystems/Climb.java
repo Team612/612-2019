@@ -7,30 +7,32 @@
 
 package frc.robot.subsystems;
 
+
+
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.commands.DefaultClimb;
 import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
  */
-public class Lift extends Subsystem {
+public class Climb extends Subsystem {
 
-WPI_TalonSRX lift_talonFront=new WPI_TalonSRX(RobotMap.lift_talonFront);
-WPI_TalonSRX lift_talonBack=new WPI_TalonSRX(RobotMap.lift_talonBack);
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+  // Define the lift talons (front & back)
+  public WPI_TalonSRX lift_talonFront = new WPI_TalonSRX(RobotMap.TALON_PORT_LIFT_F);
+  public WPI_TalonSRX lift_talonBack = new WPI_TalonSRX(RobotMap.TALON_PORT_LIFT_B);
+
+  // Define the servo objects
+  public Servo servo_front = new Servo(RobotMap.servo_front);
+  public Servo servo_back = new Servo(RobotMap.servo_back);
 
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new DefaultClimb());
   }
-  public WPI_TalonSRX getlift_talonFront(){
-    return lift_talonFront;
-  }
-  public WPI_TalonSRX getlift_talonBack(){
-    return lift_talonBack;
-  }
+
 }
