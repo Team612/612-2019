@@ -55,24 +55,21 @@ public class DefaultArm extends Command {
   protected void execute() {
 
     // Booleans for limit switch results
-    boolean top_limit_switch_hit = Robot.arm.talon_arm.getSensorCollection().isFwdLimitSwitchClosed();
-    boolean bottom_limit_switch_hit = Robot.arm.talon_arm.getSensorCollection().isRevLimitSwitchClosed();
+    boolean bottom_limit_switch_hit = Robot.arm.talon_arm.getSensorCollection().isFwdLimitSwitchClosed();
+    boolean top_limit_switch_hit = Robot.arm.talon_arm.getSensorCollection().isRevLimitSwitchClosed();
 
     if(OI.LIFT_PID) {  // Troubleshooting: Enable or Disable PID
 
-      if (top_limit_switch_hit || bottom_limit_switch_hit) {  // Check if one of the Limit Switches is hit
-
-        if (top_limit_switch_hit) {  // Check if top is triggered
-          
-        } else if (bottom_limit_switch_hit) {  // Check if bottom is triggered
-
-        }
-
-      } else if(Math.abs(OI.gunner.getY(Hand.kLeft)) > DEADZONE) {  // Filter out the DEADZONE
+        // Check if one of the Limit Switches is hit
+     /* if (top_limit_switch_hit && (OI.gunner.getY(Hand.kLeft) > 0)) {  // Check if top is triggered
+        Arm.target = Arm.target;
+      } else if (bottom_limit_switch_hit && (OI.gunner.getY(Hand.kLeft) < 0)) {  // Check if bottom is triggered
+        Arm.target = Arm.target;
+      } else*/ if(Math.abs(OI.gunner.getY(Hand.kLeft)) > DEADZONE) {  // Filter out the DEADZONE
         Arm.target += (OI.gunner.getY(Hand.kLeft)*ARM_SPEED);  // Increase the PID target value
       }
-
       Robot.arm.talon_arm.set(ControlMode.Position, Arm.target);  // Set the ARM to a specific position value
+
 
     } else {
       System.out.println(Robot.arm.talon_arm.getSelectedSensorPosition(0));

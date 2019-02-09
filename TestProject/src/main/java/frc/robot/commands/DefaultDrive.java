@@ -45,11 +45,11 @@ public class DefaultDrive extends Command {
     direction_x = OI.driver.getX(Hand.kLeft);
     rotation = OI.driver.getX(Hand.kRight);
 
-    if (invert_robot) {  // Negate the joystick values if robot is inversed
+    /*if (invert_robot) {  // Negate the joystick values if robot is inversed
       direction_y = direction_y * -1;
       direction_x = direction_x * -1;
       rotation = rotation * -1;
-    }
+    }*/
 
   }
 
@@ -80,10 +80,15 @@ public class DefaultDrive extends Command {
 
   @Override
   protected void execute() {
-    getInput(); // Fetches Joystick values
-    doDead(); // Sets the DEADZONE value
-    toPolar(); // Does calculations with Joystick values to drivetrain
-    Robot.drivetrain.drivetrain.drivePolar(magnitude, angle, rotation); // Pass the calculated drive data into the drivetrain
+    if (!OI.LOCK_DRIVETRAIN) {
+      getInput(); // Fetches Joystick values
+      doDead(); // Sets the DEADZONE value
+      toPolar(); // Does calculations with Joystick values to drivetrain
+      Robot.drivetrain.drivetrain.drivePolar(magnitude, angle, rotation); // Pass the calculated drive data into the drivetrain
+    } else {
+      Robot.drivetrain.drivetrain.drivePolar(0, 0, 0); // Set the robot's wheels to 0
+    }
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()

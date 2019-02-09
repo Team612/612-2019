@@ -21,6 +21,8 @@ public class OI {
   public static boolean LIFT_PID                    = false;
   public static boolean TOGGLE_SERVO_CLIMB_F        = true;
   public static boolean TOGGLE_SERVO_CLIMB_B        = true;
+  public static boolean LOCK_DRIVETRAIN             = false;
+  public static boolean KILL_CLIMB                  = false;
 
   // Controllers
   public static XboxController driver               = new XboxController(RobotMap.driver_port);
@@ -52,7 +54,6 @@ public class OI {
 
   public OI() {
     driver_button_STRT.whileHeld(new AutoAlign());  // Run auto align on button press
-    driver_button_BCK.whenPressed(new DefaultInvert());
   }
 
 }

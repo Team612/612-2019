@@ -103,13 +103,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-
+    Scheduler.getInstance().run();
     // ShuffleBoard Data
     SmartDashboard.putNumber("Encoder Value", Robot.arm.talon_arm.getSelectedSensorPosition(0));
     SmartDashboard.putNumber("Target", Arm.target);
-    SmartDashboard.putNumber("Deadzone", OI.driver.getY(Hand.kLeft));
-    
-    Scheduler.getInstance().run();
+    SmartDashboard.putBoolean("Fwd", arm.talon_arm.getSensorCollection().isFwdLimitSwitchClosed());
+    SmartDashboard.putBoolean("Rev", arm.talon_arm.getSensorCollection().isRevLimitSwitchClosed());
 
   }
 
