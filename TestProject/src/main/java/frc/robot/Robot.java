@@ -8,7 +8,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -27,8 +26,8 @@ import frc.robot.POVConvert;
 public class Robot extends TimedRobot {
 
   // Driver servo camera objects
-  public static POVConvert dPov = new POVConvert(OI.driver, true);
-  public static POVConvert gPov = new POVConvert(OI.gunner, true);
+  public static POVConvert driverPOV = new POVConvert(OI.driver);
+  public static POVConvert gunnerPOV = new POVConvert(OI.gunner);
   public static DriverCamera drivercamera = new DriverCamera(); 
 
   // Climb object

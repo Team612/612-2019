@@ -16,19 +16,18 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.DefaultClimb;
 import frc.robot.RobotMap;
 
 
 public class Climb extends Subsystem {
 
   // Define the lift talons (front & back)
-  public WPI_TalonSRX lift_talonFront = new WPI_TalonSRX(RobotMap.TALON_PORT_LIFT_F);
-  public WPI_TalonSRX lift_talonBack = new WPI_TalonSRX(RobotMap.TALON_PORT_LIFT_B);
+  public WPI_TalonSRX lift_talonFront = new WPI_TalonSRX(RobotMap.TALON_PORT_LIFT_FRONT);
+  public WPI_TalonSRX lift_talonBack = new WPI_TalonSRX(RobotMap.TALON_PORT_LIFT_BACK);
 
   // Define the servo objects
-  public Servo servo_front = new Servo(RobotMap.servo_front);
-  public Servo servo_back = new Servo(RobotMap.servo_back);
+  public Servo servo_front = new Servo(RobotMap.SERVO_PORT_CLIMB_FRONT);
+  public Servo servo_back = new Servo(RobotMap.SERVO_PORT_CLIMB_BACK);
 
   // Variables to PID values
   private double kF = 0.2;
@@ -54,7 +53,6 @@ public class Climb extends Subsystem {
     configure_arm(lift_talonFront);
     configure_arm(lift_talonBack);
 
-    setDefaultCommand(new DefaultClimb());
   }
 
 }

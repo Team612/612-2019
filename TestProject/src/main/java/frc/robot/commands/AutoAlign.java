@@ -7,8 +7,6 @@
 
 package frc.robot.commands;
 
-import java.util.Arrays;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;

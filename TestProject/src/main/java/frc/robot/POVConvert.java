@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import java.util.HashMap;
+
 import edu.wpi.first.wpilibj.XboxController;
 
 /**
@@ -14,50 +16,89 @@ import edu.wpi.first.wpilibj.XboxController;
  */
 public class POVConvert {
     
-    public static final int POV_UP=0;
-    public static final int POV_UR_DIAG=1;
-    public static final int POV_RIGHT=2;
-    public static final int POV_DR_DIAG=3;
-    public static final int POV_DOWN=4;
-    public static final int POV_DL_DIAG=5;
-    public static final int POV_LEFT=6;
-    public static final int POV_UL_DIAG=7;
-    private XboxController controller;
-    private boolean preferredDir;//If true,preference given to up/down. If false, preference given to left/right
-    POVConvert(XboxController controller,boolean preferNorth){
-        this.controller=controller;
-        preferredDir=preferNorth;
+    
+    private XboxController controller;  // Initialize Joystick
+    private boolean preferredDir = true;  // If true, preference given to up/down. If false, preference given to left/right
+    
+    public HashMap<Integer, String> pov_values = new HashMap<Integer, String>();  // Dictionary to store direction values
+
+    // Degree values of cardinal directions
+    int NORTH = 0;
+    int EAST = 90;
+    int SOUTH = 180;
+    int WEST = 270;
+
+    // Degree of subcardinal directions
+    int SOUTH_WEST = 225;
+    int SOUTH_EAST = 135;
+    int NORTH_WEST = 315;
+    int NORTH_EAST = 45;
+
+    POVConvert(XboxController controller) {  // Constructor
+        this.controller = controller;  // Store existing controller value to extend value
+        populate_dictionary();  // Populate the dictionary with direction values
     }
 
-    public void setPreference(boolean preferNorth){//Set what direction to prefer if in the middle
-        preferredDir=preferNorth;
+    public void setPreference(boolean preferNorth) {//Set what direction to prefer if in the middle
+        preferredDir = preferNorth;  // Set the prefered direction when dealing with diagonal inputs
     }
 
-    public int getCardinal(){//Only can return 5 values: -1, 0, 2, 4, and 6
-        if(controller.getPOV()==-1)return -1;
-        switch(controller.getPOV()){
-            case 0:return 0;
-            case 90:return 2;
-            case 180:return 4;
-            case 270:return 6;
-            default:return simplify();
+    private void populate_dictionary() {  // Function to populate the dictionary with values
+
+        // Populate the dictionary with location values
+        pov_values.put(NORTH, "North");
+        pov_values.put(EAST, "East");
+        pov_values.put(SOUTH, "South");
+        pov_values.put(WEST, "West");
+
+        // Diagonal D-Pad presses
+        pov_values.put(SOUTH_WEST, "South West");
+        pov_values.put(SOUTH_EAST, "South East");
+        pov_values.put(NORTH_WEST, "North West");
+        pov_values.put(NORTH_EAST, "North East");
+
+        // Error value of dictionary
+        pov_values.put(-1, "Invalid");
+
+    }
+
+    public String get_direction() {
+
+        int currentPOV = controller.getPOV();  // Get the current POV from the controller
+
+        if (currentPOV == NORTH || currentPOV == SOUTH || currentPOV == EAST || currentPOV == WEST) {  // If a cardinal angle run normal loop
+            return pov_values.get(currentPOV);
+        } else {
+            return pov_values.get(simplify(currentPOV));  // Else run, the simplified version
         }
+        
     }
 
-    private int simplify(){//Simplifies if value is in the middle
-        int p=controller.getPOV()/45;
-        if(preferredDir){
-            if(p==1||p==7)return 0;
-            else if(p==3||p==5)return 4;
-        }else{
-            if(p==1||p==7)return 2;
-            else if(p==3||p==5)return 6;
+    public String get_exact_direction() {
+
+        int currentPOV = controller.getPOV();  // Get the current POV from the controller
+        return pov_values.get(currentPOV);
+
+    }
+
+    private int simplify(int angle) {  //Simplifies if value is in the middle
+
+        if (preferredDir) {  // Return North or South if preferred direction is true
+
+            if (angle == NORTH_EAST || angle == NORTH_WEST) {  // If the value is north east or north west
+                return NORTH;  // Return North
+            } else if (angle == SOUTH_EAST || angle == SOUTH_WEST) {  // If the value is south east or south west
+                return SOUTH;  // Return South
+            }
+
+        } else {  // Same logic but instead returns either east or west
+            if (angle == NORTH_EAST || angle == NORTH_WEST) {
+                return EAST;
+            } else if (angle == SOUTH_EAST || angle == SOUTH_WEST) {
+                return WEST;
+            }
         }
-        return -1;
+        return -1;  // Else return the error value
     }
 
-    public int getExtended(){//Returns normal value
-        if(controller.getPOV()==-1)return -1;
-        return controller.getPOV()/45;
-    }
 }

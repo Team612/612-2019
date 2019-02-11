@@ -17,7 +17,7 @@ import frc.robot.Robot;
 
 // WHEN WE ADD AN INTERNAL CLIMB TARGET WE NEED TO HAVE IT SET IN THIS FILE
 
-public class DefaultClimb extends Command {
+public class AutoClimb extends Command {
 
   // Endgame time variables
   private final double END_GAME = 30;
@@ -36,14 +36,14 @@ public class DefaultClimb extends Command {
 
   private String PHASE_STRING = "Waiting for next step";  // The string of what phase we are currently
 
-  public DefaultClimb() {
+  public AutoClimb() {
     requires(Robot.climb);  // Require the climb object
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-
+    END = false;
   }
 
   // Unlock the chassis to allow it to be lifted
@@ -141,8 +141,12 @@ public class DefaultClimb extends Command {
 
         SmartDashboard.putString("Climb Phase", PHASE_STRING);  // Put the current phase string to SmartDashboard
 
+      } else {
+        END = true;
       }
 
+    } else {
+      END = true;
     }
 
   }

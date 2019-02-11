@@ -11,18 +11,14 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.DefaultDriverCamera;
-/**
- * Add your docs here.
- */
+
+
 public class DriverCamera extends Subsystem {
-  public Servo camera_servo = new Servo(RobotMap.servo_angle);
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+
+  public Servo camera_servo = new Servo(RobotMap.SERVO_PORT);  // Define a new servo
 
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
     setDefaultCommand(new DefaultDriverCamera() );
   }
 }

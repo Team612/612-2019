@@ -25,8 +25,8 @@ public class OI {
   public static boolean KILL_CLIMB                  = false;
 
   // Controllers
-  public static XboxController driver               = new XboxController(RobotMap.driver_port);
-  public static XboxController gunner               = new XboxController(RobotMap.gunner_port);
+  public static XboxController driver               = new XboxController(RobotMap.DRIVER_PORT);
+  public static XboxController gunner               = new XboxController(RobotMap.GUNNER_PORT);
 
   // Driver buttons
   public static JoystickButton driver_button_A    	= new JoystickButton(driver,1);
@@ -54,6 +54,7 @@ public class OI {
 
   public OI() {
     driver_button_STRT.whileHeld(new AutoAlign());  // Run auto align on button press
+    driver_button_A.whenPressed(new AutoClimb());
   }
 
 }
