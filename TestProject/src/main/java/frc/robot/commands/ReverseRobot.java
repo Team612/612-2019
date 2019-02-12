@@ -8,14 +8,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
 
-
-public class DefaultDriverCamera extends Command {
-
-
-  public DefaultDriverCamera() {
-    requires(Robot.drivercamera);
+public class ReverseRobot extends Command {
+  public ReverseRobot() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
   }
 
   // Called just before this Command runs the first time
@@ -23,22 +22,30 @@ public class DefaultDriverCamera extends Command {
   protected void initialize() {
   }
 
+  private void set_servo_angle(double angle) {
+    Robot.drivercamera.camera_servo.set(angle);
+  }
+
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
-    if(Robot.driverPOV.get_direction() == "NORTH") {  // If the value from the D-Pad is up
-      Robot.drivercamera.camera_servo.set(0);
-    } else if(Robot.driverPOV.get_direction() == "SOUTH") {  // If the value from the D-Pad is down
-      Robot.drivercamera.camera_servo.set(180);
-    } 
-
+    if (OI.isSideA) {
+      DefaultDrive.invert_robot = -1;
+      set_servo_angle(180);
+      OI.isSideA = false;
+      // Add vision switch camera
+    } else {
+      DefaultDrive.invert_robot = 1;
+      set_servo_angle(0);
+      OI.isSideA = true;
+      // Add vision switch camera
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true
@@ -51,5 +58,4 @@ public class DefaultDriverCamera extends Command {
   @Override
   protected void interrupted() {
   }
-  
 }

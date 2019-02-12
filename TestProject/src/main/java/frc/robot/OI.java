@@ -52,9 +52,14 @@ public class OI {
   public static JoystickButton gunner_button_LJ   	= new JoystickButton(gunner,9);
   public static JoystickButton gunner_button_RJ   	= new JoystickButton(gunner,10);
 
+  // Servo position
+  public static boolean isSideA                     = true;
+
   public OI() {
-    driver_button_STRT.whileHeld(new AutoAlign());  // Run auto align on button press
-    driver_button_A.whenPressed(new AutoClimb());
+    driver_button_A.whileHeld(new AutoAlign());  // Run auto align on button press
+    gunner_button_STRT.whenPressed(new AutoClimb());
+    driver_button_Y.whenPressed(new ReverseRobot());
+    
   }
 
 }

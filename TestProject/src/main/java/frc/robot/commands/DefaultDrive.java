@@ -17,7 +17,7 @@ public class DefaultDrive extends Command {
 
   final double DEADZONE = 0.2;  // Define controller deadzone
 
-  public static boolean invert_robot = false;  // Boolean to invert the robot
+  public static int invert_robot = 1;  // Boolean to invert the robot
 
   // Variables for mechanum drive
   public static double magnitude;  // The power the of the drive system
@@ -41,15 +41,9 @@ public class DefaultDrive extends Command {
 
   protected void getInput() {  // Fetch the Joystick values
 
-    direction_y = OI.driver.getY(Hand.kLeft);
-    direction_x = OI.driver.getX(Hand.kLeft);
-    rotation = OI.driver.getX(Hand.kRight);
-
-    /*if (invert_robot) {  // Negate the joystick values if robot is inversed
-      direction_y = direction_y * -1;
-      direction_x = direction_x * -1;
-      rotation = rotation * -1;
-    }*/
+    direction_y = OI.driver.getY(Hand.kLeft) * invert_robot;
+    direction_x = OI.driver.getX(Hand.kLeft) * invert_robot;
+    rotation = OI.driver.getX(Hand.kRight) * invert_robot;
 
   }
 

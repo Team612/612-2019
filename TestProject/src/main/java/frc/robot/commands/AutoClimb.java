@@ -125,11 +125,18 @@ public class AutoClimb extends Command {
               PHASE_STRING = "Climb is Currently not Running";
               System.out.println("Climb has ended");
               END = true;  // Exit the command
+
+          }
+
+          if (OI.driver_button_X.get()) {  // Allow drive override
+            IN_PROGRESS = false;
+            OI.LOCK_DRIVETRAIN = false;
+            PHASE = 0;
           }
 
         }
 
-        if (!IN_PROGRESS && OI.driver.getAButton()) {  // If we are not in progress and the driver clicks the A button
+        if (!IN_PROGRESS && OI.driver_button_A.get()) {  // If we are not in progress and the driver clicks the A button
           
           OI.LOCK_DRIVETRAIN = true;  // Lock the drivetrain
           IN_PROGRESS = true;  // Set in progress to true
