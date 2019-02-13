@@ -7,12 +7,20 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.VisionListen;
 
 public class AutoAlign extends Command {
+
+  AnalogInput leftLineTracker;
+  AnalogInput centerLineTracker;
+  AnalogInput rightLineTracker;
+  Ultrasonic ultrasonicSensor;
 
   // Define the deadbands or range allowed for each of the movements
   int ANGLE_DEADBAND = 5;
@@ -92,6 +100,7 @@ public class AutoAlign extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    assignSide();//Decides what side of the robot to take sensor data from
     angle_check = false;  // Initialize angle and position check to false
     position_check = false;  // (Will turn true when validated in functions)
     follow_line = false;
@@ -99,6 +108,20 @@ public class AutoAlign extends Command {
     pre_offset = average_offset;
     pre_time = position_timer.get();
 
+  }
+
+  private void assignSide(){
+    if(OI.isSideArm){
+      leftLineTracker=Robot.linetracker.leftLineTracker_ARM;
+      centerLineTracker=Robot.linetracker.centerLineTracker_ARM;
+      rightLineTracker=Robot.linetracker.rightLineTracker_ARM;
+      ultrasonicSensor=Robot.linetracker.ultrasonic_ARM;
+    }else{
+      leftLineTracker=Robot.linetracker.leftLineTracker_HATCH;
+      centerLineTracker=Robot.linetracker.centerLineTracker_HATCH;
+      rightLineTracker=Robot.linetracker.rightLineTracker_HATCH;
+      ultrasonicSensor=Robot.linetracker.ultrasonic_HATCH;
+    }
   }
 
   protected void stop_robot() {  // A cleaner function to stop the robot
@@ -228,9 +251,9 @@ public class AutoAlign extends Command {
   protected void update_linetrackers() {
 
     // Variables that store sampled linetracker data
-    leftLineTrackerAverage = Robot.linetracker.leftLineTracker.getAverageValue();
-    centerLineTrackerAverage = Robot.linetracker.centerLineTracker.getAverageValue();
-    rightLineTrackerAverage = Robot.linetracker.rightLineTracker.getAverageValue();
+    leftLineTrackerAverage = leftLineTracker.getAverageValue();
+    centerLineTrackerAverage = centerLineTracker.getAverageValue();
+    rightLineTrackerAverage = rightLineTracker.getAverageValue();
 
     System.out.println(leftLineTrackerAverage);
     System.out.println(centerLineTrackerAverage);
@@ -247,7 +270,7 @@ public class AutoAlign extends Command {
   protected void execute() {
     align_robot();
     /*
-    distance = Robot.Ultra.ultrasonic.getRangeInches();  // Update distance value from ultrasonic
+    distance = ultrasonicSensor.getRangeInches();  // Update distance value from ultrasonic
     update_linetrackers(); // Update values from line tracker
 
     if (distance < TAPE_LENGTH) {  // Check if within range to follow tape

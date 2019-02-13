@@ -31,15 +31,15 @@ public class ReverseRobot extends Command {
   @Override
   protected void execute() {
     System.out.println("dab");
-    if (OI.isSideA) {
+    if (OI.isSideArm) {
       DefaultDrive.invert_robot = -1;
       set_servo_angle(180);
-      OI.isSideA = false;
+      OI.isSideArm = false;
       // Add vision switch camera
     } else {
       DefaultDrive.invert_robot = 1;
       set_servo_angle(0);
-      OI.isSideA = true;
+      OI.isSideArm = true;
       // Add vision switch camera
     }
   }

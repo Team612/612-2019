@@ -53,7 +53,7 @@ public class OI {
   public static JoystickButton gunner_button_RJ   	= new JoystickButton(gunner,10);
 
   // Servo position
-  public static boolean isSideA                     = true;
+  public static boolean isSideArm                     = true;
 
   public OI() {
     driver_button_A.whileHeld(new AutoAlign());  // Run auto align on button press

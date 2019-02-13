@@ -31,9 +31,12 @@ public class RobotMap {
   public static final int SERVO_PORT_CLIMB_BACK     = 2;
 
   // Line tracker ports
-  public static final int LEFT_LINE_TRACKER_PORT    = 0;
-  public static final int CENTER_LINE_TRACKER_PORT  = 1;
-  public static final int RIGHT_LINE_TRACKER_PORT   = 2;
+  public static final int LEFT_LINE_TRACKER_PORT_ARM    = 0;
+  public static final int CENTER_LINE_TRACKER_PORT_ARM  = 1;
+  public static final int RIGHT_LINE_TRACKER_PORT_ARM   = 2;
+  public static final int LEFT_LINE_TRACKER_PORT_HATCH    = 3;
+  public static final int CENTER_LINE_TRACKER_PORT_HATCH  = 4;
+  public static final int RIGHT_LINE_TRACKER_PORT_HATCH   = 5;
 
   // Controller ports
   public static final int DRIVER_PORT               = 0;
