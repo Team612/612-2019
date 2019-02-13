@@ -94,6 +94,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    Robot.linetracker.ultrasonic_ARM.setAutomaticMode(true);  // Set the mode of the UltraSonic sensor
+    Robot.linetracker.ultrasonic_HATCH.setAutomaticMode(true);  // Set the mode of the UltraSonic sensor
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -106,6 +108,8 @@ public class Robot extends TimedRobot {
     // ShuffleBoard Data
     SmartDashboard.putNumber("Encoder Value", Robot.arm.talon_arm.getSelectedSensorPosition(0));
     SmartDashboard.putNumber("Target", Arm.target);
+    SmartDashboard.putNumber("ultra -- ARM", linetracker.ultrasonic_ARM.getRangeInches());
+    SmartDashboard.putNumber("ultra -- HATCH", linetracker.ultrasonic_HATCH.getRangeInches());
     SmartDashboard.putBoolean("Fwd", arm.talon_arm.getSensorCollection().isFwdLimitSwitchClosed());
     SmartDashboard.putBoolean("Rev", arm.talon_arm.getSensorCollection().isRevLimitSwitchClosed());
 

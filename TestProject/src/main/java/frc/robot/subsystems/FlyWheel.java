@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.DefaultFly;
@@ -16,7 +17,8 @@ import frc.robot.commands.DefaultFly;
 public class FlyWheel extends Subsystem {
 
   public WPI_TalonSRX flyer = new WPI_TalonSRX(RobotMap.TALON_PORT_FLY);  // Create flywheel talon
-  
+  public DigitalInput push_button = new DigitalInput(RobotMap.DIO_PORT);
+
   public FlyWheel(){
     flyer.setInverted(true);  // Set the talon to run to reverse direction
   }

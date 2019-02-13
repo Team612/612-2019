@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 
 public class DefaultArm extends Command {
+  public boolean top_limit_switch_hit;
+  public boolean bottom_limit_switch_hit;
 
   public static int MAX_POSITION = 500;  // Define to count at end of range of motion degrees
   private double DEADZONE = 0.1;  // Define the joystick deadzone of the gunner
@@ -55,8 +57,8 @@ public class DefaultArm extends Command {
   protected void execute() {
 
     // Booleans for limit switch results
-    boolean top_limit_switch_hit = Robot.arm.talon_arm.getSensorCollection().isRevLimitSwitchClosed();
-    boolean bottom_limit_switch_hit = Robot.arm.talon_arm.getSensorCollection().isFwdLimitSwitchClosed();
+    top_limit_switch_hit = Robot.arm.talon_arm.getSensorCollection().isFwdLimitSwitchClosed();
+    bottom_limit_switch_hit = Robot.arm.talon_arm.getSensorCollection().isRevLimitSwitchClosed();
 
     if (OI.LIFT_PID) {  // Troubleshooting: Enable or Disable PID
 

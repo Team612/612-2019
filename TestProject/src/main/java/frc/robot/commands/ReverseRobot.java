@@ -12,6 +12,7 @@ import frc.robot.OI;
 import frc.robot.Robot;
 
 public class ReverseRobot extends Command {
+
   public ReverseRobot() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -29,6 +30,7 @@ public class ReverseRobot extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    System.out.println("dab");
     if (OI.isSideA) {
       DefaultDrive.invert_robot = -1;
       set_servo_angle(180);

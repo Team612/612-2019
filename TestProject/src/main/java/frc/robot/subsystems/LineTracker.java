@@ -22,7 +22,9 @@ public class LineTracker extends Subsystem {
   public AnalogInput leftLineTracker = new AnalogInput(RobotMap.LEFT_LINE_TRACKER_PORT);
   public AnalogInput centerLineTracker = new AnalogInput(RobotMap.CENTER_LINE_TRACKER_PORT);
   public AnalogInput rightLineTracker = new AnalogInput(RobotMap.RIGHT_LINE_TRACKER_PORT);
-  public Ultrasonic ultrasonic = new Ultrasonic(RobotMap.PING_CHANNEL, RobotMap.ECHO_CHANNEL);
+  public Ultrasonic ultrasonic_ARM = new Ultrasonic(RobotMap.PING_CHANNEL_ARM, RobotMap.ECHO_CHANNEL_ARM);
+  public Ultrasonic ultrasonic_HATCH = new Ultrasonic(RobotMap.PING_CHANNEL_HATCH, RobotMap.ECHO_CHANNEL_HATCH);
+
 
   @Override
   public void initDefaultCommand() {

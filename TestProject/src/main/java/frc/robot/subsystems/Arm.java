@@ -27,6 +27,8 @@ public class Arm extends Subsystem {
   private double kI = 0;
   private double kD = 0;
 
+
+
   private void configure_arm() {
     talon_arm.setInverted(true);
     talon_arm.setNeutralMode(NeutralMode.Brake);  // Set talon arm to break mode

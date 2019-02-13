@@ -92,7 +92,6 @@ public class AutoAlign extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.linetracker.ultrasonic.setAutomaticMode(true);  // Set the mode of the UltraSonic sensor
     angle_check = false;  // Initialize angle and position check to false
     position_check = false;  // (Will turn true when validated in functions)
     follow_line = false;

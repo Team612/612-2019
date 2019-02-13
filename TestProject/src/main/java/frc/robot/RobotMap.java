@@ -40,7 +40,11 @@ public class RobotMap {
   public static final int GUNNER_PORT               = 1;
 
   // Ultrasonic ports
-  public static final int PING_CHANNEL              = 0;
-  public static final int ECHO_CHANNEL              = 1;
+  public static final int PING_CHANNEL_ARM          = 9; // The ping port of the ultrasonic sensor on the arm side of the robot
+  public static final int ECHO_CHANNEL_ARM          = 8; // The echo port of the ultrasonic sensor on the arm side of the robot
+  public static final int PING_CHANNEL_HATCH        = 7; // The ping port of the ultrasonic sensor on the hatch side of the robot
+  public static final int ECHO_CHANNEL_HATCH        = 6; // The echo port of the ultrasonic sensor on the hatch side of the robot
+  // Push Buttion 
+  public static final int DIO_PORT                  = 5;
   
 }
