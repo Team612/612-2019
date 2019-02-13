@@ -18,7 +18,7 @@ import frc.robot.commands.DefaultArm;
 
 public class Arm extends Subsystem {
 
-  public WPI_TalonSRX talon_arm = new WPI_TalonSRX(RobotMap.TALON_PORT_ARM);  // Create the ARM talon object
+  private WPI_TalonSRX talon_arm = new WPI_TalonSRX(RobotMap.TALON_PORT_ARM);  // Create the ARM talon object
   public static double target = 0;  // Define the target position of the arm
   
   // Variables to PID values
@@ -27,7 +27,9 @@ public class Arm extends Subsystem {
   private double kI = 0;
   private double kD = 0;
 
-
+  public WPI_TalonSRX getTalon(){
+    return talon_arm;
+  }
 
   private void configure_arm() {
     talon_arm.setInverted(true);

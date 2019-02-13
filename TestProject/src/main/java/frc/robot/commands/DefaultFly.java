@@ -30,26 +30,26 @@ public class DefaultFly extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    bottom_limit_switch_hit = Robot.arm.talon_arm.getSensorCollection().isRevLimitSwitchClosed();
+    bottom_limit_switch_hit = Robot.arm.getTalon().getSensorCollection().isRevLimitSwitchClosed();
     //System.out.println(bottom_limit_switch_hit);
 
     //One heck of an if-statement
     if (bottom_limit_switch_hit) { // If the bottom limit switch is hit
-      if (!Robot.flyWheel.push_button.get()) { // If the ball has hit the button
-        Robot.flyWheel.flyer.set(0); //set the motor so that there is not option for the motor burning out
+      if (!Robot.flyWheel.getButton().get()) { // If the ball has hit the button
+        Robot.flyWheel.getTalon().set(0); //set the motor so that there is not option for the motor burning out
       } else if (Math.abs(OI.gunner.getY(Hand.kRight)) < DEADZONE) {  // Filter out the DEADZONE
-        Robot.flyWheel.flyer.set(0); 
+        Robot.flyWheel.getTalon().set(0); 
       } else {  // Else, apply the the normal Joystick value, since the button hasn't hit the ball
-        Robot.flyWheel.flyer.set(OI.gunner.getY(Hand.kRight));
+        Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight));
       }
       System.out.println("HIT");
     } else { // If the bottom limit switch isn't hit
       if (Math.abs(OI.gunner.getY(Hand.kRight)) < DEADZONE) {  // Filter out the DEADZONE
-        Robot.flyWheel.flyer.set(0);
+        Robot.flyWheel.getTalon().set(0);
       } else if (OI.gunner.getY(Hand.kRight) > 0) {
-        Robot.flyWheel.flyer.set(OI.gunner.getY(Hand.kRight));
+        Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight));
       } else {
-        Robot.flyWheel.flyer.set(0);
+        Robot.flyWheel.getTalon().set(0);
       }
       System.out.println("NOT");
 

@@ -30,35 +30,35 @@ public class DefaultClimb extends Command {
     // Control the front climb system
     if(OI.gunner_button_RB.get()){
       if(OI.TOGGLE_SERVO_CLIMB_F){
-        Robot.climb.servo_front.setAngle(0);
+        Robot.climb.getServo(0).setAngle(0);
       }else{
-        Robot.climb.servo_front.setAngle(180);
+        Robot.climb.getServo(1).setAngle(0);
       }
 
      OI.TOGGLE_SERVO_CLIMB_F = !OI.TOGGLE_SERVO_CLIMB_F;
 
     }else if(OI.gunner_button_RB.get()){
       if(OI.TOGGLE_SERVO_CLIMB_B){
-        Robot.climb.servo_back.setAngle(0);
+        Robot.climb.getServo(0).setAngle(180);
       }else{
-        Robot.climb.servo_back.setAngle(180);
+        Robot.climb.getServo(1).setAngle(180);
       }
     }else{
       if (OI.gunner_button_Y.get()) {  // Up (Front)
-        Robot.climb.lift_talonFront.set(CLIMB_SPEED);
+        Robot.climb.getTalon(0).set(CLIMB_SPEED);
       } else if (OI.gunner_button_B.get()) {  // Down (Front)
-        Robot.climb.lift_talonFront.set(CLIMB_SPEED * -1);
+        Robot.climb.getTalon(0).set(CLIMB_SPEED * -1);
       } else {
-        Robot.climb.lift_talonFront.set(0);
+        Robot.climb.getTalon(0).set(0);
       }
 
       // Control the back climb system
       if (OI.gunner_button_X.get()) {  // Up (Back)
-        Robot.climb.lift_talonFront.set(CLIMB_SPEED);
+        Robot.climb.getTalon(1).set(CLIMB_SPEED);
       } else if (OI.gunner_button_A.get()) {  // Down (Back)
-        Robot.climb.lift_talonFront.set(CLIMB_SPEED * -1);
+        Robot.climb.getTalon(1).set(CLIMB_SPEED * -1);
       } else {
-        Robot.climb.lift_talonFront.set(0);
+        Robot.climb.getTalon(1).set(0);
       }
     }
 

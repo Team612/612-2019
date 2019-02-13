@@ -57,8 +57,8 @@ public class DefaultArm extends Command {
   protected void execute() {
 
     // Booleans for limit switch results
-    top_limit_switch_hit = Robot.arm.talon_arm.getSensorCollection().isFwdLimitSwitchClosed();
-    bottom_limit_switch_hit = Robot.arm.talon_arm.getSensorCollection().isRevLimitSwitchClosed();
+    top_limit_switch_hit = Robot.arm.getTalon().getSensorCollection().isFwdLimitSwitchClosed();
+    bottom_limit_switch_hit = Robot.arm.getTalon().getSensorCollection().isRevLimitSwitchClosed();
 
     if (OI.LIFT_PID) {  // Troubleshooting: Enable or Disable PID
 
@@ -70,16 +70,16 @@ public class DefaultArm extends Command {
       } else if (Math.abs(OI.gunner.getY(Hand.kLeft)) > DEADZONE) {  // Filter out the DEADZONE
         Arm.target += (OI.gunner.getY(Hand.kLeft)*ARM_SPEED);  // Increase the PID target value
       }
-      Robot.arm.talon_arm.set(ControlMode.Position, Arm.target);  // Set the ARM to a specific position value
+      Robot.arm.getTalon().set(ControlMode.Position, Arm.target);  // Set the ARM to a specific position value
 
     } else {  // Non PID version
 
-      System.out.println(Robot.arm.talon_arm.getSelectedSensorPosition(0));
+      System.out.println(Robot.arm.getTalon().getSelectedSensorPosition(0));
       
       if(Math.abs(OI.gunner.getY(Hand.kLeft)) < DEADZONE){  // Filter out the DEADZONE
-        Robot.arm.talon_arm.set(0);
+        Robot.arm.getTalon().set(0);
       } else {  // Else, apply the the normal Joystick value
-        Robot.arm.talon_arm.set(ControlMode.PercentOutput, OI.gunner.getY(Hand.kLeft));
+        Robot.arm.getTalon().set(ControlMode.PercentOutput, OI.gunner.getY(Hand.kLeft));
       }
 
     }

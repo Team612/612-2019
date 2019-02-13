@@ -49,8 +49,8 @@ public class AutoClimb extends Command {
   // Unlock the chassis to allow it to be lifted
   private void release_servo() {
 
-    Robot.climb.servo_front.setAngle(UNLATCH_ANGLE);  // Set the angle of the servo to the unlatch angle
-    if (Robot.climb.servo_front.getAngle() == UNLATCH_ANGLE) {  // If the angle of the servo is at unlatch angle
+    Robot.climb.getServo(0).setAngle(UNLATCH_ANGLE);  // Set the angle of the servo to the unlatch angle
+    if (Robot.climb.getServo(0).getAngle() == UNLATCH_ANGLE) {  // If the angle of the servo is at unlatch angle
       IN_PROGRESS = false;  // Finish the release servo function
     }
 
@@ -59,12 +59,12 @@ public class AutoClimb extends Command {
   private void lift_frame() {  // Set the climb talons to an elevated position at level to the HAB platform
 
     // Set the lift talons to target apex position
-    Robot.climb.lift_talonBack.set(ControlMode.Position, TOP_ENCODER_POSITION);
-    Robot.climb.lift_talonFront.set(ControlMode.Position, TOP_ENCODER_POSITION);
+    Robot.climb.getTalon(1).set(ControlMode.Position, TOP_ENCODER_POSITION);
+    Robot.climb.getTalon(0).set(ControlMode.Position, TOP_ENCODER_POSITION);
 
     // Ternary statements to determine lift talon positions
-    boolean front_lifted = (Robot.climb.lift_talonFront.getSelectedSensorPosition(0) == TOP_ENCODER_POSITION) ? true : false;
-    boolean back_lifted = (Robot.climb.lift_talonBack.getSelectedSensorPosition(0) == TOP_ENCODER_POSITION) ? true : false;
+    boolean front_lifted = (Robot.climb.getTalon(0).getSelectedSensorPosition(0) == TOP_ENCODER_POSITION) ? true : false;
+    boolean back_lifted = (Robot.climb.getTalon(1).getSelectedSensorPosition(0) == TOP_ENCODER_POSITION) ? true : false;
 
     if (front_lifted && back_lifted) {  // Check if the front and back are at the optimal positions
       IN_PROGRESS = false;  // Finish the lift frame function
@@ -74,10 +74,10 @@ public class AutoClimb extends Command {
 
   private void lift_front_wheels() {  // Returns to wheels back from the elevated position back to the original position
 
-    Robot.climb.lift_talonFront.set(ControlMode.Position, BOTTOM_ENCODER_POSITION);  // Set the talon position back to the bottom
+    Robot.climb.getTalon(0).set(ControlMode.Position, BOTTOM_ENCODER_POSITION);  // Set the talon position back to the bottom
 
     // Ternary statement to determine if the position of talon is back to normal position
-    boolean front_wheel_lifted = (Robot.climb.lift_talonFront.getSelectedSensorPosition(0) == BOTTOM_ENCODER_POSITION) ? true : false; 
+    boolean front_wheel_lifted = (Robot.climb.getTalon(0).getSelectedSensorPosition(0) == BOTTOM_ENCODER_POSITION) ? true : false; 
     
     if (front_wheel_lifted) {  // Check if the boolean is true
       IN_PROGRESS = false;  // Finish the lift front wheels function
@@ -87,10 +87,10 @@ public class AutoClimb extends Command {
 
   private void lift_back_wheels() {  // Returns the back wheels back from the elevated position to the original position
     
-    Robot.climb.lift_talonBack.set(ControlMode.Position, BOTTOM_ENCODER_POSITION);  // Set the talon position back to the bottom
+    Robot.climb.getTalon(1).set(ControlMode.Position, BOTTOM_ENCODER_POSITION);  // Set the talon position back to the bottom
     
     // Ternary statement to determine if the position of talon is back to normal position
-    boolean back_wheel_lifted = (Robot.climb.lift_talonBack.getSelectedSensorPosition(0) == BOTTOM_ENCODER_POSITION) ? true : false;
+    boolean back_wheel_lifted = (Robot.climb.getTalon(1).getSelectedSensorPosition(0) == BOTTOM_ENCODER_POSITION) ? true : false;
     
     if (back_wheel_lifted) {  // Check if the boolean is true
       IN_PROGRESS = false;  // Finish the lift back wheels function

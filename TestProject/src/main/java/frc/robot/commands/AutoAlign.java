@@ -112,15 +112,15 @@ public class AutoAlign extends Command {
 
   private void assignSide(){
     if(OI.isSideArm){
-      leftLineTracker=Robot.linetracker.leftLineTracker_ARM;
-      centerLineTracker=Robot.linetracker.centerLineTracker_ARM;
-      rightLineTracker=Robot.linetracker.rightLineTracker_ARM;
-      ultrasonicSensor=Robot.linetracker.ultrasonic_ARM;
+      leftLineTracker = Robot.linetracker.leftLineTracker_ARM;
+      centerLineTracker = Robot.linetracker.centerLineTracker_ARM;
+      rightLineTracker = Robot.linetracker.rightLineTracker_ARM;
+      ultrasonicSensor = Robot.linetracker.ultrasonic_ARM;
     }else{
-      leftLineTracker=Robot.linetracker.leftLineTracker_HATCH;
-      centerLineTracker=Robot.linetracker.centerLineTracker_HATCH;
-      rightLineTracker=Robot.linetracker.rightLineTracker_HATCH;
-      ultrasonicSensor=Robot.linetracker.ultrasonic_HATCH;
+      leftLineTracker = Robot.linetracker.leftLineTracker_HATCH;
+      centerLineTracker = Robot.linetracker.centerLineTracker_HATCH;
+      rightLineTracker = Robot.linetracker.rightLineTracker_HATCH;
+      ultrasonicSensor = Robot.linetracker.ultrasonic_HATCH;
     }
   }
 

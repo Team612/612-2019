@@ -17,6 +17,10 @@ public class Hatch extends Subsystem {
 
   public WPI_TalonSRX hatchTalon = new WPI_TalonSRX(RobotMap.TALON_PORT_HATCH);  // Creates the Hatch Talon Object
 
+  public WPI_TalonSRX getTalon(){
+    return hatchTalon;
+  }
+
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new DefaultHatch());

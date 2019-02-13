@@ -24,7 +24,7 @@ public class ReverseRobot extends Command {
   }
 
   private void set_servo_angle(double angle) {
-    Robot.drivercamera.camera_servo.set(angle);
+    Robot.drivercamera.getServo().set(angle);
   }
 
   // Called repeatedly when this Command is scheduled to run

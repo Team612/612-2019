@@ -14,7 +14,11 @@ import frc.robot.RobotMap;
 
 public class DriverCamera extends Subsystem {
 
-  public Servo camera_servo = new Servo(RobotMap.SERVO_PORT);  // Define a new servo
+  private Servo camera_servo = new Servo(RobotMap.SERVO_PORT);  // Define a new servo
+
+  public Servo getServo(){
+    return camera_servo;
+  }
 
   @Override
   public void initDefaultCommand() {

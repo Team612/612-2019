@@ -22,18 +22,34 @@ import frc.robot.RobotMap;
 public class Climb extends Subsystem {
 
   // Define the lift talons (front & back)
-  public WPI_TalonSRX lift_talonFront = new WPI_TalonSRX(RobotMap.TALON_PORT_LIFT_FRONT);
-  public WPI_TalonSRX lift_talonBack = new WPI_TalonSRX(RobotMap.TALON_PORT_LIFT_BACK);
+  private WPI_TalonSRX lift_talonHatch = new WPI_TalonSRX(RobotMap.TALON_PORT_LIFT_FRONT);//Front
+  private WPI_TalonSRX lift_talonArm = new WPI_TalonSRX(RobotMap.TALON_PORT_LIFT_BACK);//Back
 
   // Define the servo objects
-  public Servo servo_front = new Servo(RobotMap.SERVO_PORT_CLIMB_FRONT);
-  public Servo servo_back = new Servo(RobotMap.SERVO_PORT_CLIMB_BACK);
+  private Servo servo_hatch = new Servo(RobotMap.SERVO_PORT_CLIMB_FRONT);
+  private Servo servo_arm = new Servo(RobotMap.SERVO_PORT_CLIMB_BACK);
 
   // Variables to PID values
   private double kF = 0.2;
   private double kP = 0.2;
   private double kI = 0;
   private double kD = 0;
+
+  public WPI_TalonSRX getTalon(int talon){
+    switch(talon){
+      case 0:return lift_talonHatch;
+      case 1:return lift_talonArm;
+      default:return null;
+    }
+  }
+
+  public Servo getServo(int servo){
+    switch(servo){
+      case 0:return servo_hatch;
+      case 1:return servo_arm;
+      default:return null;
+    }
+  }
 
   private void configure_arm(WPI_TalonSRX talon) {
 
@@ -50,8 +66,8 @@ public class Climb extends Subsystem {
   @Override
   public void initDefaultCommand() {
 
-    configure_arm(lift_talonFront);
-    configure_arm(lift_talonBack);
+    configure_arm(lift_talonHatch);
+    configure_arm(lift_talonArm);
 
   }
 

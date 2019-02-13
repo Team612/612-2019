@@ -18,10 +18,10 @@ public class Drivetrain extends Subsystem {
   
 
   // Declare 4 talons for each drive talon
-  WPI_TalonSRX talon_FL = new WPI_TalonSRX(RobotMap.TALON_PORT_FL);
-  WPI_TalonSRX talon_FR = new WPI_TalonSRX(RobotMap.TALON_PORT_FR);
-  WPI_TalonSRX talon_BL = new WPI_TalonSRX(RobotMap.TALON_PORT_BL);
-  WPI_TalonSRX talon_BR = new WPI_TalonSRX(RobotMap.TALON_PORT_BR);
+  private WPI_TalonSRX talon_HL = new WPI_TalonSRX(RobotMap.TALON_PORT_FL);
+  private WPI_TalonSRX talon_HR = new WPI_TalonSRX(RobotMap.TALON_PORT_FR);
+  private WPI_TalonSRX talon_AL = new WPI_TalonSRX(RobotMap.TALON_PORT_BL);
+  private WPI_TalonSRX talon_AR = new WPI_TalonSRX(RobotMap.TALON_PORT_BR);
   
   public MecanumDrive drivetrain;  // Initialize the drivetrain object
 
@@ -37,7 +37,7 @@ public class Drivetrain extends Subsystem {
     talon_BL.setInverted(true);
     */
 
-    drivetrain = new MecanumDrive(talon_FL, talon_BL, talon_FR, talon_BR);  // Create the MechanumDrive object
+    drivetrain = new MecanumDrive(talon_HL, talon_AL, talon_HR, talon_AR);  // Create the MechanumDrive object
   
   }
 
@@ -45,13 +45,13 @@ public class Drivetrain extends Subsystem {
   public WPI_TalonSRX getTalon(int num) {  // Troubleshooting method to return talon object
     switch(num) {
         case 1:
-            return talon_FL;
+            return talon_HL;
         case 2:
-            return talon_FR;
+            return talon_HR;
         case 3:
-            return talon_BL;
+            return talon_AL;
         case 4:
-            return talon_BR;
+            return talon_AR;
         default:
             return null;
     }
