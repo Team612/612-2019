@@ -30,7 +30,7 @@ public class ReverseRobot extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    System.out.println("dab");
+    //System.out.println("dab");
     if (OI.isSideArm) {
       DefaultDrive.invert_robot = -1;
       set_servo_angle(180);

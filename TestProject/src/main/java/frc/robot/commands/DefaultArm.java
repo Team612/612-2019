@@ -74,7 +74,7 @@ public class DefaultArm extends Command {
 
     } else {  // Non PID version
 
-      System.out.println(Robot.arm.getTalon().getSelectedSensorPosition(0));
+      //System.out.println(Robot.arm.getTalon().getSelectedSensorPosition(0));
       
       if(Math.abs(OI.gunner.getY(Hand.kLeft)) < DEADZONE){  // Filter out the DEADZONE
         Robot.arm.getTalon().set(0);

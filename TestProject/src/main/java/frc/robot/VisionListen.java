@@ -16,7 +16,7 @@ public class VisionListen {
     public static boolean calculate_delta = false;
 
     VisionListen() {
-        System.out.println("We here");
+        //System.out.println("We here");
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
         table = inst.getTable("VisionTable");
         angleEntry = table.getEntry("angle");

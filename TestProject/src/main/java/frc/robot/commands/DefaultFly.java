@@ -42,7 +42,7 @@ public class DefaultFly extends Command {
       } else {  // Else, apply the the normal Joystick value, since the button hasn't hit the ball
         Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight));
       }
-      System.out.println("HIT");
+      //System.out.println("HIT");
     } else { // If the bottom limit switch isn't hit
       if (Math.abs(OI.gunner.getY(Hand.kRight)) < DEADZONE) {  // Filter out the DEADZONE
         Robot.flyWheel.getTalon().set(0);
@@ -51,7 +51,7 @@ public class DefaultFly extends Command {
       } else {
         Robot.flyWheel.getTalon().set(0);
       }
-      System.out.println("NOT");
+      //System.out.println("NOT");
 
     }
 
