@@ -49,5 +49,7 @@ public class RobotMap {
   public static final int ECHO_CHANNEL_HATCH        = 6; // The echo port of the ultrasonic sensor on the hatch side of the robot
   // Push Buttion 
   public static final int DIO_PORT                  = 5;
+  // Soft robotics port
+  public static final int TALON_SOFT_PORT             =99;
   
 }

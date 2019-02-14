@@ -50,6 +50,9 @@ public class Robot extends TimedRobot {
   // MISC
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+  //Soft Robotics
+  public static SoftRobotics softrobotics=new SoftRobotics();
   
 
   @Override
