@@ -24,138 +24,100 @@ import frc.robot.POVConvert;
  * project.
  */
 public class Robot extends TimedRobot {
+
+  // Driver servo camera objects
+  public static POVConvert driverPOV = new POVConvert(OI.driver);
+  public static POVConvert gunnerPOV = new POVConvert(OI.gunner);
+  public static DriverCamera drivercamera = new DriverCamera(); 
+
+  // Climb object
+  public static Climb climb = new Climb();
+  
+  // Gunner object
+  public static Hatch hatch = new Hatch();
   public static FlyWheel flyWheel = new FlyWheel();
   public static Arm arm = new Arm();
+
+  // Drivetrain object
   public static Drivetrain drivetrain = new Drivetrain();
+
+  // Auto Align object
+  public static LineTracker linetracker = new LineTracker();
+
+  // OI object
   public static OI m_oi;
-  public static Climb climb=new Climb();
-  public static Hatch hatch =new Hatch();
-  public static CameraTurn cameraTurn = new CameraTurn();
-  //public static ReadVision read=new ReadVision();
+
+  // MISC
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-  //VisionListen vision_network = new VisionListen();
-  public static AutoAlignSub auto_align = new AutoAlignSub();
-  public static POVConvert dPov=new POVConvert(OI.driver, true);
-  public static POVConvert gPov=new POVConvert(OI.gunner, true);
-  public static LineTracker linetracker = new LineTracker();
   
 
-  /**
-   * This function is run when the robot is first started up and should be
-   * used for any initialization code.
-   */
   @Override
   public void robotInit() {
-    m_oi = new OI();
-    //Thread t = new Thread
-    //vision_network.read_vision();
-    
-   /* Thread t = new Thread(() -> {
-      while(!Thread.interrupted()) {
-        
-        Timer.delay(1);
-      }
-    });
-    t.start();
-    */
-    
-
-    //m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
-    // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
+    m_oi = new OI();  // Create an object of OI
   }
 
-  /**
-   * This function is called every robot packet, no matter the mode. Use
-   * this for items like diagnostics that you want ran during disabled,
-   * autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before
-   * LiveWindow and SmartDashboard integrated updating.
-   */
+
   @Override
   public void robotPeriodic() {
   }
 
-  /**
-   * This function is called once each time the robot enters Disabled mode.
-   * You can use it to reset any subsystem information you want to clear when
-   * the robot is disabled.
-   */
+
   @Override
   public void disabledInit() {
   }
+
 
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
   }
 
-  /**
-   * This autonomous (along with the chooser code above) shows how to select
-   * between different autonomous modes using the dashboard. The sendable
-   * chooser code works with the Java SmartDashboard. If you prefer the
-   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-   * getString code to get the auto name from the text box below the Gyro
-   *
-   * <p>You can add additional auto modes by adding additional commands to the
-   * chooser code above (like the commented example) or additional comparisons
-   * to the switch structure below with additional strings & commands.
-   */
+
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_chooser.getSelected();
 
-    /*
-     * String autoSelected = SmartDashboard.getString("Auto Selector",
-     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-     * = new MyAutoCommand(); break; case "Default Auto": default:
-     * autonomousCommand = new ExampleCommand(); break; }
-     */
-
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
+    if (m_autonomousCommand != null) {  // Start autonomous (No autonomous this year)
       m_autonomousCommand.start();
     }
+
   }
 
-  /**
-   * This function is called periodically during autonomous.
-   */
+
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
   }
 
+
   @Override
   public void teleopInit() {
-    //Shuffleboard.addEventMarker("encoder_value", EventImportance.kCritical);
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
+    Robot.linetracker.ultrasonic_ARM.setAutomaticMode(true);  // Set the mode of the UltraSonic sensor
+    Robot.linetracker.ultrasonic_HATCH.setAutomaticMode(true);  // Set the mode of the UltraSonic sensor
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
   }
 
-  /**
-   * This function is called periodically during operator control.
-   */
+
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putNumber("Encoder Value", Robot.arm.talon_arm.getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("taret", Arm.target);
     Scheduler.getInstance().run();
-    //System.out.println(table.getKeys());
+    // ShuffleBoard Data
+    SmartDashboard.putNumber("Encoder Value", Robot.arm.getTalon().getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Target", Arm.target);
+    SmartDashboard.putNumber("ultra -- ARM", linetracker.ultrasonic_ARM.getRangeInches());
+    SmartDashboard.putNumber("ultra -- HATCH", linetracker.ultrasonic_HATCH.getRangeInches());
+    SmartDashboard.putBoolean("Fwd", arm.getTalon().getSensorCollection().isFwdLimitSwitchClosed());
+    SmartDashboard.putBoolean("Rev", arm.getTalon().getSensorCollection().isRevLimitSwitchClosed());
 
   }
 
-  /**
-   * This function is called periodically during test mode.
-   */
+
   @Override
   public void testPeriodic() {
   }
+
 }

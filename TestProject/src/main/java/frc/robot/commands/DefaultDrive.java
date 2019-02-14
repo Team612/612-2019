@@ -15,7 +15,9 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 public class DefaultDrive extends Command {
 
 
-  final double DEADZONE = 0.15;  // Define controller deadzone
+  final double DEADZONE = 0.2;  // Define controller deadzone
+
+  public static int invert_robot = 1;  // Boolean to invert the robot
 
   // Variables for mechanum drive
   public static double magnitude;  // The power the of the drive system
@@ -23,8 +25,8 @@ public class DefaultDrive extends Command {
   public static double rotation;  // The rotation is the magnitude of the robot's rotation rate
 
   // Variables for Joystick movements 
-  double direction_x;
-  double direction_y; 
+  public static double direction_x;
+  public static double direction_y; 
 
 
   public DefaultDrive() {
@@ -38,9 +40,11 @@ public class DefaultDrive extends Command {
 
 
   protected void getInput() {  // Fetch the Joystick values
-    direction_y = OI.driver.getY(Hand.kLeft);
-    direction_x = OI.driver.getX(Hand.kLeft);
-    rotation    = OI.driver.getX(Hand.kRight);
+
+    direction_y = OI.driver.getY(Hand.kLeft) * invert_robot;
+    direction_x = OI.driver.getX(Hand.kLeft) * invert_robot;
+    rotation = OI.driver.getX(Hand.kRight) * invert_robot;
+
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -64,16 +68,21 @@ public class DefaultDrive extends Command {
     if (magnitude > 1.0) {  // If Magnitude over 1 set it to 1
         magnitude = 1.0;
     }
-    angle = Math.atan2(direction_y, direction_x) * (180 / Math.PI);  // arctan(y/x) Calculates the angle of the y and x point then converts to radians
+    angle = Math.atan2(direction_x , direction_y) * (180 / Math.PI);  // arctan(y/x) Calculates the angle of the y and x point then converts to radians
   }
 
 
   @Override
   protected void execute() {
-    getInput(); // Fetches Joystick values
-    doDead(); // Sets the DEADZONE value
-    toPolar(); // Does calculations with Joystick values to drivetrain
-    Robot.drivetrain.drivetrain.drivePolar(magnitude, angle, rotation); // Pass the calculated drive data into the drivetrain
+    if (!OI.LOCK_DRIVETRAIN) {
+      getInput(); // Fetches Joystick values
+      doDead(); // Sets the DEADZONE value
+      toPolar(); // Does calculations with Joystick values to drivetrain
+      Robot.drivetrain.drivetrain.drivePolar(magnitude, angle, rotation); // Pass the calculated drive data into the drivetrain
+    } else {
+      Robot.drivetrain.drivetrain.drivePolar(0, 0, 0); // Set the robot's wheels to 0
+    }
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()

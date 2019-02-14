@@ -19,10 +19,15 @@ public class LineTracker extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  public AnalogInput leftLineTracker = new AnalogInput(RobotMap.leftLineTracker_port);
-  public AnalogInput centerLineTracker = new AnalogInput(RobotMap.centerLineTracker_port);
-  public AnalogInput rightLineTracker = new AnalogInput(RobotMap.rightLineTracker_port);
-  public Ultrasonic ultrasonic = new Ultrasonic(RobotMap.pingChannel, RobotMap.echoChannel);
+  public AnalogInput leftLineTracker_ARM = new AnalogInput(RobotMap.LEFT_LINE_TRACKER_PORT_ARM);
+  public AnalogInput centerLineTracker_ARM = new AnalogInput(RobotMap.CENTER_LINE_TRACKER_PORT_ARM);
+  public AnalogInput rightLineTracker_ARM = new AnalogInput(RobotMap.RIGHT_LINE_TRACKER_PORT_ARM);
+  public AnalogInput leftLineTracker_HATCH = new AnalogInput(RobotMap.LEFT_LINE_TRACKER_PORT_HATCH);
+  public AnalogInput centerLineTracker_HATCH = new AnalogInput(RobotMap.CENTER_LINE_TRACKER_PORT_HATCH);
+  public AnalogInput rightLineTracker_HATCH = new AnalogInput(RobotMap.RIGHT_LINE_TRACKER_PORT_HATCH);
+  public Ultrasonic ultrasonic_ARM = new Ultrasonic(RobotMap.PING_CHANNEL_ARM, RobotMap.ECHO_CHANNEL_ARM);
+  public Ultrasonic ultrasonic_HATCH = new Ultrasonic(RobotMap.PING_CHANNEL_HATCH, RobotMap.ECHO_CHANNEL_HATCH);
+
 
   @Override
   public void initDefaultCommand() {

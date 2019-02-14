@@ -12,11 +12,14 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
 
+
 public class DefaultFly extends Command {
+
+  private final double  DEADZONE = 0.1;  // Define the controller DEADZONE
+  private boolean bottom_limit_switch_hit;
+
   public DefaultFly() {
-    requires(Robot.flyWheel);
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+    requires(Robot.flyWheel);  // Requires FlyWheel Object
   }
 
   // Called just before this Command runs the first time
@@ -27,7 +30,31 @@ public class DefaultFly extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight));
+    bottom_limit_switch_hit = Robot.arm.getTalon().getSensorCollection().isRevLimitSwitchClosed();
+    //System.out.println(bottom_limit_switch_hit);
+
+    //One heck of an if-statement
+    if (bottom_limit_switch_hit) { // If the bottom limit switch is hit
+      if (!Robot.flyWheel.getButton().get()) { // If the ball has hit the button
+        Robot.flyWheel.getTalon().set(0); //set the motor so that there is not option for the motor burning out
+      } else if (Math.abs(OI.gunner.getY(Hand.kRight)) < DEADZONE) {  // Filter out the DEADZONE
+        Robot.flyWheel.getTalon().set(0); 
+      } else {  // Else, apply the the normal Joystick value, since the button hasn't hit the ball
+        Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight));
+      }
+      //System.out.println("HIT");
+    } else { // If the bottom limit switch isn't hit
+      if (Math.abs(OI.gunner.getY(Hand.kRight)) < DEADZONE) {  // Filter out the DEADZONE
+        Robot.flyWheel.getTalon().set(0);
+      } else if (OI.gunner.getY(Hand.kRight) > 0) {
+        Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight));
+      } else {
+        Robot.flyWheel.getTalon().set(0);
+      }
+      //System.out.println("NOT");
+
+    }
+
   }
 
   // Make this return true when this Command no longer needs to run execute()

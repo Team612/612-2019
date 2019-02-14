@@ -13,14 +13,15 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Arm;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 
 public class DefaultArm extends Command {
+  public boolean top_limit_switch_hit;
+  public boolean bottom_limit_switch_hit;
 
   public static int MAX_POSITION = 500;  // Define to count at end of range of motion degrees
-  private double MOTOR_DEADZONE = 0.1;  // Define the joystick deadzone of the gunner
+  private double DEADZONE = 0.1;  // Define the joystick deadzone of the gunner
   private double MAX_ANGLE = 90;  // Degree value for unit conversion
   private double ARM_SPEED = 25;
 
@@ -56,28 +57,31 @@ public class DefaultArm extends Command {
   protected void execute() {
 
     // Booleans for limit switch results
-    boolean top_limit_switch_hit = Robot.arm.talon_arm.getSensorCollection().isFwdLimitSwitchClosed();
-    boolean bottom_limit_switch_hit = Robot.arm.talon_arm.getSensorCollection().isRevLimitSwitchClosed();
+    top_limit_switch_hit = Robot.arm.getTalon().getSensorCollection().isFwdLimitSwitchClosed();
+    bottom_limit_switch_hit = Robot.arm.getTalon().getSensorCollection().isRevLimitSwitchClosed();
 
-    if(OI.LIFT_PID) {  // Troubleshooting: Enable or Disable PID
+    if (OI.LIFT_PID) {  // Troubleshooting: Enable or Disable PID
 
-      if (top_limit_switch_hit || bottom_limit_switch_hit) {  // Check if one of the Limit Switches is hit
-
-        if (top_limit_switch_hit) {  // Check if top is triggered
-          
-        } else if (bottom_limit_switch_hit) {  // Check if bottom is triggered
-
-        }
-
-      } else if(Math.abs(OI.gunner.getY(Hand.kLeft)) > MOTOR_DEADZONE) {  // Filter out the DEADZONE
+      // Check if one of the Limit Switches is hit
+      if (top_limit_switch_hit && (OI.gunner.getY(Hand.kLeft) > 0)) {  // Check if top is triggered
+        // Arm.target = Arm.target; Don't change the target value, stay still
+      } else if (bottom_limit_switch_hit && (OI.gunner.getY(Hand.kLeft) < 0)) {  // Check if bottom is triggered
+        // Arm.target = Arm.target; Don't change the target value, stay still
+      } else if (Math.abs(OI.gunner.getY(Hand.kLeft)) > DEADZONE) {  // Filter out the DEADZONE
         Arm.target += (OI.gunner.getY(Hand.kLeft)*ARM_SPEED);  // Increase the PID target value
       }
+      Robot.arm.getTalon().set(ControlMode.Position, Arm.target);  // Set the ARM to a specific position value
 
-      Robot.arm.talon_arm.set(ControlMode.Position, Arm.target);  // Set the ARM to a specific position value
+    } else {  // Non PID version
 
-    } else {
-      System.out.println(Robot.arm.talon_arm.getSelectedSensorPosition(0));
-      Robot.arm.talon_arm.set(ControlMode.PercentOutput, OI.gunner.getY(Hand.kLeft));
+      //System.out.println(Robot.arm.getTalon().getSelectedSensorPosition(0));
+      
+      if(Math.abs(OI.gunner.getY(Hand.kLeft)) < DEADZONE){  // Filter out the DEADZONE
+        Robot.arm.getTalon().set(0);
+      } else {  // Else, apply the the normal Joystick value
+        Robot.arm.getTalon().set(ControlMode.PercentOutput, OI.gunner.getY(Hand.kLeft));
+      }
+
     }
   }
 
