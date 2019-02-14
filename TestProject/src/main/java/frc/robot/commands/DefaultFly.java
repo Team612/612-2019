@@ -31,6 +31,7 @@ public class DefaultFly extends Command {
   @Override
   protected void execute() {
     bottom_limit_switch_hit = Robot.arm.getTalon().getSensorCollection().isRevLimitSwitchClosed();
+
     //System.out.println(bottom_limit_switch_hit);
 
     //One heck of an if-statement
@@ -51,6 +52,7 @@ public class DefaultFly extends Command {
       } else {
         Robot.flyWheel.getTalon().set(0);
       }
+     // System.out.println("NOT");
       //System.out.println("NOT");
 
     }
