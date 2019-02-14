@@ -6,11 +6,14 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-import frc.robot.Robot;
-import edu.wpi.first.wpilibj.command.Command;
 
-public class TurnY extends Command {
-  public TurnY() {
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
+import frc.robot.Robot;
+
+public class ReverseRobot extends Command {
+
+  public ReverseRobot() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -20,16 +23,31 @@ public class TurnY extends Command {
   protected void initialize() {
   }
 
+  private void set_servo_angle(double angle) {
+    Robot.drivercamera.getServo().set(angle);
+  }
+
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.cameraTurn.getServo().setAngle(0);
+    //System.out.println("dab");
+    if (OI.isSideArm) {
+      DefaultDrive.invert_robot = -1;
+      set_servo_angle(180);
+      OI.isSideArm = false;
+      // Add vision switch camera
+    } else {
+      DefaultDrive.invert_robot = 1;
+      set_servo_angle(0);
+      OI.isSideArm = true;
+      // Add vision switch camera
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true; 
+    return true;
   }
 
   // Called once after isFinished returns true
@@ -42,6 +60,4 @@ public class TurnY extends Command {
   @Override
   protected void interrupted() {
   }
-
-  
 }

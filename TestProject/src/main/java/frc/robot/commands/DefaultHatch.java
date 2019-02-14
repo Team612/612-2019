@@ -9,14 +9,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.POVConvert;
 
 
-public class HatchControl extends Command {
+public class DefaultHatch extends Command {
   
   private final double HATCH_TALON_SPEED = 0.5; // Set the speed of the talon
 
-  public HatchControl() {
+  public DefaultHatch() {
     requires(Robot.hatch);  // Require the Hatch object
   }
 
@@ -29,9 +28,9 @@ public class HatchControl extends Command {
   @Override
   protected void execute() {
 
-    if(Robot.gPov.getCardinal() == POVConvert.POV_UP) {  // If the value from the D-Pad is up
+    if (Robot.gunnerPOV.get_direction() == "UP") {  // If the value from the D-Pad is up
       Robot.hatch.hatchTalon.set(HATCH_TALON_SPEED);  // Set the talon to .5 speed
-    } else if(Robot.gPov.getCardinal() == POVConvert.POV_DOWN){
+    } else if (Robot.gunnerPOV.get_direction() == "DOWN"){
       Robot.hatch.hatchTalon.set(HATCH_TALON_SPEED * -1);  // Set the talon to .5 speed in opposite direction
     } else {
       Robot.hatch.hatchTalon.set(0);  // Else, set the talon speed to 0
