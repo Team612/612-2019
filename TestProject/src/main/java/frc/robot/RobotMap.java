@@ -51,5 +51,7 @@ public class RobotMap {
   public static final int DIO_PORT                  = 5;
   // Soft robotics port
   public static final int TALON_SOFT_PORT             =99;
+  //for the LEDS 
+  public static final int ARDUINO_ADDRESS           = 1;
   
 }

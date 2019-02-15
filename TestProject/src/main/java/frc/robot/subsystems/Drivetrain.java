@@ -22,6 +22,12 @@ public class Drivetrain extends Subsystem {
   private WPI_TalonSRX talon_HR = new WPI_TalonSRX(RobotMap.TALON_PORT_FR);
   private WPI_TalonSRX talon_AL = new WPI_TalonSRX(RobotMap.TALON_PORT_BL);
   private WPI_TalonSRX talon_AR = new WPI_TalonSRX(RobotMap.TALON_PORT_BR);
+
+  private double talonArray[] = {talon_HL.get(), talon_AL.get(), talon_HR.get(), talon_AR.get()};
+
+  public double[] getTalonArray(){
+      return talonArray;
+  }
   
   public MecanumDrive drivetrain;  // Initialize the drivetrain object
 
