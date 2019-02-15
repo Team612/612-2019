@@ -17,6 +17,7 @@ public class DefaultFly extends Command {
 
   private final double  DEADZONE = 0.1;  // Define the controller DEADZONE
   private boolean bottom_limit_switch_hit;
+  private boolean state_ball_in_intake  = false;
 
   public DefaultFly() {
     requires(Robot.flyWheel);  // Requires FlyWheel Object
@@ -32,29 +33,21 @@ public class DefaultFly extends Command {
   protected void execute() {
     bottom_limit_switch_hit = Robot.arm.getTalon().getSensorCollection().isRevLimitSwitchClosed();
 
-    //System.out.println(bottom_limit_switch_hit);
-
-    //One heck of an if-statement
-    if (bottom_limit_switch_hit) { // If the bottom limit switch is hit
-      if (!Robot.flyWheel.getButton().get()) { // If the ball has hit the button
-        Robot.flyWheel.getTalon().set(0); //set the motor so that there is not option for the motor burning out
-      } else if (Math.abs(OI.gunner.getY(Hand.kRight)) < DEADZONE) {  // Filter out the DEADZONE
-        Robot.flyWheel.getTalon().set(0); 
-      } else {  // Else, apply the the normal Joystick value, since the button hasn't hit the ball
-        Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight));
-      }
-      //System.out.println("HIT");
-    } else { // If the bottom limit switch isn't hit
-      if (Math.abs(OI.gunner.getY(Hand.kRight)) < DEADZONE) {  // Filter out the DEADZONE
+    if (OI.gunner.getY(Hand.kRight) > DEADZONE) { 
+      state_ball_in_intake = false;
+      Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight));
+    }else if(!bottom_limit_switch_hit){
+      Robot.flyWheel.getTalon().set(0);
+    } else { 
+      if(Math.abs(OI.gunner.getY(Hand.kRight)) < DEADZONE){
         Robot.flyWheel.getTalon().set(0);
-      } else if (OI.gunner.getY(Hand.kRight) > 0) {
-        Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight));
-      } else {
+        state_ball_in_intake = false;
+      } else if (!Robot.flyWheel.getButton().get()){
         Robot.flyWheel.getTalon().set(0);
-      }
-     // System.out.println("NOT");
-      //System.out.println("NOT");
-
+        state_ball_in_intake = true;
+      } else if (!state_ball_in_intake){
+        Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight));
+      } // else do not change state_ball_in_intake 
     }
 
   }

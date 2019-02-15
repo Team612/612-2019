@@ -8,12 +8,11 @@
 package frc.robot.subsystems;
 
 
-
-
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -25,6 +24,9 @@ public class Climb extends Subsystem {
   private WPI_TalonSRX lift_talonHatch = new WPI_TalonSRX(RobotMap.TALON_PORT_LIFT_FRONT);//Front
   private WPI_TalonSRX lift_talonArm = new WPI_TalonSRX(RobotMap.TALON_PORT_LIFT_BACK);//Back
 
+  // Define an object that stores the NavX on the roboRio as an object
+  private static AHRS navX = new AHRS(I2C.Port.kOnboard);
+
   // Define the servo objects
   private Servo servo_hatch = new Servo(RobotMap.SERVO_PORT_CLIMB_FRONT);
   private Servo servo_arm = new Servo(RobotMap.SERVO_PORT_CLIMB_BACK);
@@ -35,6 +37,7 @@ public class Climb extends Subsystem {
   private double kI = 0;
   private double kD = 0;
 
+  // Getter for the Talons
   public WPI_TalonSRX getTalon(int talon){
     switch(talon){
       case 0:return lift_talonHatch;
@@ -43,6 +46,7 @@ public class Climb extends Subsystem {
     }
   }
 
+  // Getter for the Servo objects
   public Servo getServo(int servo){
     switch(servo){
       case 0:return servo_hatch;
@@ -51,6 +55,12 @@ public class Climb extends Subsystem {
     }
   }
 
+  // Getter for the NavX object
+  public AHRS getNavX(){
+    return navX;  
+  }
+
+  // Configures the Talon settings for the climbn
   private void configure_arm(WPI_TalonSRX talon) {
 
     talon.setNeutralMode(NeutralMode.Brake);  // Set talon arm to break mode
@@ -63,12 +73,11 @@ public class Climb extends Subsystem {
     
   }
 
+
   @Override
   public void initDefaultCommand() {
-
     configure_arm(lift_talonHatch);
     configure_arm(lift_talonArm);
-
   }
 
 }

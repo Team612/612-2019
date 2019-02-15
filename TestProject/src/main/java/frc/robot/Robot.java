@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -53,6 +54,9 @@ public class Robot extends TimedRobot {
 
   //Soft Robotics
   public static SoftRobotics softrobotics=new SoftRobotics();
+
+  //I2C Interface
+  public static I2CInterface i2cInterface=new I2CInterface();
   
 
   @Override
@@ -104,17 +108,23 @@ public class Robot extends TimedRobot {
     }
   }
 
-
+  
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+
     // ShuffleBoard Data
-    SmartDashboard.putNumber("Encoder Value", Robot.arm.getTalon().getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Arm Encoder Value", Robot.arm.getTalon().getSelectedSensorPosition(0));
     SmartDashboard.putNumber("Target", Arm.target);
     SmartDashboard.putNumber("ultra -- ARM", linetracker.ultrasonic_ARM.getRangeInches());
     SmartDashboard.putNumber("ultra -- HATCH", linetracker.ultrasonic_HATCH.getRangeInches());
-    SmartDashboard.putBoolean("Fwd", arm.getTalon().getSensorCollection().isFwdLimitSwitchClosed());
-    SmartDashboard.putBoolean("Rev", arm.getTalon().getSensorCollection().isRevLimitSwitchClosed());
+    SmartDashboard.putBoolean("ARM UP", arm.getTalon().getSensorCollection().isFwdLimitSwitchClosed());
+    SmartDashboard.putBoolean("ARM DOWN", arm.getTalon().getSensorCollection().isRevLimitSwitchClosed());
+    SmartDashboard.putNumberArray("Mecanum Drivebase", drivetrain.getTalonArray());
+    // Gives the angles for the x, y, and z axes
+    SmartDashboard.putNumber("NavX Z-Axis", climb.getNavX().getAngle()); 
+    SmartDashboard.putNumber("NavX Y-Axis", climb.getNavX().getRoll()); 
+    SmartDashboard.putNumber("NavX X-Axis", climb.getNavX().getPitch()); 
 
   }
 
