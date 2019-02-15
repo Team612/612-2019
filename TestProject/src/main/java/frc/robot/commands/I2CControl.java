@@ -26,9 +26,8 @@ public class I2CControl extends Command {
   @Override
   protected void initialize() {
     //Turns off the speaker
-    I2C i2c=I2CInterface.getI2C();
-    i2c.writeBulk(convert("SET_SOUND"));
-    i2c.writeBulk(convert("0"));
+    I2CInterface.getI2C().writeBulk(convert("SET_SOUND"));
+    I2CInterface.getI2C().writeBulk(convert("0"));
   }
   // Called repeatedly when this Command is scheduled to run
   @Override
@@ -42,7 +41,7 @@ public class I2CControl extends Command {
   }
   private final double BRIGHTNESS=0.5;//0 to 1, controls brightness of LEDs
   //These 3 methods send individual color values to the Arduino. These are faster than sendRGB().
-  private void sendRed(int strip,int red){
+  private void sendRed(int strip, int red){
     //Voltage protection on Arduino
     I2CInterface.getI2C().writeBulk(convert("SET_STRIP"));
     I2CInterface.getI2C().writeBulk(convert(strip+""));

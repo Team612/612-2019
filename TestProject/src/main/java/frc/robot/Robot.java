@@ -115,6 +115,7 @@ public class Robot extends TimedRobot {
 
     // ShuffleBoard Data
     SmartDashboard.putNumber("Arm Encoder Value", Robot.arm.getTalon().getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Climb Encoder A", Robot.climb.getTalon(0).getSelectedSensorPosition(0));
     SmartDashboard.putNumber("Target", Arm.target);
     SmartDashboard.putNumber("ultra -- ARM", linetracker.ultrasonic_ARM.getRangeInches());
     SmartDashboard.putNumber("ultra -- HATCH", linetracker.ultrasonic_HATCH.getRangeInches());
@@ -125,6 +126,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("NavX Z-Axis", climb.getNavX().getAngle()); 
     SmartDashboard.putNumber("NavX Y-Axis", climb.getNavX().getRoll()); 
     SmartDashboard.putNumber("NavX X-Axis", climb.getNavX().getPitch()); 
+
+
 
   }
 
