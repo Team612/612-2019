@@ -11,11 +11,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
 
-public class ReverseRobot extends Command {
-
-  public ReverseRobot() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+public class RotateDriverCamera extends Command {
+  public RotateDriverCamera() {
+    //requires(Robot.drivercamera);
   }
 
   // Called just before this Command runs the first time
@@ -23,25 +21,15 @@ public class ReverseRobot extends Command {
   protected void initialize() {
   }
 
-  private void set_servo_angle(double angle) {
-    //Robot.drivercamera.getServo().set(angle);
-  }
-
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //System.out.println("dab");
-    if (OI.isSideArm) {
-      DefaultDrive.invert_robot = -1;
-      set_servo_angle(180);
-      OI.isSideArm = false;
-      // Add vision switch camera
-    } else {
-      DefaultDrive.invert_robot = 1;
-      set_servo_angle(0);
-      OI.isSideArm = true;
-      // Add vision switch camera
-    }
+
+   /* if(OI.driver_button_RB.get()){
+        Robot.drivercamera.getServo().setAngle(180);
+    } else if (OI.driver_button_LB.get()){
+        Robot.drivercamera.getServo().setAngle(0); 
+    }*/
   }
 
   // Make this return true when this Command no longer needs to run execute()

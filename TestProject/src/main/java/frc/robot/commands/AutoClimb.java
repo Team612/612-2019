@@ -27,12 +27,11 @@ public class AutoClimb extends Command {
   private double TOP_ENCODER_POSITION = 400;
   private double BOTTOM_ENCODER_POSITION = 0;
 
-  private double UNLATCH_ANGLE = 0;  // Angle at which the chassis is free
 
   private boolean IN_PROGRESS = true;  // Boolean to determine when performing a function
   private boolean END = false;  // Boolean to end the command
 
-  private int PHASE = 0;  // Specify what phase of the case functions we are in
+  private int PHASE = 1;  // Specify what phase of the case functions we are in
 
   private String PHASE_STRING = "Waiting for next step";  // The string of what phase we are currently
 
@@ -44,16 +43,6 @@ public class AutoClimb extends Command {
   @Override
   protected void initialize() {
     END = false;
-  }
-
-  // Unlock the chassis to allow it to be lifted
-  private void release_servo() {
-
-    Robot.climb.getServo(0).setAngle(UNLATCH_ANGLE);  // Set the angle of the servo to the unlatch angle
-    if (Robot.climb.getServo(0).getAngle() == UNLATCH_ANGLE) {  // If the angle of the servo is at unlatch angle
-      IN_PROGRESS = false;  // Finish the release servo function
-    }
-
   }
 
   private void lift_frame() {  // Set the climb talons to an elevated position at level to the HAB platform
@@ -108,11 +97,8 @@ public class AutoClimb extends Command {
         
         if (IN_PROGRESS) {  // Only run this case statement if a phase function is called
           
-          switch( PHASE ) {  // Switch case for the phase step
-            case 0:
-              PHASE_STRING = "Releasing the Servo";
-              release_servo();  // At step 0, firstly, rotate the servo to release the chassis
-            case 1:
+          switch( PHASE ) {  // Switch case for the phase stepS
+              case 1:
               PHASE_STRING = "Lifting the Chassis";
               lift_frame();  // At step 1, secondly, lift the entire robot frame up except for the wheels
             case 2:

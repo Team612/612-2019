@@ -7,13 +7,22 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.subsystems.Climb;
 
 public class DefaultClimb extends Command {
 
   private final static double CLIMB_SPEED = 0.75; // Define climb sped
+  private boolean top_arm;
+  private boolean bottom_arm;
+  private boolean top_hatch;
+  private boolean bottom_hatch;
+  public double DEADZONE = 0.1;
+
 
   public DefaultClimb() {
     requires(Robot.climb);
@@ -22,45 +31,56 @@ public class DefaultClimb extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Climb.target_C_A = Robot.climb.getTalon(1).getSelectedSensorPosition(0);
+    Climb.target_C_H = Robot.climb.getTalon(0).getSelectedSensorPosition(0);
+
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Control the front climb system
-    if(OI.gunner_button_RB.get()){
-      if(OI.TOGGLE_SERVO_CLIMB_F){
-        Robot.climb.getServo(0).setAngle(0);
-      }else{
-        Robot.climb.getServo(1).setAngle(0);
-      }
-
-     OI.TOGGLE_SERVO_CLIMB_F = !OI.TOGGLE_SERVO_CLIMB_F;
-
-    }else if(OI.gunner_button_RB.get()){
-      if(OI.TOGGLE_SERVO_CLIMB_B){
-        Robot.climb.getServo(0).setAngle(180);
-      }else{
-        Robot.climb.getServo(1).setAngle(180);
-      }
-    }else{
-      if (OI.gunner_button_Y.get()) {  // Up (Front)
-        Robot.climb.getTalon(0).set(CLIMB_SPEED);
-      } else if (OI.gunner_button_B.get()) {  // Down (Front)
-        Robot.climb.getTalon(0).set(CLIMB_SPEED * -1);
+    top_arm = Robot.talonHelper.getClimbTopArm();
+    bottom_arm = Robot.talonHelper.getClimbBottomArm();
+    top_hatch = Robot.talonHelper.getClimbTopHatch();
+    bottom_hatch = Robot.talonHelper.getClimbBottomHatch();
+      if (OI.CLIMB_PID){
+        //for the ARM side 
+        if (OI.gunner_button_Y.get()) { 
+          System.out.println("Y is clicked");
+          Climb.target_C_A += 10;
+          Climb.target_C_H += 10;
+        } else if (OI.gunner_button_B.get()) {  
+          System.out.println("B is clicked");
+          Climb.target_C_A -= 10;
+          Climb.target_C_H -= 10;
+        } else {
+          //do nothing
+        }
+        /// HATCH 0
+        // ARM 1
+        //set the values
+        Robot.climb.getTalon(1).set(ControlMode.Position,Climb.target_C_A);
+        Robot.climb.getTalon(0).set(ControlMode.Position,Climb.target_C_H);
+      } else if (OI.gunner_button_B.get()) {  // Up (Front)
+        System.out.println("B is clicked");
+        Robot.climb.getTalon(0).set(ControlMode.PercentOutput,.5);
+      } else if (OI.gunner_button_Y.get()) {  // Down (Front)
+        System.out.println("Y is clicked");
+        Robot.climb.getTalon(0).set(ControlMode.PercentOutput,-.75);
       } else {
-        Robot.climb.getTalon(0).set(0);
-      }
+        Robot.climb.getTalon(0).set(ControlMode.PercentOutput,0);
 
-      // Control the back climb system
-      if (OI.gunner_button_X.get()) {  // Up (Back)
-        Robot.climb.getTalon(1).set(CLIMB_SPEED);
-      } else if (OI.gunner_button_A.get()) {  // Down (Back)
-        Robot.climb.getTalon(1).set(CLIMB_SPEED * -1);
-      } else {
-        Robot.climb.getTalon(1).set(0);
       }
-    }
+         if (OI.gunner_button_A.get()) {  // Up (Back)
+        System.out.println("X is clicked");
+        Robot.climb.getTalon(1).set(ControlMode.PercentOutput,.5);
+      } else if (OI.gunner_button_X.get()) {  // Down (Back)
+        System.out.println("A is clicked");
+        Robot.climb.getTalon(1).set(ControlMode.PercentOutput,-.75);
+      } else {
+        Robot.climb.getTalon(1).set(ControlMode.PercentOutput,0);
+      }
+    //}
 
   }
 
@@ -81,3 +101,15 @@ public class DefaultClimb extends Command {
   protected void interrupted() {
   }
 }
+
+
+
+
+        /*if (OI.gunner_button_X.get()) { 
+          System.out.println("X is clicked");
+
+        } else if (OI.gunner_button_A.get()) {  
+          System.out.println("A is clicked");
+
+        } else {
+        }*/

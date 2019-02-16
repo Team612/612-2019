@@ -23,7 +23,7 @@ public class Arm extends Subsystem {
   
   // Variables to PID values
   private double kF = 0.2;
-  private double kP = 0.2;
+  private double kP = 1;
   private double kI = 0;
   private double kD = 0;
 
@@ -32,7 +32,7 @@ public class Arm extends Subsystem {
   }
 
   private void configure_arm() {
-    talon_arm.setInverted(true);
+    talon_arm.setInverted(false);
     talon_arm.setNeutralMode(NeutralMode.Brake);  // Set talon arm to break mode
     talon_arm.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 300);
     talon_arm.selectProfileSlot(0, 0);  // Find out what THIS DOES

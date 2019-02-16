@@ -15,7 +15,7 @@ import frc.robot.Robot;
 
 public class DefaultFly extends Command {
 
-  private final double  DEADZONE = 0.1;  // Define the controller DEADZONE
+  private final double  DEADZONE = 0;  // Define the controller DEADZONE
   private boolean bottom_limit_switch_hit;
   private boolean state_ball_in_intake  = false;
 
@@ -39,7 +39,7 @@ public class DefaultFly extends Command {
     }else if(!bottom_limit_switch_hit){
       Robot.flyWheel.getTalon().set(0);
     } else { 
-      if(Math.abs(OI.gunner.getY(Hand.kRight)) < DEADZONE){
+      if(Math.abs(OI.gunner.getY(Hand.kRight)) < DEADZONE){ // Filters out the deadzone
         Robot.flyWheel.getTalon().set(0);
         state_ball_in_intake = false;
       } else if (!Robot.flyWheel.getButton().get()){

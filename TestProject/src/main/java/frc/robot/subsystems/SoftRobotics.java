@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.DefaultSoftRobotics;
 
 /**
  * Add your docs here.
@@ -21,7 +22,7 @@ public class SoftRobotics extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-   
+    setDefaultCommand(new DefaultSoftRobotics());
   }
 
   public WPI_TalonSRX getTalon() {

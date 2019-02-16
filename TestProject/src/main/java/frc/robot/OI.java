@@ -18,7 +18,8 @@ import frc.robot.commands.*;
 public class OI {
 
   // Booleans
-  public static boolean LIFT_PID                    = false;
+  public static boolean ARM_PID                     = true;
+  public static boolean CLIMB_PID                   = false; 
   public static boolean TOGGLE_SERVO_CLIMB_F        = true;
   public static boolean TOGGLE_SERVO_CLIMB_B        = true;
   public static boolean LOCK_DRIVETRAIN             = false;
@@ -41,8 +42,8 @@ public class OI {
   public static JoystickButton driver_button_RJ   	= new JoystickButton(driver,10);
 
   // Gunner buttons
-  public static JoystickButton gunner_button_A    	= new JoystickButton(gunner, 1);
-  public static JoystickButton gunner_button_B    	= new JoystickButton(gunner, 2);
+  public static JoystickButton gunner_button_A    	= new JoystickButton(gunner,1);
+  public static JoystickButton gunner_button_B    	= new JoystickButton(gunner,2);
   public static JoystickButton gunner_button_X    	= new JoystickButton(gunner,3);
   public static JoystickButton gunner_button_Y    	= new JoystickButton(gunner,4);
   public static JoystickButton gunner_button_LB   	= new JoystickButton(gunner,5);
@@ -53,12 +54,12 @@ public class OI {
   public static JoystickButton gunner_button_RJ   	= new JoystickButton(gunner,10);
 
   // Servo position
-  public static boolean isSideArm                     = true;
+  public static boolean isSideArm                   = true;
 
   public OI() {
     driver_button_A.whileHeld(new AutoAlign());  // Run auto align on button press
     gunner_button_STRT.whenPressed(new AutoClimb());
-    driver_button_Y.whenPressed(new ReverseRobot());
+    driver_button_BCK.whenPressed(new ReverseRobot());
     
   }
 

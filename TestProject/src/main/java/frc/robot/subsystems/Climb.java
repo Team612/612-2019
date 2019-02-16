@@ -13,23 +13,22 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.DefaultClimb;
 
 
 public class Climb extends Subsystem {
 
   // Define the lift talons (front & back)
-  private WPI_TalonSRX lift_talonHatch = new WPI_TalonSRX(RobotMap.TALON_PORT_LIFT_FRONT);//Front
-  private WPI_TalonSRX lift_talonArm = new WPI_TalonSRX(RobotMap.TALON_PORT_LIFT_BACK);//Back
+  private WPI_TalonSRX lift_talonHatch = new WPI_TalonSRX(RobotMap.TALON_PORT_CLIMB_HATCH);//Front
+  private WPI_TalonSRX lift_talonArm = new WPI_TalonSRX(RobotMap.TALON_PORT_CLIMB_ARM);//Back
+  public static  int target_C_H = 0;
+  public static int target_C_A = 0;
 
   // Define an object that stores the NavX on the roboRio as an object
   private static AHRS navX = new AHRS(I2C.Port.kOnboard);
 
-  // Define the servo objects
-  private Servo servo_hatch = new Servo(RobotMap.SERVO_PORT_CLIMB_FRONT);
-  private Servo servo_arm = new Servo(RobotMap.SERVO_PORT_CLIMB_BACK);
 
   // Variables to PID values
   private double kF = 0.2;
@@ -46,19 +45,12 @@ public class Climb extends Subsystem {
     }
   }
 
-  // Getter for the Servo objects
-  public Servo getServo(int servo){
-    switch(servo){
-      case 0:return servo_hatch;
-      case 1:return servo_arm;
-      default:return null;
-    }
-  }
-
+  
   // Getter for the NavX object
   public AHRS getNavX(){
     return navX;  
   }
+  
 
   // Configures the Talon settings for the climbn
   private void configure_arm(WPI_TalonSRX talon) {
@@ -78,6 +70,9 @@ public class Climb extends Subsystem {
   public void initDefaultCommand() {
     configure_arm(lift_talonHatch);
     configure_arm(lift_talonArm);
+    lift_talonHatch.setNeutralMode(NeutralMode.Brake);  // Set talon arm to break mode
+    lift_talonArm.setNeutralMode(NeutralMode.Brake);  // Set talon arm to break mode
+    setDefaultCommand(new DefaultClimb());
   }
 
 }

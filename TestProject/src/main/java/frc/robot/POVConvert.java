@@ -24,9 +24,9 @@ public class POVConvert {
 
     // Degree values of cardinal directions
     int NORTH = 0;
-    int EAST = 90;
+    int EAST  = 90;
     int SOUTH = 180;
-    int WEST = 270;
+    int WEST  = 270;
 
     // Degree of subcardinal directions
     int SOUTH_WEST = 225;

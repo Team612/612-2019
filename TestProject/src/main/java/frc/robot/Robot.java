@@ -7,7 +7,7 @@
 
 package frc.robot;
 
-
+import frc.robot.TalonHelper;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -25,11 +25,13 @@ import frc.robot.POVConvert;
  * project.
  */
 public class Robot extends TimedRobot {
+  //talon helper 
+  public static TalonHelper talonHelper = new TalonHelper();
 
   // Driver servo camera objects
   public static POVConvert driverPOV = new POVConvert(OI.driver);
   public static POVConvert gunnerPOV = new POVConvert(OI.gunner);
-  public static DriverCamera drivercamera = new DriverCamera(); 
+  //public static DriverCamera drivercamera = new DriverCamera(); 
 
   // Climb object
   public static Climb climb = new Climb();
@@ -53,10 +55,10 @@ public class Robot extends TimedRobot {
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   //Soft Robotics
-  public static SoftRobotics softrobotics=new SoftRobotics();
+  //public static SoftRobotics softrobotics = new SoftRobotics();
 
   //I2C Interface
-  public static I2CInterface i2cInterface=new I2CInterface();
+  //public static I2CInterface i2cInterface=new I2CInterface();
   
 
   @Override
@@ -114,22 +116,49 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
 
     // ShuffleBoard Data
+    /*
     SmartDashboard.putNumber("Arm Encoder Value", Robot.arm.getTalon().getSelectedSensorPosition(0));
     SmartDashboard.putNumber("Climb Encoder A", Robot.climb.getTalon(0).getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Target", Arm.target);
     SmartDashboard.putNumber("ultra -- ARM", linetracker.ultrasonic_ARM.getRangeInches());
     SmartDashboard.putNumber("ultra -- HATCH", linetracker.ultrasonic_HATCH.getRangeInches());
-    SmartDashboard.putBoolean("ARM UP", arm.getTalon().getSensorCollection().isFwdLimitSwitchClosed());
-    SmartDashboard.putBoolean("ARM DOWN", arm.getTalon().getSensorCollection().isRevLimitSwitchClosed());
-    SmartDashboard.putNumberArray("Mecanum Drivebase", drivetrain.getTalonArray());
-    // Gives the angles for the x, y, and z axes
-    SmartDashboard.putNumber("NavX Z-Axis", climb.getNavX().getAngle()); 
-    SmartDashboard.putNumber("NavX Y-Axis", climb.getNavX().getRoll()); 
-    SmartDashboard.putNumber("NavX X-Axis", climb.getNavX().getPitch()); 
+    
+    */
+    //HATCH LIMIT SWITCHES 
+    SmartDashboard.putBoolean("Hatch FAR",talonHelper.getHatchFar());
+    SmartDashboard.putBoolean("Hatch CLOSE", talonHelper.getHatchFar());
+    //ARM LIMIT SWITCHES 
+    SmartDashboard.putBoolean("Arm TOP", talonHelper.getArmTop());
+    SmartDashboard.putBoolean("Arm BOTTOM", talonHelper.getArmBottom());
+    //CLIMB LIMIT SWITCHES 
+    SmartDashboard.putBoolean("ClimbA Top", talonHelper.getClimbTopArm());
+    SmartDashboard.putBoolean("ClimbA Bottom", talonHelper.getClimbBottomArm());
+    SmartDashboard.putBoolean("ClimbH Top", talonHelper.getClimbTopHatch());
+    SmartDashboard.putBoolean("ClimbH Bottonm", talonHelper.getClimbBottomHatch());
+    //NAVX values 
+   /* SmartDashboard.putNumber("NAVX VALUE ", Robot.climb.getNavX().getAngle());
+    SmartDashboard.putNumber("NAVX VALUE ", Robot.climb.getNavX().getRoll());
+    SmartDashboard.putNumber("NAVX VALUE ", Robot.climb.getNavX().getPitch());
+*/
 
 
-
+    //encoder values and Targets 
+    SmartDashboard.putNumber("Arm Target", Arm.target);
+    SmartDashboard.putNumber("Arm Encoder", Robot.arm.getTalon().getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Climb Hatch Encoder", climb.getTalon(0).getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Climb Hatch Target", Climb.target_C_H);
+    SmartDashboard.putNumber("Climb Arm  Encoder", climb.getTalon(1).getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Climb Arm Target", Climb.target_C_A);
+    //Line tracker values    
+   /* SmartDashboard.putNumber("Line Tracker Arm Left", linetracker.leftLineTracker_ARM.getAverageVoltage());
+    SmartDashboard.putNumber("Line Tracker Arm Middle", linetracker.centerLineTracker_ARM.getAverageVoltage());
+    SmartDashboard.putNumber("Line Tracker Arm Right", linetracker.rightLineTracker_ARM.getAverageVoltage());
+    SmartDashboard.putNumber("Line Tracker Hatch Left", linetracker.leftLineTracker_HATCH.getAverageVoltage());
+    SmartDashboard.putNumber("Line Tracker Hatch Middle", linetracker.centerLineTracker_HATCH.getAverageVoltage());
+    SmartDashboard.putNumber("Line Tracker Hatch Right", linetracker.rightLineTracker_HATCH.getAverageVoltage());
+    */
+  
   }
+
 
 
   @Override

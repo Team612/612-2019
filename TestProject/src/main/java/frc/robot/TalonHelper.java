@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import frc.robot.Robot;
 
@@ -15,32 +14,34 @@ import frc.robot.Robot;
  * Add your docs here.
  */
 public class TalonHelper {
+
     TalonHelper(){}
-    public boolean getArmLimitBottom(){
+    public boolean getArmBottom(){
         return Robot.arm.getTalon().getSensorCollection().isRevLimitSwitchClosed();
     }
-    public boolean getArmLimitTop(){
+    public boolean getArmTop(){
         return Robot.arm.getTalon().getSensorCollection().isFwdLimitSwitchClosed();
     }
 
-    public boolean getHatchLimitOut(){//Guess
+    public boolean getHatchFar(){//Guess
         return Robot.hatch.getTalon().getSensorCollection().isFwdLimitSwitchClosed();
     }
-    public boolean getHatchLimitIn(){//Guess
+    public boolean getHatchClose(){//Guess
         return Robot.hatch.getTalon().getSensorCollection().isRevLimitSwitchClosed();
     }
 
-    /*public boolean getClimbLimitTopArm(){
-        return Robot.hatch.getTalon().getSensorCollection().isRevLimitSwitchClosed();
+    public boolean getClimbTopArm(){
+        return Robot.climb.getTalon(1).getSensorCollection().isRevLimitSwitchClosed();
     }
-    public boolean getClimbLimitBottomArm(){
-        return Robot.hatch.getTalon().getSensorCollection().isRevLimitSwitchClosed();
+    public boolean getClimbBottomArm(){
+        return Robot.climb.getTalon(1).getSensorCollection().isFwdLimitSwitchClosed();
     }
-    public boolean getClimbLimitTopHatch(){
-        return Robot.hatch.getTalon().getSensorCollection().isRevLimitSwitchClosed();
+    public boolean getClimbTopHatch(){
+        return Robot.climb.getTalon(0).getSensorCollection().isRevLimitSwitchClosed();
     }
-    public boolean getClimbLimitBottomHatch(){
-        return Robot.hatch.getTalon().getSensorCollection().isRevLimitSwitchClosed();
-    }*/
+    public boolean getClimbBottomHatch(){
+        return Robot.climb.getTalon(0).getSensorCollection().isFwdLimitSwitchClosed();
+    }
+   
     
 }

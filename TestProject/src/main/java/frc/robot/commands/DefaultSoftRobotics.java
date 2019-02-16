@@ -7,7 +7,9 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
 
 public class DefaultSoftRobotics extends Command {
@@ -21,7 +23,7 @@ public class DefaultSoftRobotics extends Command {
   boolean far_limit_switch_hit;
   
   public DefaultSoftRobotics() {
-    requires(Robot.softrobotics);  // Require the soft robotics object
+    //requires(Robot.softrobotics);  // Require the soft robotics object
   }
 
   // Called just before this Command runs the first time
@@ -32,10 +34,11 @@ public class DefaultSoftRobotics extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() { 
-
+  
+  //TODO: THINK ABOUT USING SENSOR STATES (LIKE FOR THE ARM)
   // Update limit switch state
-  close_limit_switch_hit = Robot.softrobotics.getTalon().getSensorCollection().isFwdLimitSwitchClosed();
-  far_limit_switch_hit = Robot.softrobotics.getTalon().getSensorCollection().isRevLimitSwitchClosed();
+  //close_limit_switch_hit = Robot.softrobotics.getTalon().getSensorCollection().isFwdLimitSwitchClosed();
+  //far_limit_switch_hit = Robot.softrobotics.getTalon().getSensorCollection().isRevLimitSwitchClosed();
 
   if (close_limit_switch_hit) {  // If closest limit switch is true
     soft_speed = -.5;  // Deflate the soft
@@ -47,11 +50,21 @@ public class DefaultSoftRobotics extends Command {
     soft_speed = 0;  // Set soft-speed to 0
     END = true;  // Set program to finished
   } 
+   Robot.hatch.hatchTalon.set(soft_speed);  // Apply soft speed to talon
+  
+   /*
 
-    Robot.hatch.hatchTalon.set(soft_speed);  // Apply soft speed to talon
+    THIS IS CODE WE COULD TRY FOR SOFT ROBOTICS -- ESSENTIALLY, IT SAYS TO MOVE THE ARM ACCORDING TO JOYSTIC INPUT
+    AND WHEN IT HITS A LIMIT SWITCH, SETS TALON VALUE TO 0
 
+  if(close_limit_switch_hit || far_limit_switch_hit){
+    Robot.softrobotics.getTalon().set(0);
+  } else{
+    Robot.softrobotics.getTalon().set(Robot.m_oi.gunner.getY(Hand.kLeft));
   }
-  // Make this return true when this Command no longer needs to run execute()
+  */
+  }
+
   @Override
   protected boolean isFinished() {
 

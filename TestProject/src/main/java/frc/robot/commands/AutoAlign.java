@@ -125,7 +125,7 @@ public class AutoAlign extends Command {
   }
 
   protected void stop_robot() {  // A cleaner function to stop the robot
-    Robot.drivetrain.drivetrain.drivePolar(0, 0, 0);
+    Robot.drivetrain.getDriveTrain().drivePolar(0, 0, 0);
   }
 
   private void align_angle() {  // Function to calculate rotation value to align angle
@@ -216,9 +216,9 @@ public class AutoAlign extends Command {
       stop_robot();  // stop the robot and enable line following mode
       follow_line = true;  // Begin follow line
     } else if (angle_check && position_check && !linetracker_triggered) {  // Second clause: if both vision booleans return true by 
-      Robot.drivetrain.drivetrain.drivePolar(.25, 0, 0);  // Drive slow super slowly to maybe trip off a sensor
+      Robot.drivetrain.getDriveTrain().drivePolar(.25, 0, 0);  // Drive slow super slowly to maybe trip off a sensor
     } else {
-      Robot.drivetrain.drivetrain.drivePolar(drive_magnitude, drive_angle, drive_rotation);  // If nothing keep on aligning
+      Robot.drivetrain.getDriveTrain().drivePolar(drive_magnitude, drive_angle, drive_rotation);  // If nothing keep on aligning
     }
 
   }
@@ -240,10 +240,10 @@ public class AutoAlign extends Command {
 
       linetracker_drive_magnitude = KP_DISTANCE * distance;  // Calculate drive_magnitude based on distance
 
-      Robot.drivetrain.drivetrain.drivePolar(linetracker_drive_magnitude, linetracker_drive_angle, linetracker_drive_rotation); // Drive within line tracker data
+      Robot.drivetrain.getDriveTrain().drivePolar(linetracker_drive_magnitude, linetracker_drive_angle, linetracker_drive_rotation); // Drive within line tracker data
 
     } else {
-      Robot.drivetrain.drivetrain.drivePolar(0, 0, 0); // Stop the bot we are here!
+      Robot.drivetrain.getDriveTrain().drivePolar(0, 0, 0); // Stop the bot we are here!
     }
 
   }
@@ -268,7 +268,11 @@ public class AutoAlign extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    align_robot();
+    distance = ultrasonicSensor.getRangeInches();  // Update distance value from ultrasonic
+    System.out.println(distance);
+    update_linetrackers(); // Update values from line tracker
+    follow_line();  // Call line follower code
+    //align_robot();
     /*
     distance = ultrasonicSensor.getRangeInches();  // Update distance value from ultrasonic
     update_linetrackers(); // Update values from line tracker

@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
 
 
@@ -27,14 +28,15 @@ public class DefaultHatch extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
-    if (Robot.gunnerPOV.get_direction() == "UP") {  // If the value from the D-Pad is up
-      Robot.hatch.hatchTalon.set(HATCH_TALON_SPEED);  // Set the talon to .5 speed
-    } else if (Robot.gunnerPOV.get_direction() == "DOWN"){
-      Robot.hatch.hatchTalon.set(HATCH_TALON_SPEED * -1);  // Set the talon to .5 speed in opposite direction
-    } else {
-      Robot.hatch.hatchTalon.set(0);  // Else, set the talon speed to 0
-    }
+    //System.out.println(Robot.gunnerPOV.get_direction());
+  
+        if (Robot.gunnerPOV.get_direction().equals("North")) {
+          Robot.hatch.hatchTalon.set(HATCH_TALON_SPEED);  // Set the talon to .5 speed
+        } else if (Robot.gunnerPOV.get_direction().equals("South")) {
+          Robot.hatch.hatchTalon.set(HATCH_TALON_SPEED  * -1);  // Set the talon to .5 speed
+        } else {
+          Robot.hatch.hatchTalon.set(0);  // Set the talon to .5 speed
+        }
     
   }
 

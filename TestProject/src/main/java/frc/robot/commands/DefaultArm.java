@@ -23,8 +23,7 @@ public class DefaultArm extends Command {
   public static int MAX_POSITION = 500;  // Define to count at end of range of motion degrees
   private double DEADZONE = 0.1;  // Define the joystick deadzone of the gunner
   private double MAX_ANGLE = 90;  // Degree value for unit conversion
-  private double ARM_SPEED = 25;
-
+  private double ARM_SPEED = 100;
   private double SHOOT_ANGLE = 250;
   
   public DefaultArm() {
@@ -34,6 +33,7 @@ public class DefaultArm extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Arm.target = Robot.arm.getTalon().getSelectedSensorPosition(0);
   }
 
   private double countsToAngle() {  // Convert the PID count to an angle value
@@ -55,22 +55,25 @@ public class DefaultArm extends Command {
 
   @Override
   protected void execute() {
-
+    
     // Booleans for limit switch results
-    top_limit_switch_hit = Robot.arm.getTalon().getSensorCollection().isFwdLimitSwitchClosed();
-    bottom_limit_switch_hit = Robot.arm.getTalon().getSensorCollection().isRevLimitSwitchClosed();
+    top_limit_switch_hit = Robot.talonHelper.getArmTop();
+    bottom_limit_switch_hit = Robot.talonHelper.getArmBottom();
 
-    if (OI.LIFT_PID) {  // Troubleshooting: Enable or Disable PID
+    
 
-      // Check if one of the Limit Switches is hit
+    if (OI.ARM_PID) {  // Troubleshooting: Enable or Disable PID
       if (top_limit_switch_hit && (OI.gunner.getY(Hand.kLeft) > 0)) {  // Check if top is triggered
+        System.out.println("We bads");
         // Arm.target = Arm.target; Don't change the target value, stay still
       } else if (bottom_limit_switch_hit && (OI.gunner.getY(Hand.kLeft) < 0)) {  // Check if bottom is triggered
         // Arm.target = Arm.target; Don't change the target value, stay still
+        System.out.println("We bads2");
       } else if (Math.abs(OI.gunner.getY(Hand.kLeft)) > DEADZONE) {  // Filter out the DEADZONE
+        System.out.println("We goods");
         Arm.target += (OI.gunner.getY(Hand.kLeft)*ARM_SPEED);  // Increase the PID target value
       }
-      Robot.arm.getTalon().set(ControlMode.Position, Arm.target);  // Set the ARM to a specific position value
+      Robot.arm.getTalon().set(ControlMode.Position,Arm.target);  // Set the ARM to a specific position value
 
     } else {  // Non PID version
 

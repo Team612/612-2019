@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -43,7 +44,7 @@ public class DefaultDrive extends Command {
 
     direction_y = OI.driver.getY(Hand.kLeft) * invert_robot;
     direction_x = OI.driver.getX(Hand.kLeft) * invert_robot;
-    rotation = OI.driver.getX(Hand.kRight) * invert_robot;
+    rotation = OI.driver.getX(Hand.kRight);
 
   }
 
@@ -68,7 +69,10 @@ public class DefaultDrive extends Command {
     if (magnitude > 1.0) {  // If Magnitude over 1 set it to 1
         magnitude = 1.0;
     }
-    angle = Math.atan2(direction_x , direction_y) * (180 / Math.PI);  // arctan(y/x) Calculates the angle of the y and x point then converts to radians
+    SmartDashboard.putNumber("X", direction_x);
+    SmartDashboard.putNumber("Y", direction_y);
+    direction_y = direction_y;
+    angle = Math.atan2(direction_x , direction_y ) * (180 / Math.PI);  // arctan(y/x) Calculates the angle of the y and x point then converts to radians
   }
 
 
@@ -78,9 +82,18 @@ public class DefaultDrive extends Command {
       getInput(); // Fetches Joystick values
       doDead(); // Sets the DEADZONE value
       toPolar(); // Does calculations with Joystick values to drivetrain
-      Robot.drivetrain.drivetrain.drivePolar(magnitude, angle, rotation); // Pass the calculated drive data into the drivetrain
+      SmartDashboard.putNumber("MAG", magnitude);
+      SmartDashboard.putNumber("ANGLE", angle);
+      SmartDashboard.putNumber("ROTROTROT", rotation);
+
+
+      /*System.out.println("MAG" + magnitude);
+      System.out.println("ANGLE" + angle);
+      System.out.println("ROTROTROT" +rotation);*/
+
+      Robot.drivetrain.getDriveTrain().drivePolar(magnitude, angle, rotation); // Pass the calculated drive data into the drivetrain
     } else {
-      Robot.drivetrain.drivetrain.drivePolar(0, 0, 0); // Set the robot's wheels to 0
+      Robot.drivetrain.getDriveTrain().drivePolar(0, 0, 0); // Set the robot's wheels to 0
     }
     
   }
