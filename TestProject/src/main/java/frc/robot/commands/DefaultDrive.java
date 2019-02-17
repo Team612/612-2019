@@ -71,7 +71,6 @@ public class DefaultDrive extends Command {
     }
     SmartDashboard.putNumber("X", direction_x);
     SmartDashboard.putNumber("Y", direction_y);
-    direction_y = direction_y;
     angle = Math.atan2(direction_x , direction_y ) * (180 / Math.PI);  // arctan(y/x) Calculates the angle of the y and x point then converts to radians
   }
 

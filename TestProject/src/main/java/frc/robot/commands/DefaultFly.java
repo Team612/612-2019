@@ -46,7 +46,7 @@ public class DefaultFly extends Command {
         Robot.flyWheel.getTalon().set(0);
         state_ball_in_intake = true;
       } else if (!state_ball_in_intake){
-        Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight));
+        Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight)* -1);
       } // else do not change state_ball_in_intake 
     }
 

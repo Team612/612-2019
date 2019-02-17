@@ -49,8 +49,6 @@ public class Drivetrain extends Subsystem {
   }
   public void initDefaultCommand() {
       setDefaultCommand(new DefaultDrive());
-      // TODO: Set the default command, if any, for a subsystem here. Example:
-      //    setDefaultCommand(new MySpecialCommand());
   }
 
 }

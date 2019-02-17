@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
   // Driver servo camera objects
   public static POVConvert driverPOV = new POVConvert(OI.driver);
   public static POVConvert gunnerPOV = new POVConvert(OI.gunner);
-  //public static DriverCamera drivercamera = new DriverCamera(); 
+  public static DriverCamera drivercamera = new DriverCamera(); 
 
   // Climb object
   public static Climb climb = new Climb();
@@ -135,11 +135,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("ClimbH Top", talonHelper.getClimbTopHatch());
     SmartDashboard.putBoolean("ClimbH Bottonm", talonHelper.getClimbBottomHatch());
     //NAVX values 
-   /* SmartDashboard.putNumber("NAVX VALUE ", Robot.climb.getNavX().getAngle());
+    SmartDashboard.putNumber("NAVX VALUE ", Robot.climb.getNavX().getAngle());
     SmartDashboard.putNumber("NAVX VALUE ", Robot.climb.getNavX().getRoll());
     SmartDashboard.putNumber("NAVX VALUE ", Robot.climb.getNavX().getPitch());
-*/
-
 
     //encoder values and Targets 
     SmartDashboard.putNumber("Arm Target", Arm.target);
