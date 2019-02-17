@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
+import edu.wpi.first.wpilibj.GenericHID;
 
 // WHEN WE ADD AN INTERNAL CLIMB TARGET WE NEED TO HAVE IT SET IN THIS FILE
 
@@ -31,6 +32,9 @@ public class AutoClimb extends Command {
   private boolean IN_PROGRESS = true;  // Boolean to determine when performing a function
   private boolean END = false;  // Boolean to end the command
 
+  public static boolean is_Tilted = false; 
+  private int pitchedOver_Count = 0;
+
   private int PHASE = 1;  // Specify what phase of the case functions we are in
 
   private String PHASE_STRING = "Waiting for next step";  // The string of what phase we are currently
@@ -43,6 +47,10 @@ public class AutoClimb extends Command {
   @Override
   protected void initialize() {
     END = false;
+  }
+
+  public boolean getIs_Tilted(){
+    return is_Tilted;
   }
 
   private void lift_frame() {  // Set the climb talons to an elevated position at level to the HAB platform
@@ -95,29 +103,43 @@ public class AutoClimb extends Command {
 
       if (Timer.getMatchTime() < (MATCH_LENGTH - END_GAME)) {  // Only run this execute loop if the match time is in the endgame
         
-        if (IN_PROGRESS) {  // Only run this case statement if a phase function is called
-          
-          switch( PHASE ) {  // Switch case for the phase stepS
-              case 1:
-              PHASE_STRING = "Lifting the Chassis";
-              lift_frame();  // At step 1, secondly, lift the entire robot frame up except for the wheels
-            case 2:
-              PHASE_STRING = "Lifting the Front Wheels";
-              lift_front_wheels();  // At step 2, thirdly, lift the front wheels of the robot to drive onto the HAB
-            case 3:
-              PHASE_STRING = "Lifting the Back Wheels";
-              lift_back_wheels();  // At step 3, fourth, lift the back wheels to elevate the entire robot
-            default:
-              PHASE_STRING = "Climb is Currently not Running";
-              System.out.println("Climb has ended");
-              END = true;  // Exit the command
+        if(Robot.climb.getNavX.getPitch() >= 20)){  // If pitch is >20 degrees
+          pitchedOver_Count++;  // Count number of times robot is over count
+        } else
+          pitchedOver_Count = 0;  // Reset Count
+          is_Tilted = false // Make sure it reports not tilted if < 10 consecutive countsit
+        }
+        if(pitchedOver_Count >= 10){ // If 10 consecutive counts, then rumble
+            //IN_PROGRESS = false; 
+            is_Tilted = true
+            OI.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 1); 
+            OI.driver.setRumble(GenericHID.RumbleType.kRightRumble, 1); 
+        }
+          if (IN_PROGRESS) {  // Only run this case statement if a phase function is called
+            
+            switch( PHASE ) {  // Switch case for the phase stepS
+                case 1:
+                PHASE_STRING = "Lifting the Chassis";
+                lift_frame();  // At step 1, secondly, lift the entire robot frame up except for the wheels
+              case 2:
+                PHASE_STRING = "Lifting the Front Wheels";
+                lift_front_wheels();  // At step 2, thirdly, lift the front wheels of the robot to drive onto the HAB
+              case 3:
+                PHASE_STRING = "Lifting the Back Wheels";
+                lift_back_wheels();  // At step 3, fourth, lift the back wheels to elevate the entire robot
+              default:
+                PHASE_STRING = "Climb is Currently not Running";
+                System.out.println("Climb has ended");
+                END = true;  // Exit the command
 
-          }
+            }
 
           if (OI.driver_button_X.get()) {  // Allow drive override
             IN_PROGRESS = false;
             OI.LOCK_DRIVETRAIN = false;
             PHASE = 0;
+            OI.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 0); 
+            OI.driver.setRumble(GenericHID.RumbleType.kRightRumble, 0); 
           }
 
         }
@@ -127,9 +149,13 @@ public class AutoClimb extends Command {
           OI.LOCK_DRIVETRAIN = true;  // Lock the drivetrain
           IN_PROGRESS = true;  // Set in progress to true
           PHASE++;  // Go to the next step
+          OI.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 0); 
+          OI.driver.setRumble(GenericHID.RumbleType.kRightRumble, 0); 
         
         } else {
           OI.LOCK_DRIVETRAIN = false;
+          OI.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 0); 
+          OI.driver.setRumble(GenericHID.RumbleType.kRightRumble, 0); 
         }
 
         SmartDashboard.putString("Climb Phase", PHASE_STRING);  // Put the current phase string to SmartDashboard
