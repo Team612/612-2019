@@ -9,54 +9,53 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
+import frc.robot.Robot;
 
 public class ReverseRobot extends Command {
 
   public ReverseRobot() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
   }
 
-  private void set_servo_angle(double angle) {
-    //Robot.drivercamera.getServo().set(angle);
+  private void set_servo_angle(double angle) {  // Function that will rotate camera servo to specified degree
+    Robot.drivercamera.getServo().set(angle);
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //System.out.println("dab");
-    if (OI.isSideArm) {
-      DefaultDrive.invert_robot = -1;
-      set_servo_angle(180);
-      OI.isSideArm = false;
-      // Add vision switch camera
+
+    if (OI.isSideArm) {  // If on arm side
+
+      DefaultDrive.invert_robot = -1;  // Invert the drivetrain
+      set_servo_angle(180);  // Rotate the servo to hatch side
+      // TODO: Add vision toggle camera
+      
     } else {
+
       DefaultDrive.invert_robot = 1;
       set_servo_angle(0);
-      OI.isSideArm = true;
-      // Add vision switch camera
+      // TODO: Add vision toggle camera
+      
     }
+
+    OI.isSideArm = !OI.isSideArm;  // Set side arm variable to opposite
+
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     return true;
   }
 
-  // Called once after isFinished returns true
   @Override
   protected void end() {
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
   }
+
 }

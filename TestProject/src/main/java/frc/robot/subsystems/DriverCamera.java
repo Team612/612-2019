@@ -10,7 +10,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.RotateDriverCamera;
 
 
 public class DriverCamera extends Subsystem {
@@ -23,6 +22,5 @@ public class DriverCamera extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new RotateDriverCamera());
   }
 }

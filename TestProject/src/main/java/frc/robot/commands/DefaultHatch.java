@@ -7,51 +7,50 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
 
 
 public class DefaultHatch extends Command {
   
-  private final double HATCH_TALON_SPEED = 0.5; // Set the speed of the talon
+  private final double DEADZONE = 0.1;  // Define a trigger axis deadzone
 
   public DefaultHatch() {
     requires(Robot.hatch);  // Require the Hatch object
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //System.out.println(Robot.gunnerPOV.get_direction());
-  
-        if (Robot.gunnerPOV.get_direction().equals("North")) {
-          Robot.hatch.hatchTalon.set(HATCH_TALON_SPEED);  // Set the talon to .5 speed
-        } else if (Robot.gunnerPOV.get_direction().equals("South")) {
-          Robot.hatch.hatchTalon.set(HATCH_TALON_SPEED  * -1);  // Set the talon to .5 speed
-        } else {
-          Robot.hatch.hatchTalon.set(0);  // Set the talon to .5 speed
-        }
-    
+
+    // Variables to store trigger data, for effiency
+    double left_trigger_axis = OI.gunner.getTriggerAxis(Hand.kLeft);
+    double right_trigger_axis = OI.gunner.getTriggerAxis(Hand.kRight);
+
+    if (left_trigger_axis > DEADZONE) {  // If the left trigger value is greater than the deadzone
+      Robot.hatch.hatchTalon.set(left_trigger_axis);  // Push out the hatch talon, based on the trigger value
+    } else if (right_trigger_axis > DEADZONE) {  // If the right trigger value is greater than the deadzone
+      Robot.hatch.hatchTalon.set(right_trigger_axis);  // Push in the hatch talon, based on the trigger value
+    } else {
+      Robot.hatch.hatchTalon.set(0);  // Stop the hatch talon
+    }
+
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     return false;
   }
 
-  // Called once after isFinished returns true
   @Override
   protected void end() {
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
   }

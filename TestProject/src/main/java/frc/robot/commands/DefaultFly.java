@@ -7,7 +7,7 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
@@ -15,72 +15,60 @@ import frc.robot.Robot;
 
 public class DefaultFly extends Command {
 
-  private final double  DEADZONE = 0;  // Define the controller DEADZONE
-  private boolean bottom_limit_switch_hit;
-  private boolean state_ball_in_intake  = false;
+  private final double DEADZONE = 0;  // Define the controller DEADZONE
 
-  private double flywheel_speed = 1;
+  private boolean bottom_limit_switch_hit;  // Initialize the bottom limit switch boolean for arm
+  
+  private double flywheel_speed = 1;  // Variable to store flywheel motor speed
 
   public DefaultFly() {
     requires(Robot.flyWheel);  // Requires FlyWheel Object
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    bottom_limit_switch_hit = Robot.arm.getTalon().getSensorCollection().isRevLimitSwitchClosed();
-//LB is in
-//RB is out
 
-    if (OI.gunner.getY(Hand.kRight) > DEADZONE ) { 
-      state_ball_in_intake = false;
-      Robot.flyWheel.getTalon().set(1);
-    }else if(!bottom_limit_switch_hit){ // If trying to go in and arm is up dont allow flywheel to move in
-      Robot.flyWheel.getTalon().set(0);
-    } else { //Arm is down
-      if(Math.abs(OI.gunner.getY(Hand.kRight)) < DEADZONE){ // Filters out the deadzone
-        Robot.flyWheel.getTalon().set(0);
-        state_ball_in_intake = false;
-      } else if (!Robot.flyWheel.getButton().get()){// trying to pull in and button not pushed
-        Robot.flyWheel.getTalon().set(0);
-        state_ball_in_intake = true;// ball inside
-           // if ball is in and trying to intake
-          /*if(state_ball_in_intake &&  OI.gunner_button_LB.get()){
-            OI.gunner.setRumble(GenericHID.RumbleType.kLeftRumble, 1); //rumble
-            OI.gunner.setRumble(GenericHID.RumbleType.kRightRumble, 1); 
-          } else {
-            OI.gunner.setRumble(GenericHID.RumbleType.kLeftRumble, 0); //stop rumbling
-            OI.gunner.setRumble(GenericHID.RumbleType.kRightRumble, 0); 
-          }*/
-      } else if (!state_ball_in_intake){//if ball is not in
-        Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight));
-        state_ball_in_intake = true;
-      } else if (!state_ball_in_intake){
-        Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight)* -1);
-      } // else do not change state_ball_in_intake 
+    bottom_limit_switch_hit = Robot.limit_switch.getArmBottom();  // Boolean to store bottom arm limit switch
+
+    if (!Robot.flyWheel.getButton().get()) {  // If the the ball is not touching the button allow for intake
+
+      if (bottom_limit_switch_hit && OI.gunner_button_LB.get()) {  // If the arm is at the bottom position and the intake button is pressed enable intake
+        Robot.flyWheel.getTalon().set(flywheel_speed);  // Run the motors to intake the ball
+      }
+
+    } else if (OI.gunner_button_RB.get()) {  // If the button is pressed and the user presses RB, push the ball out
+      Robot.flyWheel.getTalon().set(flywheel_speed * -1);  // Run the motors to push out the ball
+    } else {
+
+      if (OI.gunner_button_LB.get()) {  // If the ball is in the intake and gunner attempts to pull ball in, rumble
+        OI.gunner.setRumble(RumbleType.kLeftRumble, 1);
+        OI.gunner.setRumble(RumbleType.kRightRumble, 1); 
+      } else {
+        OI.gunner.setRumble(RumbleType.kLeftRumble, 0);
+        OI.gunner.setRumble(RumbleType.kRightRumble, 0); 
+      }
+
+      Robot.flyWheel.getTalon().set(0);  // Don't allow for motors to run
+
     }
 
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     return false;
   }
 
-  // Called once after isFinished returns true
   @Override
   protected void end() {
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
   }
+
 }

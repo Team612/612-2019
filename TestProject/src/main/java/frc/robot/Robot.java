@@ -7,7 +7,7 @@
 
 package frc.robot;
 
-import frc.robot.TalonHelper;
+import frc.robot.commands.DefaultDrive;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -25,10 +25,9 @@ import frc.robot.POVConvert;
  * project.
  */
 public class Robot extends TimedRobot {
-  // check if in auto 
-  public static boolean isAuto = false;
+  
   //talon helper 
-  public static TalonHelper talonHelper = new TalonHelper();
+  public static LimitSwitchHelper limit_switch = new LimitSwitchHelper();
 
   // Driver servo camera objects
   public static POVConvert driverPOV = new POVConvert(OI.driver);
@@ -87,7 +86,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    isAuto = true;
+    OI.isAutonomous = true;
     m_autonomousCommand = m_chooser.getSelected();
 
     // schedule the autonomous command (example)
@@ -106,7 +105,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    isAuto = false;
+    OI.isAutonomous = false;
     Robot.linetracker.ultrasonic_ARM.setAutomaticMode(true);  // Set the mode of the UltraSonic sensor
     Robot.linetracker.ultrasonic_HATCH.setAutomaticMode(true);  // Set the mode of the UltraSonic sensor
     if (m_autonomousCommand != null) {
@@ -128,16 +127,16 @@ public class Robot extends TimedRobot {
     
     */
     //HATCH LIMIT SWITCHES 
-    SmartDashboard.putBoolean("Hatch FAR",talonHelper.getHatchFar());
-    SmartDashboard.putBoolean("Hatch CLOSE", talonHelper.getHatchFar());
+    SmartDashboard.putBoolean("Hatch FAR",limit_switch.getHatchFar());
+    SmartDashboard.putBoolean("Hatch CLOSE", limit_switch.getHatchFar());
     //ARM LIMIT SWITCHES 
-    SmartDashboard.putBoolean("Arm TOP", talonHelper.getArmTop());
-    SmartDashboard.putBoolean("Arm BOTTOM", talonHelper.getArmBottom());
+    SmartDashboard.putBoolean("Arm TOP", limit_switch.getArmTop());
+    SmartDashboard.putBoolean("Arm BOTTOM", limit_switch.getArmBottom());
     //CLIMB LIMIT SWITCHES 
-    SmartDashboard.putBoolean("ClimbA Top", talonHelper.getClimbTopArm());
-    SmartDashboard.putBoolean("ClimbA Bottom", talonHelper.getClimbBottomArm());
-    SmartDashboard.putBoolean("ClimbH Top", talonHelper.getClimbTopHatch());
-    SmartDashboard.putBoolean("ClimbH Bottonm", talonHelper.getClimbBottomHatch());
+    SmartDashboard.putBoolean("ClimbA Top", limit_switch.getClimbTopArm());
+    SmartDashboard.putBoolean("ClimbA Bottom", limit_switch.getClimbBottomArm());
+    SmartDashboard.putBoolean("ClimbH Top", limit_switch.getClimbTopHatch());
+    SmartDashboard.putBoolean("ClimbH Bottonm", limit_switch.getClimbBottomHatch());
     //SmartDashboard.putBoolean("Tilt Status", climb.;
     //NAVX values 
     SmartDashboard.putNumber("NAVX VALUE ", Robot.climb.getNavX().getAngle());
@@ -148,9 +147,16 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Arm Target", Arm.target);
     SmartDashboard.putNumber("Arm Encoder", Robot.arm.getTalon().getSelectedSensorPosition(0));
     SmartDashboard.putNumber("Climb Hatch Encoder", climb.getTalon(0).getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Climb Hatch Target", Climb.target_C_H);
+    SmartDashboard.putNumber("Climb Hatch Target", Climb.target_hatch);
     SmartDashboard.putNumber("Climb Arm  Encoder", climb.getTalon(1).getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Climb Arm Target", Climb.target_C_A);
+    SmartDashboard.putNumber("Climb Arm Target", Climb.target_arm);
+
+    SmartDashboard.putNumber("MAG", DefaultDrive.magnitude);
+      SmartDashboard.putNumber("ANGLE", DefaultDrive.angle);
+      SmartDashboard.putNumber("ROTROTROT", DefaultDrive.rotation);
+
+      SmartDashboard.putNumber("X", DefaultDrive.direction_x);
+    SmartDashboard.putNumber("Y", DefaultDrive.direction_y);
     //Line tracker values    
    /* SmartDashboard.putNumber("Line Tracker Arm Left", linetracker.leftLineTracker_ARM.getAverageVoltage());
     SmartDashboard.putNumber("Line Tracker Arm Middle", linetracker.centerLineTracker_ARM.getAverageVoltage());

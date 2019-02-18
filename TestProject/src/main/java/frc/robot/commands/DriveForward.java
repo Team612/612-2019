@@ -8,48 +8,45 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
 
-public class MoveForward extends Command {
+public class DriveForward extends Command {
 
-  int seconds = 2;
-  double speed = .99;
+  // Variables to control time and speed
+  int SECONDS = 4;
+  double DRIVE_MAGNITUDE = .99;
 
-  public MoveForward() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Robot.drivetrain);
+  public DriveForward() {
+    requires(Robot.drivetrain);  // Require the drivetrain subsystem
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    setTimeout(seconds);  // set 2 second timeout
+    setTimeout(SECONDS);  // Set an X amount of timeout for drive forward
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(Robot.isAuto){
-      Robot.drivetrain.getDriveTrain().drivePolar(speed, 0, 0); // full power is too dangerus .99 is way safer 
+
+    if (OI.isAutonomous) {  // Only run drive forward in autonomous
+      Robot.drivetrain.getDriveTrain().drivePolar(DRIVE_MAGNITUDE, 0, 0);  // Drive forward for X amount of magnitude
     }
+
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return true;  // Since there is a timeout, end after one iteration
   }
 
-  // Called once after isFinished returns true
   @Override
   protected void end() {
     Robot.drivetrain.getDriveTrain().drivePolar(0,0,0);
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
   }
+  
 }

@@ -56,9 +56,13 @@ public class OI {
   // Servo position
   public static boolean isSideArm                   = true;
 
+  // Boolean to tell if in autonomous period
+  public static boolean isAutonomous = false;
+
   public OI() {
-    driver_button_RB.whenPressed(new MoveForward());
-    driver_button_A.whileHeld(new AutoAlign());  // Run auto align on button press
+
+    driver_button_RB.whenPressed(new DriveForward());
+    driver_button_A.whileHeld(new AutoAlign());
     driver_button_X.whenPressed(new AutoClimb());
     driver_button_LB.whenPressed(new ReverseRobot());
     

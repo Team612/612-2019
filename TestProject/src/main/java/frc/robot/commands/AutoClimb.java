@@ -14,9 +14,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
-import edu.wpi.first.wpilibj.GenericHID;
-
-// WHEN WE ADD AN INTERNAL CLIMB TARGET WE NEED TO HAVE IT SET IN THIS FILE
 
 public class AutoClimb extends Command {
 
@@ -28,12 +25,10 @@ public class AutoClimb extends Command {
   private double TOP_ENCODER_POSITION = 400;
   private double BOTTOM_ENCODER_POSITION = 0;
 
-
+  // Climb state booleans
   private boolean IN_PROGRESS = true;  // Boolean to determine when performing a function
   private boolean END = false;  // Boolean to end the command
-
-  public static boolean is_Tilted = false; 
-  private int pitchedOver_Count = 0;
+  public static boolean IS_TILTED = false;
 
   private int PHASE = 1;  // Specify what phase of the case functions we are in
 
@@ -47,10 +42,6 @@ public class AutoClimb extends Command {
   @Override
   protected void initialize() {
     END = false;
-  }
-
-  public boolean getIs_Tilted(){
-    return is_Tilted;
   }
 
   private void lift_frame() {  // Set the climb talons to an elevated position at level to the HAB platform
@@ -104,6 +95,8 @@ public class AutoClimb extends Command {
       if (Timer.getMatchTime() < (MATCH_LENGTH - END_GAME)) {  // Only run this execute loop if the match time is in the endgame
         
         /*if(Robot.climb.getNavX().getPitch() >= 20){  // If pitch is >20 degrees
+
+          IS_TILTED = true;
           OI.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 1); 
           OI.driver.setRumble(GenericHID.RumbleType.kRightRumble, 1); 
 
@@ -116,6 +109,8 @@ public class AutoClimb extends Command {
           }
 
         } else {
+
+          IS_TILTED = false;
           OI.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 0); 
           OI.driver.setRumble(GenericHID.RumbleType.kRightRumble, 0); 
         }*/
@@ -179,4 +174,5 @@ public class AutoClimb extends Command {
   @Override
   protected void interrupted() {
   }
+  
 }

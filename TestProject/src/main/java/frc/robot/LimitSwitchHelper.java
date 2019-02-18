@@ -13,9 +13,9 @@ import frc.robot.Robot;
 /**
  * Add your docs here.
  */
-public class TalonHelper {
+public class LimitSwitchHelper {
 
-    TalonHelper(){}
+    LimitSwitchHelper(){}
     public boolean getArmBottom(){
         return Robot.arm.getTalon().getSensorCollection().isRevLimitSwitchClosed();
     }

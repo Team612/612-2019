@@ -12,32 +12,35 @@ import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.subsystems.Arm;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 
 public class DefaultArm extends Command {
-  public boolean top_limit_switch_hit;
-  public boolean bottom_limit_switch_hit;
 
-  public static int MAX_POSITION = 500;  // Define to count at end of range of motion degrees
-  private double DEADZONE = 0.1;  // Define the joystick deadzone of the gunner
+  // Booleans for limit switches on arm
+  private boolean top_limit_switch_hit;
+  private boolean bottom_limit_switch_hit;
+
+  // PID position variables
+  private int MAX_POSITION = 500;  // Define to count at end of range of motion degrees
   private double MAX_ANGLE = 90;  // Degree value for unit conversion
-  private double SHOOT_ANGLE = 250;
 
+  // Pre-defined positions for PID shooting
+  private double SHOOT_ANGLE = 250;  // Optimal shooting position for arm
+
+  // PID speed variables (Increments)
   private double PID_UP_SPEED = 15;
   private double PID_DOWN_SPEED = 15;
 
-  private double ARM_SPEED = 0.75;
+  private double ARM_SPEED = 0.75;  // Define the NON-PID motor speed
   
   public DefaultArm() {
     requires(Robot.arm);  // Require the arm object
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Arm.target = Robot.arm.getTalon().getSelectedSensorPosition(0);
+    Arm.target = Robot.arm.getTalon().getSelectedSensorPosition(0);  // Set the arm target to lowest position at beginning of the round
   }
 
   private double countsToAngle() {  // Convert the PID count to an angle value
@@ -45,73 +48,64 @@ public class DefaultArm extends Command {
     return angle;
   }
 
-  private void setArmAngle() {  // Set the arm to a certain position based on Joystick press of gunner
-
-    if (OI.gunner.getYButton()) {
-      Arm.target = 0;
-    } else if (OI.gunner.getAButton()) {
-      Arm.target = MAX_POSITION;
-    } else if (OI.gunner.getBButton()) {
-      Arm.target = SHOOT_ANGLE;
+  private void setArmAngle(double target_position, JoystickButton button) {  // Set the arm to a certain position based on Joystick press of gunner
+    if (button.get()) {  // If the button passed is clicked
+      Arm.target = target_position;  // Set the target to the given angle
     }
-
   }
 
   @Override
   protected void execute() {
     
     // Booleans for limit switch results
-    top_limit_switch_hit = Robot.talonHelper.getArmTop();
-    bottom_limit_switch_hit = Robot.talonHelper.getArmBottom();
+    top_limit_switch_hit = Robot.limit_switch.getArmTop();
+    bottom_limit_switch_hit = Robot.limit_switch.getArmBottom();
 
-    if (OI.gunner_button_BCK.get()) {
-      OI.ARM_PID = !OI.ARM_PID;
+    String pov_position = Robot.gunnerPOV.get_direction();  // Get the position of the D-PAD before the logic, for effiency
+
+    if (OI.gunner_button_BCK.get()) {  // Toggle button to disable arm PID
+      OI.ARM_PID = false;
     }
 
-    if (OI.ARM_PID) {
-      if (top_limit_switch_hit && Robot.gunnerPOV.get_direction().equals("North")) {
+    if (OI.ARM_PID) {  // Only run PID code if variable in OI is true
 
-      } else if (bottom_limit_switch_hit && Robot.gunnerPOV.get_direction().equals("South")) {
+      if (top_limit_switch_hit && pov_position.equals("North")) {  // If the gunner is trying to move the arm up while at the top position, do nothing
+
+      } else if (bottom_limit_switch_hit && pov_position.equals("South")) {  // If the gunner is trying to move the arm down while at the bottom position, do nothing
       
-      } else if (Robot.gunnerPOV.get_direction().equals("North")) {
+      } else if (pov_position.equals("North")) {  // Else do normal PID increments
         Arm.target += PID_UP_SPEED;  // Increase the PID target value 
-      } else if (Robot.gunnerPOV.get_direction().equals("South")) {
-        Arm.target -= PID_DOWN_SPEED;  // Increase the PID target value 
+      } else if (pov_position.equals("South")) {  // If D-Pad is down, decrease arm target
+        Arm.target -= PID_DOWN_SPEED;  // Decrease the PID target value 
       }
 
-      Robot.arm.getTalon().set(ControlMode.Position,Arm.target);  // Set the ARM to a specific position value
+      Robot.arm.getTalon().set(ControlMode.Position, Arm.target);  // Set the ARM to a specific position value
 
     } else {  // Non PID version
-
-      //System.out.println(Robot.arm.getTalon().getSelectedSensorPosition(0));
       
-      if(Robot.gunnerPOV.get_direction().equals("North")){  // Filter out the DEADZONE
-        Robot.arm.getTalon().set(ControlMode.PercentOutput, ARM_SPEED);
-        
-      } else if (Robot.gunnerPOV.get_direction().equals("South")) {  // Else, apply the the normal Joystick value
+      if (pov_position.equals("North")) {  // If the D-Pad is going up 
+        Robot.arm.getTalon().set(ControlMode.PercentOutput, ARM_SPEED);  // Set the arm to specified arm speed
+      } else if (pov_position.equals("South")) {  // If the D-Pad is going down 
         Robot.arm.getTalon().set(ControlMode.PercentOutput, ARM_SPEED * -1);
       } else {
-        Robot.arm.getTalon().set(0);
+        Robot.arm.getTalon().set(0);  // Don't move the Arm
       }
 
     }
 
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     return false;
   }
 
-  // Called once after isFinished returns true
   @Override
   protected void end() {
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
   }
+
 }
