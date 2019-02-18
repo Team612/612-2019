@@ -15,6 +15,8 @@ import frc.robot.Robot;
 
 public class DefaultFly extends Command {
 
+  private boolean BALL_IN_FLY = false;
+
   private final double DEADZONE = 0;  // Define the controller DEADZONE
 
   private boolean bottom_limit_switch_hit;  // Initialize the bottom limit switch boolean for arm
@@ -34,16 +36,17 @@ public class DefaultFly extends Command {
 
     bottom_limit_switch_hit = Robot.limit_switch.getArmBottom();  // Boolean to store bottom arm limit switch
 
-    if (!Robot.flyWheel.getButton().get()) {  // If the the ball is not touching the button allow for intake
-
-      if (bottom_limit_switch_hit && OI.gunner_button_LB.get()) {  // If the arm is at the bottom position and the intake button is pressed enable intake
+    if (Robot.flyWheel.getButton().get()) {  // If the the ball is not touching the button allow for intake
+      if (bottom_limit_switch_hit && OI.gunner_button_LB.get() && !BALL_IN_FLY) {  // If the arm is at the bottom position and the intake button is pressed enable intake
         Robot.flyWheel.getTalon().set(flywheel_speed);  // Run the motors to intake the ball
       }
 
-    } else if (OI.gunner_button_RB.get()) {  // If the button is pressed and the user presses RB, push the ball out
+    } else if (OI.gunner_button_RB.get() ){  // If the button is pressed and the user presses RB, push the ball out
       Robot.flyWheel.getTalon().set(flywheel_speed * -1);  // Run the motors to push out the ball
-    } else {
+      BALL_IN_FLY = false;
 
+    } else {
+      BALL_IN_FLY = true;
       if (OI.gunner_button_LB.get()) {  // If the ball is in the intake and gunner attempts to pull ball in, rumble
         OI.gunner.setRumble(RumbleType.kLeftRumble, 1);
         OI.gunner.setRumble(RumbleType.kRightRumble, 1); 
