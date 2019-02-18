@@ -31,7 +31,7 @@ public class LineTracker extends Subsystem {
   public Ultrasonic ultrasonic_ARM = new Ultrasonic(RobotMap.PING_CHANNEL_ARM, RobotMap.ECHO_CHANNEL_ARM);
   public Ultrasonic ultrasonic_HATCH = new Ultrasonic(RobotMap.PING_CHANNEL_HATCH, RobotMap.ECHO_CHANNEL_HATCH);
 
-  //NAVX 
+  // NAVX 
   AHRS navx = new AHRS(I2C.Port.kMXP);
 
   @Override

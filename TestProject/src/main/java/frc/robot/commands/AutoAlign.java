@@ -93,6 +93,10 @@ public class AutoAlign extends Command {
     
     requires(Robot.linetracker);  // Require the line tracker
     requires(Robot.drivetrain);  // Require the Drivetrain
+
+    Robot.linetracker.ultrasonic_ARM.setAutomaticMode(true);  // Set the mode of the UltraSonic sensor
+    Robot.linetracker.ultrasonic_HATCH.setAutomaticMode(true);  // Set the mode of the UltraSonic sensor
+
     position_timer.start();
 
   }

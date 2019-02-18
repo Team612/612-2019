@@ -25,9 +25,9 @@ import frc.robot.POVConvert;
  * project.
  */
 public class Robot extends TimedRobot {
-  
-  //talon helper 
-  public static LimitSwitchHelper limit_switch = new LimitSwitchHelper();
+
+  // Drivetrain object
+  public static Drivetrain drivetrain = new Drivetrain();
 
   // Driver servo camera objects
   public static POVConvert driverPOV = new POVConvert(OI.driver);
@@ -42,11 +42,11 @@ public class Robot extends TimedRobot {
   public static FlyWheel flyWheel = new FlyWheel();
   public static Arm arm = new Arm();
 
-  // Drivetrain object
-  public static Drivetrain drivetrain = new Drivetrain();
-
   // Auto Align object
   public static LineTracker linetracker = new LineTracker();
+
+  // Limit switch helper object
+  public static LimitSwitchHelper limit_switch = new LimitSwitchHelper();
 
   // OI object
   public static OI m_oi;
@@ -54,13 +54,6 @@ public class Robot extends TimedRobot {
   // MISC
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
-
-  //Soft Robotics
-  //public static SoftRobotics softrobotics = new SoftRobotics();
-
-  //I2C Interface
-  //public static I2CInterface i2cInterface=new I2CInterface();
-  
 
   @Override
   public void robotInit() {
@@ -83,13 +76,12 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   }
 
-
   @Override
   public void autonomousInit() {
-    OI.isAutonomous = true;
-    m_autonomousCommand = m_chooser.getSelected();
 
-    // schedule the autonomous command (example)
+    OI.isAutonomous = true;  // Set is autonomous boolean to true
+
+    m_autonomousCommand = m_chooser.getSelected();
     if (m_autonomousCommand != null) {  // Start autonomous (No autonomous this year)
       m_autonomousCommand.start();
     }
@@ -105,12 +97,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    OI.isAutonomous = false;
-    Robot.linetracker.ultrasonic_ARM.setAutomaticMode(true);  // Set the mode of the UltraSonic sensor
-    Robot.linetracker.ultrasonic_HATCH.setAutomaticMode(true);  // Set the mode of the UltraSonic sensor
+
+    OI.isAutonomous = false;  // At beginning of teleop, set autonomous to false
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
   }
 
   
@@ -118,47 +111,49 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
-    // ShuffleBoard Data
-    /*
-    SmartDashboard.putNumber("Arm Encoder Value", Robot.arm.getTalon().getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Climb Encoder A", Robot.climb.getTalon(0).getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("ultra -- ARM", linetracker.ultrasonic_ARM.getRangeInches());
-    SmartDashboard.putNumber("ultra -- HATCH", linetracker.ultrasonic_HATCH.getRangeInches());
-    
-    */
-    //HATCH LIMIT SWITCHES 
+    /* -- SHUFFLE BOARD DATA -- */
+
+    // Hatch Limit Switches
     SmartDashboard.putBoolean("Hatch FAR",limit_switch.getHatchFar());
     SmartDashboard.putBoolean("Hatch CLOSE", limit_switch.getHatchFar());
-    //ARM LIMIT SWITCHES 
+
+    // Arm Limit Switches
     SmartDashboard.putBoolean("Arm TOP", limit_switch.getArmTop());
     SmartDashboard.putBoolean("Arm BOTTOM", limit_switch.getArmBottom());
-    //CLIMB LIMIT SWITCHES 
-    SmartDashboard.putBoolean("ClimbA Top", limit_switch.getClimbTopArm());
-    SmartDashboard.putBoolean("ClimbA Bottom", limit_switch.getClimbBottomArm());
-    SmartDashboard.putBoolean("ClimbH Top", limit_switch.getClimbTopHatch());
-    SmartDashboard.putBoolean("ClimbH Bottonm", limit_switch.getClimbBottomHatch());
-    //SmartDashboard.putBoolean("Tilt Status", climb.;
-    //NAVX values 
-    SmartDashboard.putNumber("NAVX VALUE ", Robot.climb.getNavX().getAngle());
-    SmartDashboard.putNumber("NAVX VALUE ", Robot.climb.getNavX().getRoll());
-    SmartDashboard.putNumber("NAVX VALUE ", Robot.climb.getNavX().getPitch());
 
-    //encoder values and Targets 
-    SmartDashboard.putNumber("Arm Target", Arm.target);
-    SmartDashboard.putNumber("Arm Encoder", Robot.arm.getTalon().getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Climb Hatch Encoder", climb.getTalon(0).getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Climb Hatch Target", Climb.target_hatch);
-    SmartDashboard.putNumber("Climb Arm  Encoder", climb.getTalon(1).getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Climb Arm Target", Climb.target_arm);
+    // Climb Limit Switches
+    SmartDashboard.putBoolean("Climb ARM TOP", limit_switch.getClimbTopArm());
+    SmartDashboard.putBoolean("Climb ARM BOTTOM", limit_switch.getClimbBottomArm());
+    SmartDashboard.putBoolean("Climb HATCH TOP", limit_switch.getClimbTopHatch());
+    SmartDashboard.putBoolean("Climb HATCH BOTTOM", limit_switch.getClimbBottomHatch());
 
-    SmartDashboard.putNumber("MAG", DefaultDrive.magnitude);
-      SmartDashboard.putNumber("ANGLE", DefaultDrive.angle);
-      SmartDashboard.putNumber("ROTROTROT", DefaultDrive.rotation);
+    // NavX Data Values
+    SmartDashboard.putNumber("NavX ANGLE ", Robot.climb.getNavX().getAngle());
+    SmartDashboard.putNumber("NavX ROLL ", Robot.climb.getNavX().getRoll());
+    SmartDashboard.putNumber("NavX PITCH ", Robot.climb.getNavX().getPitch());
 
-      SmartDashboard.putNumber("X", DefaultDrive.direction_x);
-    SmartDashboard.putNumber("Y", DefaultDrive.direction_y);
-    //Line tracker values    
-   /* SmartDashboard.putNumber("Line Tracker Arm Left", linetracker.leftLineTracker_ARM.getAverageVoltage());
+    // Values For Arm Data
+    SmartDashboard.putNumber("Arm PID Target", Robot.arm.target);
+    SmartDashboard.putNumber("Arm Encoder Position", Robot.arm.getTalon().getSelectedSensorPosition(0));
+    
+    // Values For Climb Data
+    SmartDashboard.putNumber("Climb Arm PID Target", Climb.target_arm);
+    SmartDashboard.putNumber("Climb HATCH PID Target", Climb.target_hatch);
+    SmartDashboard.putNumber("Climb HATCH Encoder Position", Robot.climb.getTalon(0).getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Climb ARM Encoder Position", Robot.climb.getTalon(1).getSelectedSensorPosition(0));
+
+    // Drivetrain Values
+    SmartDashboard.putNumber("Drive Magnitude", DefaultDrive.magnitude);
+    SmartDashboard.putNumber("Drive Angle", DefaultDrive.angle);
+    SmartDashboard.putNumber("Drive Rotation", DefaultDrive.rotation);
+    
+    // Drive Joystick Values
+    SmartDashboard.putNumber("Joystick X", DefaultDrive.direction_x);
+    SmartDashboard.putNumber("Joystick Y", DefaultDrive.direction_y);
+
+    //Line tracker values
+    /*  
+    SmartDashboard.putNumber("Line Tracker Arm Left", linetracker.leftLineTracker_ARM.getAverageVoltage());
     SmartDashboard.putNumber("Line Tracker Arm Middle", linetracker.centerLineTracker_ARM.getAverageVoltage());
     SmartDashboard.putNumber("Line Tracker Arm Right", linetracker.rightLineTracker_ARM.getAverageVoltage());
     SmartDashboard.putNumber("Line Tracker Hatch Left", linetracker.leftLineTracker_HATCH.getAverageVoltage());
