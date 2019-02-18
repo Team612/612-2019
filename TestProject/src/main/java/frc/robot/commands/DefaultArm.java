@@ -64,14 +64,11 @@ public class DefaultArm extends Command {
 
     if (OI.ARM_PID) {  // Troubleshooting: Enable or Disable PID
       if (top_limit_switch_hit && (OI.gunner.getY(Hand.kLeft) > 0)) {  // Check if top is triggered
-        System.out.println("We bads");
         // Arm.target = Arm.target; Don't change the target value, stay still
       } else if (bottom_limit_switch_hit && (OI.gunner.getY(Hand.kLeft) < 0)) {  // Check if bottom is triggered
         // Arm.target = Arm.target; Don't change the target value, stay still
-        System.out.println("We bads2");
       } else if (Math.abs(OI.gunner.getY(Hand.kLeft)) > DEADZONE) {  // Filter out the DEADZONE
-        System.out.println("We goods");
-        Arm.target += (OI.gunner.getY(Hand.kLeft)*ARM_SPEED);  // Increase the PID target value
+        Arm.target += ((OI.gunner.getY(Hand.kLeft)*ARM_SPEED)) * -1;  // Increase the PID target value
       }
       Robot.arm.getTalon().set(ControlMode.Position,Arm.target);  // Set the ARM to a specific position value
 

@@ -57,6 +57,9 @@ public class DefaultFly extends Command {
           }
       } else if (!state_ball_in_intake){//if ball is not in
         Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight));
+        state_ball_in_intake = true;
+      } else if (!state_ball_in_intake){
+        Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight)* -1);
       } // else do not change state_ball_in_intake 
     }
 

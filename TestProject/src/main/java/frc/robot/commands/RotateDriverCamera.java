@@ -25,11 +25,11 @@ public class RotateDriverCamera extends Command {
   @Override
   protected void execute() {
 
-   /* if(OI.driver_button_RB.get()){
+    if(OI.driver_button_RB.get()){
         Robot.drivercamera.getServo().setAngle(180);
     } else if (OI.driver_button_LB.get()){
         Robot.drivercamera.getServo().setAngle(0); 
-    }*/
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
