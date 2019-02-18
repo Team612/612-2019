@@ -103,18 +103,18 @@ public class AutoClimb extends Command {
 
       if (Timer.getMatchTime() < (MATCH_LENGTH - END_GAME)) {  // Only run this execute loop if the match time is in the endgame
         
-        if(Robot.climb.getNavX.getPitch() >= 20)){  // If pitch is >20 degrees
+        /*if(Robot.climb.getNavX().getPitch() >= 20){  // If pitch is >20 degrees
           pitchedOver_Count++;  // Count number of times robot is over count
-        } else
+        } else {
           pitchedOver_Count = 0;  // Reset Count
-          is_Tilted = false // Make sure it reports not tilted if < 10 consecutive countsit
+          is_Tilted = false; // Make sure it reports not tilted if < 10 consecutive countsit
         }
         if(pitchedOver_Count >= 10){ // If 10 consecutive counts, then rumble
             //IN_PROGRESS = false; 
-            is_Tilted = true
+            is_Tilted = true;
             OI.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 1); 
             OI.driver.setRumble(GenericHID.RumbleType.kRightRumble, 1); 
-        }
+        }*/
           if (IN_PROGRESS) {  // Only run this case statement if a phase function is called
             
             switch( PHASE ) {  // Switch case for the phase stepS

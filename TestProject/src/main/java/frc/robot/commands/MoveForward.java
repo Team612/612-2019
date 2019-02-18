@@ -8,50 +8,39 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.OI;
+import frc.robot.Robot;
 
-public class ReverseRobot extends Command {
-
-  public ReverseRobot() {
+public class MoveForward extends Command {
+  public MoveForward() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(Robot.drivetrain);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-  }
-
-  private void set_servo_angle(double angle) {
-    //Robot.drivercamera.getServo().set(angle);
+    setTimeout(2);  // set 2 second timeout
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //System.out.println("dab");
-    if (OI.isSideArm) {
-      DefaultDrive.invert_robot = -1;
-      set_servo_angle(180);
-      OI.isSideArm = false;
-      // Add vision switch camera
-    } else {
-      DefaultDrive.invert_robot = 1;
-      set_servo_angle(0);
-      OI.isSideArm = true;
-      // Add vision switch camera
+    if(Robot.isAuto){
+      Robot.drivetrain.getDriveTrain().drivePolar(0.99,0,0); // full power is too dangerus .99 is way safer 
     }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.drivetrain.getDriveTrain().drivePolar(0,0,0);
   }
 
   // Called when another command which requires one or more of the same

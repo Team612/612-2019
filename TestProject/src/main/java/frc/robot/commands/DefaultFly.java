@@ -48,13 +48,13 @@ public class DefaultFly extends Command {
         Robot.flyWheel.getTalon().set(0);
         state_ball_in_intake = true;// ball inside
            // if ball is in and trying to intake
-          if(state_ball_in_intake && OI.gunner_button_LB){
+          /*if(state_ball_in_intake &&  OI.gunner_button_LB.get()){
             OI.gunner.setRumble(GenericHID.RumbleType.kLeftRumble, 1); //rumble
             OI.gunner.setRumble(GenericHID.RumbleType.kRightRumble, 1); 
           } else {
             OI.gunner.setRumble(GenericHID.RumbleType.kLeftRumble, 0); //stop rumbling
             OI.gunner.setRumble(GenericHID.RumbleType.kRightRumble, 0); 
-          }
+          }*/
       } else if (!state_ball_in_intake){//if ball is not in
         Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight));
         state_ball_in_intake = true;

@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
-import frc.robot.commands.AutoClimb;
 import frc.robot.POVConvert;
 
 
@@ -26,6 +25,8 @@ import frc.robot.POVConvert;
  * project.
  */
 public class Robot extends TimedRobot {
+  // check if in auto 
+  public static boolean isAuto = false;
   //talon helper 
   public static TalonHelper talonHelper = new TalonHelper();
 
@@ -86,6 +87,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    isAuto = true;
     m_autonomousCommand = m_chooser.getSelected();
 
     // schedule the autonomous command (example)
@@ -104,6 +106,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    isAuto = false;
     Robot.linetracker.ultrasonic_ARM.setAutomaticMode(true);  // Set the mode of the UltraSonic sensor
     Robot.linetracker.ultrasonic_HATCH.setAutomaticMode(true);  // Set the mode of the UltraSonic sensor
     if (m_autonomousCommand != null) {
@@ -135,7 +138,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("ClimbA Bottom", talonHelper.getClimbBottomArm());
     SmartDashboard.putBoolean("ClimbH Top", talonHelper.getClimbTopHatch());
     SmartDashboard.putBoolean("ClimbH Bottonm", talonHelper.getClimbBottomHatch());
-    SmartDashboard.putBoolean("Tilt Status", AutoClimb.getIs_Tilted())
+    //SmartDashboard.putBoolean("Tilt Status", climb.;
     //NAVX values 
     SmartDashboard.putNumber("NAVX VALUE ", Robot.climb.getNavX().getAngle());
     SmartDashboard.putNumber("NAVX VALUE ", Robot.climb.getNavX().getRoll());
