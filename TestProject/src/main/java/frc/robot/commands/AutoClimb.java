@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.subsystems.Climb;
 
 public class AutoClimb extends Command {
 
@@ -32,6 +33,8 @@ public class AutoClimb extends Command {
 
   private int PHASE = 1;  // Specify what phase of the case functions we are in
 
+  private int LIFT_SPEED = 15;
+
   private String PHASE_STRING = "Waiting for next step";  // The string of what phase we are currently
 
   public AutoClimb() {
@@ -42,45 +45,54 @@ public class AutoClimb extends Command {
   @Override
   protected void initialize() {
     END = false;
+    Climb.target_hatch = Robot.arm.getTalon().getSelectedSensorPosition(1);
+    Climb.target_arm = Robot.arm.getTalon().getSelectedSensorPosition(0);
   }
 
   private void lift_frame() {  // Set the climb talons to an elevated position at level to the HAB platform
 
+    Climb.target_hatch += LIFT_SPEED;
+    Climb.target_arm += LIFT_SPEED;
+
     // Set the lift talons to target apex position
-    Robot.climb.getTalon(1).set(ControlMode.Position, TOP_ENCODER_POSITION);
-    Robot.climb.getTalon(0).set(ControlMode.Position, TOP_ENCODER_POSITION);
+    Robot.climb.getTalon(1).set(ControlMode.Position, Climb.target_arm);
+    Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
 
     // Ternary statements to determine lift talon positions
-    boolean front_lifted = (Robot.climb.getTalon(0).getSelectedSensorPosition(0) == TOP_ENCODER_POSITION) ? true : false;
-    boolean back_lifted = (Robot.climb.getTalon(1).getSelectedSensorPosition(0) == TOP_ENCODER_POSITION) ? true : false;
+    boolean hatch_lifted = Robot.limit_switch.getClimbTopHatch();
+    boolean arm_lifted = Robot.limit_switch.getClimbTopArm();
 
-    if (front_lifted && back_lifted) {  // Check if the front and back are at the optimal positions
+    if (hatch_lifted && arm_lifted) {  // Check if the front and back are at the optimal positions
       IN_PROGRESS = false;  // Finish the lift frame function
     }
 
   }
 
-  private void lift_front_wheels() {  // Returns to wheels back from the elevated position back to the original position
+  private void lift_hatch_wheels() {  // Returns to wheels back from the elevated position back to the original position
 
-    Robot.climb.getTalon(0).set(ControlMode.Position, BOTTOM_ENCODER_POSITION);  // Set the talon position back to the bottom
+    Climb.target_hatch -= LIFT_SPEED;
+
+    Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);  // Set the talon position back to the bottom
 
     // Ternary statement to determine if the position of talon is back to normal position
-    boolean front_wheel_lifted = (Robot.climb.getTalon(0).getSelectedSensorPosition(0) == BOTTOM_ENCODER_POSITION) ? true : false; 
+    boolean hatch_wheel_lifted = Robot.limit_switch.getClimbBottomHatch(); 
     
-    if (front_wheel_lifted) {  // Check if the boolean is true
+    if (hatch_wheel_lifted) {  // Check if the boolean is true
       IN_PROGRESS = false;  // Finish the lift front wheels function
     }
 
   }
 
-  private void lift_back_wheels() {  // Returns the back wheels back from the elevated position to the original position
+  private void lift_arm_wheels() {  // Returns the back wheels back from the elevated position to the original position
     
+    Climb.target_arm -= LIFT_SPEED;
+
     Robot.climb.getTalon(1).set(ControlMode.Position, BOTTOM_ENCODER_POSITION);  // Set the talon position back to the bottom
     
     // Ternary statement to determine if the position of talon is back to normal position
-    boolean back_wheel_lifted = (Robot.climb.getTalon(1).getSelectedSensorPosition(0) == BOTTOM_ENCODER_POSITION) ? true : false;
+    boolean arm_wheel_lifted = Robot.limit_switch.getClimbBottomArm(); 
     
-    if (back_wheel_lifted) {  // Check if the boolean is true
+    if (arm_wheel_lifted) {  // Check if the boolean is true
       IN_PROGRESS = false;  // Finish the lift back wheels function
     }
 
@@ -92,7 +104,7 @@ public class AutoClimb extends Command {
 
     if (!OI.KILL_CLIMB) {  // Only run if climb is enabled
 
-      if (Timer.getMatchTime() < (MATCH_LENGTH - END_GAME)) {  // Only run this execute loop if the match time is in the endgame
+      //if (Timer.getMatchTime() < (MATCH_LENGTH - END_GAME)) {  // Only run this execute loop if the match time is in the endgame
         
         /*if(Robot.climb.getNavX().getPitch() >= 20){  // If pitch is >20 degrees
 
@@ -123,10 +135,10 @@ public class AutoClimb extends Command {
                 lift_frame();  // At step 1, secondly, lift the entire robot frame up except for the wheels
               case 2:
                 PHASE_STRING = "Lifting the Front Wheels";
-                lift_front_wheels();  // At step 2, thirdly, lift the front wheels of the robot to drive onto the HAB
+                lift_hatch_wheels();  // At step 2, thirdly, lift the front wheels of the robot to drive onto the HAB
               case 3:
                 PHASE_STRING = "Lifting the Back Wheels";
-                lift_back_wheels();  // At step 3, fourth, lift the back wheels to elevate the entire robot
+                lift_arm_wheels();  // At step 3, fourth, lift the back wheels to elevate the entire robot
               default:
                 PHASE_STRING = "Climb is Currently not Running";
                 System.out.println("Climb has ended");
@@ -152,9 +164,9 @@ public class AutoClimb extends Command {
         END = true;
       }
 
-    } else {
+   /* } else {
       END = true;
-    }
+    } */
 
   }
 

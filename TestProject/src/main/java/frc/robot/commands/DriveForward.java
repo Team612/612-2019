@@ -37,7 +37,7 @@ public class DriveForward extends Command {
 
   @Override
   protected boolean isFinished() {
-    return true;  // Since there is a timeout, end after one iteration
+    return false;  // Since there is a timeout, end after one iteration
   }
 
   @Override
