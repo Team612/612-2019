@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
+import frc.robot.commands.AutoClimb;
 import frc.robot.POVConvert;
 
 
@@ -134,6 +135,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("ClimbA Bottom", talonHelper.getClimbBottomArm());
     SmartDashboard.putBoolean("ClimbH Top", talonHelper.getClimbTopHatch());
     SmartDashboard.putBoolean("ClimbH Bottonm", talonHelper.getClimbBottomHatch());
+    SmartDashboard.putBoolean("Tilt Status", AutoClimb.getIs_Tilted())
     //NAVX values 
     SmartDashboard.putNumber("NAVX VALUE ", Robot.climb.getNavX().getAngle());
     SmartDashboard.putNumber("NAVX VALUE ", Robot.climb.getNavX().getRoll());

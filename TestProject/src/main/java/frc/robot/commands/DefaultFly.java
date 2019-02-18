@@ -32,18 +32,31 @@ public class DefaultFly extends Command {
   @Override
   protected void execute() {
     bottom_limit_switch_hit = Robot.arm.getTalon().getSensorCollection().isRevLimitSwitchClosed();
+//LB is in
+//RB is out
 
-    if (OI.gunner.getY(Hand.kRight) > DEADZONE) { 
+    if (OI.gunner.getY(Hand.kRight) > DEADZONE ) { 
       state_ball_in_intake = false;
-      Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight));
-    }else if(!bottom_limit_switch_hit){
+      Robot.flyWheel.getTalon().set(1);
+    }else if(!bottom_limit_switch_hit){ // If trying to go in and arm is up dont allow flywheel to move in
       Robot.flyWheel.getTalon().set(0);
-    } else { 
+    } else { //Arm is down
       if(Math.abs(OI.gunner.getY(Hand.kRight)) < DEADZONE){ // Filters out the deadzone
         Robot.flyWheel.getTalon().set(0);
         state_ball_in_intake = false;
-      } else if (!Robot.flyWheel.getButton().get()){
+      } else if (!Robot.flyWheel.getButton().get()){// trying to pull in and button not pushed
         Robot.flyWheel.getTalon().set(0);
+        state_ball_in_intake = true;// ball inside
+           // if ball is in and trying to intake
+          if(state_ball_in_intake && OI.gunner_button_LB){
+            OI.gunner.setRumble(GenericHID.RumbleType.kLeftRumble, 1); //rumble
+            OI.gunner.setRumble(GenericHID.RumbleType.kRightRumble, 1); 
+          } else {
+            OI.gunner.setRumble(GenericHID.RumbleType.kLeftRumble, 0); //stop rumbling
+            OI.gunner.setRumble(GenericHID.RumbleType.kRightRumble, 0); 
+          }
+      } else if (!state_ball_in_intake){//if ball is not in
+        Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight));
         state_ball_in_intake = true;
       } else if (!state_ball_in_intake){
         Robot.flyWheel.getTalon().set(OI.gunner.getY(Hand.kRight)* -1);
