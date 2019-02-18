@@ -104,17 +104,22 @@ public class AutoClimb extends Command {
       if (Timer.getMatchTime() < (MATCH_LENGTH - END_GAME)) {  // Only run this execute loop if the match time is in the endgame
         
         /*if(Robot.climb.getNavX().getPitch() >= 20){  // If pitch is >20 degrees
-          pitchedOver_Count++;  // Count number of times robot is over count
+          OI.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 1); 
+          OI.driver.setRumble(GenericHID.RumbleType.kRightRumble, 1); 
+
+          if (OI.driver_button_BCK.get()) {  // Allow drive override
+            IN_PROGRESS = false;
+            OI.LOCK_DRIVETRAIN = false;
+            PHASE = 0;
+            OI.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 0); 
+            OI.driver.setRumble(GenericHID.RumbleType.kRightRumble, 0); 
+          }
+
         } else {
-          pitchedOver_Count = 0;  // Reset Count
-          is_Tilted = false; // Make sure it reports not tilted if < 10 consecutive countsit
-        }
-        if(pitchedOver_Count >= 10){ // If 10 consecutive counts, then rumble
-            //IN_PROGRESS = false; 
-            is_Tilted = true;
-            OI.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 1); 
-            OI.driver.setRumble(GenericHID.RumbleType.kRightRumble, 1); 
+          OI.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 0); 
+          OI.driver.setRumble(GenericHID.RumbleType.kRightRumble, 0); 
         }*/
+
           if (IN_PROGRESS) {  // Only run this case statement if a phase function is called
             
             switch( PHASE ) {  // Switch case for the phase stepS
@@ -134,14 +139,6 @@ public class AutoClimb extends Command {
 
             }
 
-          if (OI.driver_button_X.get()) {  // Allow drive override
-            IN_PROGRESS = false;
-            OI.LOCK_DRIVETRAIN = false;
-            PHASE = 0;
-            OI.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 0); 
-            OI.driver.setRumble(GenericHID.RumbleType.kRightRumble, 0); 
-          }
-
         }
 
         if (!IN_PROGRESS && OI.driver_button_A.get()) {  // If we are not in progress and the driver clicks the A button
@@ -149,13 +146,9 @@ public class AutoClimb extends Command {
           OI.LOCK_DRIVETRAIN = true;  // Lock the drivetrain
           IN_PROGRESS = true;  // Set in progress to true
           PHASE++;  // Go to the next step
-          OI.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 0); 
-          OI.driver.setRumble(GenericHID.RumbleType.kRightRumble, 0); 
         
         } else {
           OI.LOCK_DRIVETRAIN = false;
-          OI.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 0); 
-          OI.driver.setRumble(GenericHID.RumbleType.kRightRumble, 0); 
         }
 
         SmartDashboard.putString("Climb Phase", PHASE_STRING);  // Put the current phase string to SmartDashboard

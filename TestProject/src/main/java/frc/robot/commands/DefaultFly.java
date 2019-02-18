@@ -19,6 +19,8 @@ public class DefaultFly extends Command {
   private boolean bottom_limit_switch_hit;
   private boolean state_ball_in_intake  = false;
 
+  private double flywheel_speed = 1;
+
   public DefaultFly() {
     requires(Robot.flyWheel);  // Requires FlyWheel Object
   }

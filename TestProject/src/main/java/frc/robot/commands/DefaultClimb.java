@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
@@ -45,41 +46,44 @@ public class DefaultClimb extends Command {
     bottom_hatch = Robot.talonHelper.getClimbBottomHatch();
       if (OI.CLIMB_PID){
         //for the ARM side 
-        if (OI.gunner_button_Y.get()) { 
+        if (OI.gunner.getY(Hand.kLeft) > DEADZONE) { 
           System.out.println("Y is clicked");
           Climb.target_C_A += 10;
           Climb.target_C_H += 10;
-        } else if (OI.gunner_button_B.get()) {  
-          System.out.println("B is clicked");
+        } else if (OI.gunner.getY(Hand.kLeft) < DEADZONE) {
           Climb.target_C_A -= 10;
           Climb.target_C_H -= 10;
-        } else {
-          //do nothing
         }
         /// HATCH 0
         // ARM 1
         //set the values
         Robot.climb.getTalon(1).set(ControlMode.Position,Climb.target_C_A);
         Robot.climb.getTalon(0).set(ControlMode.Position,Climb.target_C_H);
-      } else if (OI.gunner_button_B.get()) {  // Up (Front)
-        System.out.println("B is clicked");
-        Robot.climb.getTalon(0).set(ControlMode.PercentOutput,.5);
-      } else if (OI.gunner_button_Y.get()) {  // Down (Front)
-        System.out.println("Y is clicked");
-        Robot.climb.getTalon(0).set(ControlMode.PercentOutput,-.75);
       } else {
-        Robot.climb.getTalon(0).set(ControlMode.PercentOutput,0);
 
-      }
-         if (OI.gunner_button_A.get()) {  // Up (Back)
-        System.out.println("X is clicked");
-        Robot.climb.getTalon(1).set(ControlMode.PercentOutput,.5);
-      } else if (OI.gunner_button_X.get()) {  // Down (Back)
-        System.out.println("A is clicked");
-        Robot.climb.getTalon(1).set(ControlMode.PercentOutput,-.75);
-      } else {
-        Robot.climb.getTalon(1).set(ControlMode.PercentOutput,0);
-      }
+        if (OI.gunner.getY(Hand.kLeft) > DEADZONE) {  // Up (Hatch)
+          System.out.println("Hatch Climb up");
+          Robot.climb.getTalon(0).set(ControlMode.PercentOutput, OI.gunner.getY(Hand.kLeft));
+        } else if (OI.gunner.getY(Hand.kLeft) < DEADZONE) {  // Down (Hatch)
+          System.out.println("Hatch Climb down");
+          Robot.climb.getTalon(0).set(ControlMode.PercentOutput, OI.gunner.getY(Hand.kLeft));
+        } else {
+          Robot.climb.getTalon(0).set(ControlMode.PercentOutput, 0);
+        }
+        
+        if (OI.gunner.getY(Hand.kRight) > DEADZONE) {  // Up (Hatch)
+          System.out.println("Arm Climb up");
+          Robot.climb.getTalon(1).set(ControlMode.PercentOutput, OI.gunner.getY(Hand.kRight));
+        } else if (OI.gunner.getY(Hand.kRight) < DEADZONE) {  // Down (Hatch)
+          System.out.println("Arm Climb down");
+          Robot.climb.getTalon(1).set(ControlMode.PercentOutput, OI.gunner.getY(Hand.kRight));
+        } else {
+          Robot.climb.getTalon(1).set(ControlMode.PercentOutput, 0);
+        }
+
+      } 
+      
+      
     //}
 
   }

@@ -57,10 +57,10 @@ public class OI {
   public static boolean isSideArm                   = true;
 
   public OI() {
-    driver_button_STRT.whenPressed(new MoveForward());
+    driver_button_RB.whenPressed(new MoveForward());
     driver_button_A.whileHeld(new AutoAlign());  // Run auto align on button press
-    gunner_button_STRT.whenPressed(new AutoClimb());
-    driver_button_BCK.whenPressed(new ReverseRobot());
+    driver_button_X.whenPressed(new AutoClimb());
+    driver_button_LB.whenPressed(new ReverseRobot());
     
   }
 
