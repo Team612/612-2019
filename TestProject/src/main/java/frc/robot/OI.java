@@ -19,7 +19,7 @@ public class OI {
 
   // Booleans
   public static boolean ARM_PID                     = true;
-  public static boolean CLIMB_PID                   = false; 
+  public static boolean CLIMB_PID                   = true;  // never change 
   public static boolean TOGGLE_SERVO_CLIMB_F        = true;
   public static boolean TOGGLE_SERVO_CLIMB_B        = true;
   public static boolean LOCK_DRIVETRAIN             = false;

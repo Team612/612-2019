@@ -104,7 +104,7 @@ public class AutoAlign extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    assignSide();//Decides what side of the robot to take sensor data from
+    //assignSide();//Decides what side of the robot to take sensor data from
     angle_check = false;  // Initialize angle and position check to false
     position_check = false;  // (Will turn true when validated in functions)
     follow_line = false;
@@ -115,6 +115,7 @@ public class AutoAlign extends Command {
   }
 
   private void assignSide(){
+  
     if(OI.isSideArm){
       leftLineTracker = Robot.linetracker.leftLineTracker_ARM;
       centerLineTracker = Robot.linetracker.centerLineTracker_ARM;
@@ -213,7 +214,7 @@ public class AutoAlign extends Command {
     
     // Call the align angle and position functions to update drive variables
     align_angle();
-    //align_position();
+    align_position();
     boolean linetracker_triggered = (overLeftTracker || overCenterTracker || overRightTracker) ? true : false;  // If any of the line trackers are enabled return true
 
     if (linetracker_triggered && angle_check) {  // First Clause: if any line tracker is true and angle check is valid
@@ -272,10 +273,19 @@ public class AutoAlign extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    /*
     distance = ultrasonicSensor.getRangeInches();  // Update distance value from ultrasonic
     System.out.println(distance);
     update_linetrackers(); // Update values from line tracker
     follow_line();  // Call line follower code
+    */
+    align_angle();
+    align_position();
+    System.out.println(OI.isSideArm);
+    System.out.println(VisionListen.vision_array[0]);
+    System.out.println(drive_magnitude + " | " + drive_angle + " | " + drive_rotation);
+    System.out.println("--------");
+    Robot.drivetrain.getDriveTrain().drivePolar(drive_magnitude, drive_angle, drive_rotation);  // If nothing keep on aligning
     //align_robot();
     /*
     distance = ultrasonicSensor.getRangeInches();  // Update distance value from ultrasonic

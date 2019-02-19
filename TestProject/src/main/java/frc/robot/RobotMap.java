@@ -26,7 +26,7 @@ public class RobotMap {
   public static final int TALON_PORT_FLY                  = 1;
 
   // Servo ports
-  public static final int SERVO_PORT                      = 0;
+  public static final int SERVO_PORT                      = 9;
 
   // Line tracker ports
   public static final int LEFT_LINE_TRACKER_PORT_ARM      = 1;

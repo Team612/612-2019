@@ -51,6 +51,8 @@ public class Robot extends TimedRobot {
   // OI object
   public static OI m_oi;
 
+  public static VisionListen vision_listen = new VisionListen();
+
   // MISC
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -58,6 +60,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();  // Create an object of OI
+    //vision_listen.read_vision();
   }
 
 
@@ -109,14 +112,17 @@ public class Robot extends TimedRobot {
   
   @Override
   public void teleopPeriodic() {
+    
     Scheduler.getInstance().run();
 
     /* -- SHUFFLE BOARD DATA -- */
 
     // Hatch Limit Switches
     SmartDashboard.putBoolean("Hatch FAR",limit_switch.getHatchFar());
-    SmartDashboard.putBoolean("Hatch CLOSE", limit_switch.getHatchFar());
+    SmartDashboard.putBoolean("Hatch CLOSE", limit_switch.getHatchClose());
 
+    SmartDashboard.putBoolean("Ball", FlyWheel.push_button.get());
+    
     // Arm Limit Switches
     SmartDashboard.putBoolean("Arm TOP", limit_switch.getArmTop());
     SmartDashboard.putBoolean("Arm BOTTOM", limit_switch.getArmBottom());
@@ -126,12 +132,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Climb ARM BOTTOM", limit_switch.getClimbBottomArm());
     SmartDashboard.putBoolean("Climb HATCH TOP", limit_switch.getClimbTopHatch());
     SmartDashboard.putBoolean("Climb HATCH BOTTOM", limit_switch.getClimbBottomHatch());
-
+/*
     // NavX Data Values
     SmartDashboard.putNumber("NavX ANGLE ", Robot.climb.getNavX().getAngle());
     SmartDashboard.putNumber("NavX ROLL ", Robot.climb.getNavX().getRoll());
     SmartDashboard.putNumber("NavX PITCH ", Robot.climb.getNavX().getPitch());
-
+*/
     // Values For Arm Data
     SmartDashboard.putNumber("Arm PID Target", Robot.arm.target);
     SmartDashboard.putNumber("Arm Encoder Position", Robot.arm.getTalon().getSelectedSensorPosition(0));
@@ -141,7 +147,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Climb HATCH PID Target", Climb.target_hatch);
     SmartDashboard.putNumber("Climb HATCH Encoder Position", Robot.climb.getTalon(0).getSelectedSensorPosition(0));
     SmartDashboard.putNumber("Climb ARM Encoder Position", Robot.climb.getTalon(1).getSelectedSensorPosition(0));
-
+    /*
     // Drivetrain Values
     SmartDashboard.putNumber("Drive Magnitude", DefaultDrive.magnitude);
     SmartDashboard.putNumber("Drive Angle", DefaultDrive.angle);
@@ -160,6 +166,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Line Tracker Hatch Middle", linetracker.centerLineTracker_HATCH.getAverageVoltage());
     SmartDashboard.putNumber("Line Tracker Hatch Right", linetracker.rightLineTracker_HATCH.getAverageVoltage());
     */
+    
   
   }
 

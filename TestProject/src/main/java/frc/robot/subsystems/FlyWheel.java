@@ -17,7 +17,7 @@ import frc.robot.commands.DefaultFly;
 public class FlyWheel extends Subsystem {
 
   private WPI_TalonSRX flyer = new WPI_TalonSRX(RobotMap.TALON_PORT_FLY);  // Create flywheel talon
-  private DigitalInput push_button = new DigitalInput(RobotMap.DIO_PORT);
+  public static DigitalInput push_button = new DigitalInput(RobotMap.DIO_PORT);
 
   public FlyWheel(){
     flyer.setInverted(true);  // Set the talon to run to reverse direction

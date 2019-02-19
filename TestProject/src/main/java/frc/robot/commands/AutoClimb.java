@@ -17,6 +17,9 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Climb;
 
 public class AutoClimb extends Command {
+  private double LIFT_SPEED_H = -.5;
+  private double LIFT_SPEED_A = -.5;
+
 
   // Endgame time variables
   private final double END_GAME = 30;
@@ -50,13 +53,22 @@ public class AutoClimb extends Command {
   }
 
   private void lift_frame() {  // Set the climb talons to an elevated position at level to the HAB platform
-
-    Climb.target_hatch += LIFT_SPEED;
-    Climb.target_arm += LIFT_SPEED;
+    Robot.climb.getTalon(0).set(ControlMode.PercentOutput, LIFT_SPEED_H);
+    Robot.climb.getTalon(1).set(ControlMode.PercentOutput, LIFT_SPEED_A);
+    if(Robot.climb.getTalon(0).getSelectedSensorPosition(0) >  Robot.climb.getTalon(1).getSelectedSensorPosition(0) + 100){
+      LIFT_SPEED_A = LIFT_SPEED_A * .95;
+      LIFT_SPEED_H = LIFT_SPEED_H * 1.05;
+    }
+    else if(Robot.climb.getTalon(1).getSelectedSensorPosition(0) >  Robot.climb.getTalon(0).getSelectedSensorPosition(0) + 100){
+      LIFT_SPEED_H = LIFT_SPEED_H * .95;
+      LIFT_SPEED_A = LIFT_SPEED_A * 1.05;
+    }
+    //Climb.target_hatch += LIFT_SPEED;
+    //Climb.target_arm += LIFT_SPEED;
 
     // Set the lift talons to target apex position
-    Robot.climb.getTalon(1).set(ControlMode.Position, Climb.target_arm);
-    Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
+    //Robot.climb.getTalon(1).set(ControlMode.Position, Climb.target_arm);
+    //Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
 
     // Ternary statements to determine lift talon positions
     boolean hatch_lifted = Robot.limit_switch.getClimbTopHatch();

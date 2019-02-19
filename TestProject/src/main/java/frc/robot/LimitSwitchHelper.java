@@ -31,16 +31,19 @@ public class LimitSwitchHelper {
     }
 
     public boolean getClimbTopArm(){
-        return Robot.climb.getTalon(1).getSensorCollection().isRevLimitSwitchClosed();
-    }
-    public boolean getClimbBottomArm(){
         return Robot.climb.getTalon(1).getSensorCollection().isFwdLimitSwitchClosed();
     }
+    public boolean getClimbBottomArm(){
+        return Robot.climb.getTalon(1).getSensorCollection().isRevLimitSwitchClosed();
+    }
     public boolean getClimbTopHatch(){
-        return Robot.climb.getTalon(0).getSensorCollection().isRevLimitSwitchClosed();
+        return Robot.climb.getTalon(0).getSensorCollection().isFwdLimitSwitchClosed();
     }
     public boolean getClimbBottomHatch(){
-        return Robot.climb.getTalon(0).getSensorCollection().isFwdLimitSwitchClosed();
+        return Robot.climb.getTalon(0).getSensorCollection().isRevLimitSwitchClosed();
+    }
+    public boolean getBallStatus(){
+        return Robot.flyWheel.getButton().get();
     }
    
     

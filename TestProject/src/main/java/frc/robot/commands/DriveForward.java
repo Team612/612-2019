@@ -14,7 +14,7 @@ import frc.robot.Robot;
 public class DriveForward extends Command {
 
   // Variables to control time and speed
-  int SECONDS = 4;
+  int SECONDS = 1;
   double DRIVE_MAGNITUDE = .99;
 
   public DriveForward() {

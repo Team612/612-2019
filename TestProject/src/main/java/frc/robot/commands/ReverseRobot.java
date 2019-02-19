@@ -21,7 +21,8 @@ public class ReverseRobot extends Command {
   }
 
   private void set_servo_angle(double angle) {  // Function that will rotate camera servo to specified degree
-    Robot.drivercamera.getServo().set(angle);
+    System.out.println(angle);
+    Robot.drivercamera.getServo().set(angle);;
   }
 
   @Override

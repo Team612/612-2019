@@ -29,12 +29,12 @@ public class Climb extends Subsystem {
   public static int target_arm = 0;
 
   // Define an object that stores the NavX on the roboRio as an object
-  private static AHRS navX = new AHRS(I2C.Port.kOnboard);
+  private static AHRS navX = new AHRS(I2C.Port.kMXP);
 
 
   // Variables to PID values
   private double kF = 0.2;
-  private double kP = 0.2;
+  private double kP = 3;
   private double kI = 0;
   private double kD = 0;
 

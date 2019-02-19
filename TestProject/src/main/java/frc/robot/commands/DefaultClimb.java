@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.subsystems.Climb;
@@ -49,53 +50,31 @@ public class DefaultClimb extends Command {
     limit_switch_bottom_hatch = Robot.limit_switch.getClimbBottomHatch();
 
     // Store the values for the joysticks before the logic, for effiency
-    double left_joytick_value = OI.gunner.getY(Hand.kLeft);
-    double right_joytick_value = OI.gunner.getY(Hand.kLeft);
-
+    double left_joytick_value = OI.gunner.getY(Hand.kRight) * -1;
+    double right_joytick_value = OI.gunner.getY(Hand.kLeft) * -1;
+    SmartDashboard.putNumber("Left Stick", left_joytick_value); 
+    SmartDashboard.putNumber("Right  Stick", right_joytick_value); 
     if (OI.CLIMB_PID) {  // If PID is enabled
-
-      // PID Code for HATCH Side
-
-      if (limit_switch_top_hatch) {  // If at top limit switch and trying to go up, only allow to go down
-
-        if (left_joytick_value < DEADZONE) {
-          Climb.target_hatch -= 10;  // Decrease the hatch PID target
-        }
-        
-      } else if (limit_switch_bottom_hatch) {  // If at bottom limit switch and trying to go up, only allow to go up
-
-        if (left_joytick_value > DEADZONE) {
-          Climb.target_hatch += 10;  // Increase the hatch PID target
-        }
-
-      } else if (left_joytick_value > DEADZONE) {  // If the joystick value is positive
-        Climb.target_hatch += 10;  // Increase the hatch PID target
-      } else if (left_joytick_value < DEADZONE) {  // If the joystick value is negative
-        Climb.target_hatch -= 10;  // Decrease the hatch PID target
-      }
-      
-      // PID Code for ARM Side
-
-      if (limit_switch_top_arm) {  // If at top limit switch and trying to go up, only allow to go down
-
-        if (right_joytick_value < DEADZONE) {
-          Climb.target_arm -= 10;  // Decrease the arm PID target
-        }
-        
-      } else if (limit_switch_bottom_arm) {  // If at bottom limit switch and trying to go up, only allow to go up
-
-        if (right_joytick_value > DEADZONE) {
-          Climb.target_arm += 10;  // Increase the arm PID target
-        }
-
-      } else if (right_joytick_value > DEADZONE) {  // If the joystick value is positive
-        Climb.target_arm += 10;  // Increase the arm PID target
-      } else if (right_joytick_value < DEADZONE) {  // If the joystick value is negative
-        Climb.target_arm -= 10;  // Decrease the arm PID target
-      }
-
       // Apply the PID target values
-      Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_arm);
+      if(Math.abs(right_joytick_value) > .2){
+        if(limit_switch_top_hatch && right_joytick_value > 0){
+
+        }else if(limit_switch_bottom_hatch && right_joytick_value < 0){
+
+        }else{
+          Climb.target_hatch += right_joytick_value * 100;
+        }
+        }
+        if(Math.abs(left_joytick_value) > .2){
+          if(limit_switch_top_arm && left_joytick_value > 0 ){
+
+          }else if(limit_switch_bottom_arm && left_joytick_value < 0 ){
+  
+          }else{
+            Climb.target_arm += left_joytick_value * 100;
+          }
+        }
+      Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
       Robot.climb.getTalon(1).set(ControlMode.Position, Climb.target_arm);
 
     } else {  // If PID is not enabled

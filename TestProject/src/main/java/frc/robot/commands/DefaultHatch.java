@@ -27,6 +27,7 @@ public class DefaultHatch extends Command {
 
   @Override
   protected void execute() {
+  
 
     // Variables to store trigger data, for effiency
     double left_trigger_axis = OI.gunner.getTriggerAxis(Hand.kLeft);
@@ -35,7 +36,7 @@ public class DefaultHatch extends Command {
     if (left_trigger_axis > DEADZONE) {  // If the left trigger value is greater than the deadzone
       Robot.hatch.hatchTalon.set(left_trigger_axis);  // Push out the hatch talon, based on the trigger value
     } else if (right_trigger_axis > DEADZONE) {  // If the right trigger value is greater than the deadzone
-      Robot.hatch.hatchTalon.set(right_trigger_axis);  // Push in the hatch talon, based on the trigger value
+      Robot.hatch.hatchTalon.set(right_trigger_axis * -1);  // Push in the hatch talon, based on the trigger value
     } else {
       Robot.hatch.hatchTalon.set(0);  // Stop the hatch talon
     }

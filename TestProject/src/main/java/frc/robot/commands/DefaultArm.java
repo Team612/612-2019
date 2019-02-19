@@ -29,8 +29,8 @@ public class DefaultArm extends Command {
   private double SHOOT_ANGLE = 250;  // Optimal shooting position for arm
 
   // PID speed variables (Increments)
-  private double PID_UP_SPEED = 15;
-  private double PID_DOWN_SPEED = 15;
+  private double PID_UP_SPEED = 35;
+  private double PID_DOWN_SPEED = 35;
 
   private double ARM_SPEED = 0.75;  // Define the NON-PID motor speed
   
