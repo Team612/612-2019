@@ -40,6 +40,7 @@ public class DefaultArm extends Command {
 
   @Override
   protected void initialize() {
+    //Robot.arm.getTalon().getSensorCollection().setQuadraturePosition(0, 0);
     Arm.target = Robot.arm.getTalon().getSelectedSensorPosition(0);  // Set the arm target to lowest position at beginning of the round
   }
 
@@ -68,9 +69,13 @@ public class DefaultArm extends Command {
     }
 
     if (OI.ARM_PID) {  // Only run PID code if variable in OI is true
+      setArmAngle(-2300, OI.gunner_button_Y);
+      setArmAngle(-964, OI.gunner_button_B);
+      setArmAngle(-500, OI.gunner_button_X);
 
       if (top_limit_switch_hit && pov_position.equals("North")) {  // If the gunner is trying to move the arm up while at the top position, do nothing
-
+        Robot.arm.getTalon().getSensorCollection().setQuadraturePosition(0, 0);
+        Arm.target =0; // set to zero
       } else if (bottom_limit_switch_hit && pov_position.equals("South")) {  // If the gunner is trying to move the arm down while at the bottom position, do nothing
       
       } else if (pov_position.equals("North")) {  // Else do normal PID increments

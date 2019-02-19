@@ -25,7 +25,7 @@ public class Arm extends Subsystem {
   private double kF = 0.2;
   private double kP = 1;
   private double kI = 0;
-  private double kD = 0;
+  private double kD = .3;
 
   public WPI_TalonSRX getTalon(){
     return talon_arm;

@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import frc.robot.commands.DefaultDrive;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -51,7 +50,7 @@ public class Robot extends TimedRobot {
   // OI object
   public static OI m_oi;
 
-  public static VisionListen vision_listen = new VisionListen();
+  //public static VisionListen vision_listen = new VisionListen();
 
   // MISC
   Command m_autonomousCommand;
@@ -113,7 +112,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     
-    Scheduler.getInstance().run();
 
     /* -- SHUFFLE BOARD DATA -- */
 
@@ -139,9 +137,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("NavX PITCH ", Robot.climb.getNavX().getPitch());
 */
     // Values For Arm Data
-    SmartDashboard.putNumber("Arm PID Target", Robot.arm.target);
+    SmartDashboard.putNumber("Arm PID Target", Arm.target);
     SmartDashboard.putNumber("Arm Encoder Position", Robot.arm.getTalon().getSelectedSensorPosition(0));
-    
+    //ultrasonics 
+    SmartDashboard.putNumber("ULTRASONIC ARM", LineTracker.ultrasonic_ARM.getRangeInches());
+    SmartDashboard.putNumber("ULTRASONIC HATCH", LineTracker.ultrasonic_ARM.getRangeInches());
+
     // Values For Climb Data
     SmartDashboard.putNumber("Climb Arm PID Target", Climb.target_arm);
     SmartDashboard.putNumber("Climb HATCH PID Target", Climb.target_hatch);
@@ -167,7 +168,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Line Tracker Hatch Right", linetracker.rightLineTracker_HATCH.getAverageVoltage());
     */
     
-  
+    Scheduler.getInstance().run();
   }
 
 
