@@ -15,14 +15,14 @@ public class VisionListen {
 
     public static boolean calculate_delta = false;
 
-    VisionListen() {
+    VisionListen(String table_name) {
         //System.out.println("We heresssss");
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
-        table = inst.getTable("VisionTable");
+        table = inst.getTable(table_name);
         angleEntry = table.getEntry("angle");
         p1Entry = table.getEntry("p1_offset");
         p2Entry = table.getEntry("p2_offset");
-        inst.startClientTeam(612);
+        //inst.startClientTeam(612);
     }
 
     public void read_vision() {

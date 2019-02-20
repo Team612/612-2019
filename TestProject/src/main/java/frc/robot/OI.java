@@ -63,7 +63,7 @@ public class OI {
 
     driver_button_RB.whenPressed(new DriveForward());
     driver_button_A.whileHeld(new AutoAlign());
-    driver_button_X.whenPressed(new AutoClimb());
+    //driver_button_X.whenPressed(new AutoClimb());
     driver_button_LB.whenPressed(new ReverseRobot());
     
   }

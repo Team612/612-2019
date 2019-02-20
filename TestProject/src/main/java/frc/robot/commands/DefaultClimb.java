@@ -52,8 +52,8 @@ public class DefaultClimb extends Command {
     // Store the values for the joysticks before the logic, for effiency
     double left_joytick_value = OI.gunner.getY(Hand.kRight) * -1;
     double right_joytick_value = OI.gunner.getY(Hand.kLeft) * -1;
-    SmartDashboard.putNumber("Left Stick", left_joytick_value); 
-    SmartDashboard.putNumber("Right  Stick", right_joytick_value); 
+    //SmartDashboard.putNumber("Left Stick", left_joytick_value); 
+    //SmartDashboard.putNumber("Right  Stick", right_joytick_value); 
     if (OI.CLIMB_PID) {  // If PID is enabled
       // Apply the PID target values
       if(Math.abs(right_joytick_value) > .2){
@@ -62,7 +62,7 @@ public class DefaultClimb extends Command {
         }else if(limit_switch_bottom_hatch && right_joytick_value < 0){
 
         }else{
-          Climb.target_hatch += right_joytick_value * 100;
+          Climb.target_hatch += right_joytick_value * 600;
         }
         }
         if(Math.abs(left_joytick_value) > .2){

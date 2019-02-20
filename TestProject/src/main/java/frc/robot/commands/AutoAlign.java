@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.VisionListen;
@@ -24,7 +25,7 @@ public class AutoAlign extends Command {
 
   // Define the deadbands or range allowed for each of the movements
   int ANGLE_DEADBAND = 5;
-  int POSITION_DEADBAND = 15;
+  int POSITION_DEADBAND = 100;
   int TAPE_LENGTH = 15;  // Distance in inches to stop entire line following
   int WALL_STOP = 8;
 
@@ -34,17 +35,17 @@ public class AutoAlign extends Command {
   double currentP2Offset;
 
   // Define KP values constants that slow down motors as intended value is reached
-  double KP_POSITION = .02;
-  double KP_ANGLE = .025;
+  double KP_POSITION = .0025;
+  double KP_ANGLE = .0095;
   double KP_DISTANCE = .015;
 
-  double KD_POSITION = 0.00003;
+  double KD_POSITION = 0;
   double position_rate = 0;
 
   // Initialize variables that will be passed into drivetrain (Mecannum)
-  double drive_magnitude = 0;
-  double drive_angle = 0;
-  double drive_rotation = 0;
+  public static double drive_magnitude = 0;
+  public static double drive_angle = 0;
+  public static double drive_rotation = 0;
 
   // Initialize the position and angle checker booleans
   boolean angle_check;
@@ -80,7 +81,7 @@ public class AutoAlign extends Command {
   double[] first_point = new double[2];
   double[] second_point = new double[2];
 
-  double average_offset = 0;
+  public static double average_offset = 0;
   double pre_time;
   double pre_offset;
   double delta_time = 0;
@@ -89,13 +90,15 @@ public class AutoAlign extends Command {
 
   boolean recordSecond = false;
 
+  boolean position_aligned = false;
+
   public AutoAlign() {
     
     requires(Robot.linetracker);  // Require the line tracker
     requires(Robot.drivetrain);  // Require the Drivetrain
 
-    Robot.linetracker.ultrasonic_ARM.setAutomaticMode(true);  // Set the mode of the UltraSonic sensor
-    Robot.linetracker.ultrasonic_HATCH.setAutomaticMode(true);  // Set the mode of the UltraSonic sensor
+    //Robot.linetracker.ultrasonic_ARM.setAutomaticMode(true);  // Set the mode of the UltraSonic sensor
+    //Robot.linetracker.ultrasonic_HATCH.setAutomaticMode(true);  // Set the mode of the UltraSonic sensor
 
     position_timer.start();
 
@@ -120,12 +123,12 @@ public class AutoAlign extends Command {
       leftLineTracker = Robot.linetracker.leftLineTracker_ARM;
       centerLineTracker = Robot.linetracker.centerLineTracker_ARM;
       rightLineTracker = Robot.linetracker.rightLineTracker_ARM;
-      ultrasonicSensor = Robot.linetracker.ultrasonic_ARM;
+      //ultrasonicSensor = Robot.linetracker.ultrasonic_ARM;
     }else{
       leftLineTracker = Robot.linetracker.leftLineTracker_HATCH;
       centerLineTracker = Robot.linetracker.centerLineTracker_HATCH;
       rightLineTracker = Robot.linetracker.rightLineTracker_HATCH;
-      ultrasonicSensor = Robot.linetracker.ultrasonic_HATCH;
+     // ultrasonicSensor = Robot.linetracker.ultrasonic_HATCH;
     }
   }
 
@@ -143,15 +146,20 @@ public class AutoAlign extends Command {
 
     if (Math.abs(currentAngle) != 0) {  // Check if angle is not 0 (This is our error angle)
       
-      if (currentAngle < 0) {  // Check if angle is negative (Rotate Right) or if its positive (Rotate Left)
-        direction = 1;  // Set direction to 1 (Rotate Right)
-        System.out.println("Rotate right!");
+      if (angle_offset >= ANGLE_DEADBAND) {
+        if (currentAngle < 0) {  // Check if angle is negative (Rotate Right) or if its positive (Rotate Left)
+          direction = 1;  // Set direction to 1 (Rotate Right)
+          System.out.println("Rotate right!");
+        } else {
+          direction = -1;  // Set direction to -1 (Rotate Left)
+          System.out.println("Rotate left!");
+        }
+  
+        drive_rotation = (KP_ANGLE * angle_offset) * direction;  // Calculate rotation with new direction values
       } else {
-        direction = -1;  // Set direction to -1 (Rotate Left)
-        System.out.println("Rotate left!");
+        drive_rotation = 0;
       }
-
-      drive_rotation = (KP_ANGLE * angle_offset) * direction;  // Calculate rotation with new direction values
+      
 
     } else {
 
@@ -192,19 +200,27 @@ public class AutoAlign extends Command {
 
     if (Math.abs(average_offset) != 0) {  // Check if average offset is not zero
       
-      if (average_offset > 0) {  // Check if average offset is positive (Strafe left!)
+      if (Math.abs(average_offset) >= POSITION_DEADBAND) {
+        if (average_offset > 0) {  // Check if average offset is positive (Strafe left!)
 
-        drive_magnitude = (KP_POSITION * Math.abs(average_offset) + (KD_POSITION * rate));  // Calculate magnitude based on KP value
-        drive_angle = -90;  // Strafe Left at -90 degrees
-        System.out.println("Strafe left!");
-
+          drive_magnitude = (KP_POSITION * Math.abs(average_offset) + (KD_POSITION * rate));  // Calculate magnitude based on KP value
+          drive_angle = -90;  // Strafe Left at -90 degrees
+          System.out.println("Strafe left!");
+  
+        } else {
+  
+          drive_magnitude = (KP_POSITION * Math.abs(average_offset) + (KD_POSITION * rate));  // Calculate magnitude based on KP value
+          drive_angle = 90;  // Strafe Right at 90 degrees
+          System.out.println("Strafe right!");
+  
+        }
       } else {
-
-        drive_magnitude = (KP_POSITION * Math.abs(average_offset) + (KD_POSITION * rate));  // Calculate magnitude based on KP value
-        drive_angle = 90;  // Strafe Right at 90 degrees
-        System.out.println("Strafe right!");
-
+        drive_magnitude = 0;
+        drive_angle = 0;
+        position_aligned = true;
+        System.out.println("In deadband");
       }
+      
 
     }
 
@@ -214,7 +230,7 @@ public class AutoAlign extends Command {
     
     // Call the align angle and position functions to update drive variables
     align_angle();
-    align_position();
+    //align_position();
     boolean linetracker_triggered = (overLeftTracker || overCenterTracker || overRightTracker) ? true : false;  // If any of the line trackers are enabled return true
 
     if (linetracker_triggered && angle_check) {  // First Clause: if any line tracker is true and angle check is valid
@@ -273,14 +289,14 @@ public class AutoAlign extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    /*
-    distance = ultrasonicSensor.getRangeInches();  // Update distance value from ultrasonic
-    System.out.println(distance);
-    update_linetrackers(); // Update values from line tracker
+    
+    //System.out.println(ultrasonicSensor.getRangeInches());
+    
+    /*update_linetrackers(); // Update values from line tracker
     follow_line();  // Call line follower code
     */
-    align_angle();
     align_position();
+    align_angle();
     System.out.println(OI.isSideArm);
     System.out.println(VisionListen.vision_array[0]);
     System.out.println(drive_magnitude + " | " + drive_angle + " | " + drive_rotation);

@@ -7,9 +7,12 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
+import frc.robot.subsystems.LineTracker;
 
 public class ReverseRobot extends Command {
 
@@ -33,13 +36,19 @@ public class ReverseRobot extends Command {
       DefaultDrive.invert_robot = -1;  // Invert the drivetrain
       set_servo_angle(180);  // Rotate the servo to hatch side
       // TODO: Add vision toggle camera
-      
+    //  Robot.linetracker.ultrasonic_HATCH.free();
+     // Robot.linetracker.getUltrasonic(0).setAutomaticMode(true);
+      /*Robot.linetracker.ultrasonic_ARM = new Ultrasonic(RobotMap.PING_CHANNEL_ARM, RobotMap.ECHO_CHANNEL_ARM);
+      Robot.linetracker.getUltrasonic(0).setAutomaticMode(true);*/
     } else {
 
       DefaultDrive.invert_robot = 1;
       set_servo_angle(0);
       // TODO: Add vision toggle camera
-      
+  //    Robot.linetracker.ultrasonic_ARM.free();
+    ///  Robot.linetracker.getUltrasonic(1).setAutomaticMode(true);
+      /*Robot.linetracker.ultrasonic_HATCH = new Ultrasonic(RobotMap.PING_CHANNEL_HATCH, RobotMap.ECHO_CHANNEL_HATCH);
+      Robot.linetracker.getUltrasonic(1).setAutomaticMode(true);*/
     }
 
     OI.isSideArm = !OI.isSideArm;  // Set side arm variable to opposite

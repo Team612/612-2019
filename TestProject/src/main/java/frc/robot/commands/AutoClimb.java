@@ -34,7 +34,7 @@ public class AutoClimb extends Command {
   private boolean END = false;  // Boolean to end the command
   public static boolean IS_TILTED = false;
 
-  private int PHASE = 1;  // Specify what phase of the case functions we are in
+  //public static int PHASE = 1;  // Specify what phase of the case functions we are in
 
   private int LIFT_SPEED = 15;
 
@@ -42,37 +42,34 @@ public class AutoClimb extends Command {
 
   public AutoClimb() {
     requires(Robot.climb);  // Require the climb object
+
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     END = false;
-    Climb.target_hatch = Robot.arm.getTalon().getSelectedSensorPosition(1);
-    Climb.target_arm = Robot.arm.getTalon().getSelectedSensorPosition(0);
-  }
+    Climb.target_hatch = Robot.climb.getTalon(0).getSelectedSensorPosition(0);
+    Climb.target_arm = Robot.climb.getTalon(1).getSelectedSensorPosition(0);
+  } /// 0 Hatch 
+    /// 1 arm 
 
   private void lift_frame() {  // Set the climb talons to an elevated position at level to the HAB platform
-    Robot.climb.getTalon(0).set(ControlMode.PercentOutput, LIFT_SPEED_H);
-    Robot.climb.getTalon(1).set(ControlMode.PercentOutput, LIFT_SPEED_A);
-    if(Robot.climb.getTalon(0).getSelectedSensorPosition(0) >  Robot.climb.getTalon(1).getSelectedSensorPosition(0) + 100){
-      LIFT_SPEED_A = LIFT_SPEED_A * .95;
-      LIFT_SPEED_H = LIFT_SPEED_H * 1.05;
+        // Ternary statements to determine lift talon positions
+        boolean hatch_lifted = Robot.limit_switch.getClimbTopHatch();
+        boolean arm_lifted = Robot.limit_switch.getClimbTopArm();
+    if(!hatch_lifted){
+      Climb.target_hatch -= LIFT_SPEED;
+    } 
+    if(!arm_lifted){
+      Climb.target_arm += LIFT_SPEED;
     }
-    else if(Robot.climb.getTalon(1).getSelectedSensorPosition(0) >  Robot.climb.getTalon(0).getSelectedSensorPosition(0) + 100){
-      LIFT_SPEED_H = LIFT_SPEED_H * .95;
-      LIFT_SPEED_A = LIFT_SPEED_A * 1.05;
-    }
-    //Climb.target_hatch += LIFT_SPEED;
-    //Climb.target_arm += LIFT_SPEED;
 
     // Set the lift talons to target apex position
-    //Robot.climb.getTalon(1).set(ControlMode.Position, Climb.target_arm);
-    //Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
+    Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
+    Robot.climb.getTalon(1).set(ControlMode.Position, Climb.target_arm);
 
-    // Ternary statements to determine lift talon positions
-    boolean hatch_lifted = Robot.limit_switch.getClimbTopHatch();
-    boolean arm_lifted = Robot.limit_switch.getClimbTopArm();
+
 
     if (hatch_lifted && arm_lifted) {  // Check if the front and back are at the optimal positions
       IN_PROGRESS = false;  // Finish the lift frame function
@@ -114,34 +111,10 @@ public class AutoClimb extends Command {
   @Override
   protected void execute() {
 
-    if (!OI.KILL_CLIMB) {  // Only run if climb is enabled
-
-      //if (Timer.getMatchTime() < (MATCH_LENGTH - END_GAME)) {  // Only run this execute loop if the match time is in the endgame
-        
-        /*if(Robot.climb.getNavX().getPitch() >= 20){  // If pitch is >20 degrees
-
-          IS_TILTED = true;
-          OI.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 1); 
-          OI.driver.setRumble(GenericHID.RumbleType.kRightRumble, 1); 
-
-          if (OI.driver_button_BCK.get()) {  // Allow drive override
-            IN_PROGRESS = false;
-            OI.LOCK_DRIVETRAIN = false;
-            PHASE = 0;
-            OI.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 0); 
-            OI.driver.setRumble(GenericHID.RumbleType.kRightRumble, 0); 
-          }
-
-        } else {
-
-          IS_TILTED = false;
-          OI.driver.setRumble(GenericHID.RumbleType.kLeftRumble, 0); 
-          OI.driver.setRumble(GenericHID.RumbleType.kRightRumble, 0); 
-        }*/
-
+    //if (!OI.KILL_CLIMB) {  // Only run if climb is enabled
           if (IN_PROGRESS) {  // Only run this case statement if a phase function is called
             
-            switch( PHASE ) {  // Switch case for the phase stepS
+            switch( Climb.phase ) {  // Switch case for the phase stepS
                 case 1:
                 PHASE_STRING = "Lifting the Chassis";
                 lift_frame();  // At step 1, secondly, lift the entire robot frame up except for the wheels
@@ -158,34 +131,34 @@ public class AutoClimb extends Command {
 
             }
 
-        }
-
-        if (!IN_PROGRESS && OI.driver_button_A.get()) {  // If we are not in progress and the driver clicks the A button
+       } else if (OI.driver_button_X.get()) {  // If we are not in progress and the driver clicks the A button
           
-          OI.LOCK_DRIVETRAIN = true;  // Lock the drivetrain
+          //OI.LOCK_DRIVETRAIN = true;  // Lock the drivetrain
           IN_PROGRESS = true;  // Set in progress to true
-          PHASE++;  // Go to the next step
+          Climb.phase += 1;  // Go to the next step
         
         } else {
-          OI.LOCK_DRIVETRAIN = false;
+
+          //OI.LOCK_DRIVETRAIN = false;
         }
+        SmartDashboard.putBoolean("IN FRICKING PROGRESS", IN_PROGRESS);  // Put the current phase string to SmartDashboard
 
         SmartDashboard.putString("Climb Phase", PHASE_STRING);  // Put the current phase string to SmartDashboard
 
-      } else {
+  } /*else {
         END = true;
-      }
+      }*/
 
    /* } else {
       END = true;
     } */
 
-  }
+  //}
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return END;  // End the command based on the boolean
+    return false;  // End the command based on the boolean
   }
 
   // Called once after isFinished returns true

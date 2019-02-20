@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import javax.sound.sampled.Line;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -14,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
 import frc.robot.POVConvert;
+import frc.robot.commands.AutoAlign;
 
 
 /**
@@ -50,7 +53,8 @@ public class Robot extends TimedRobot {
   // OI object
   public static OI m_oi;
 
-  //public static VisionListen vision_listen = new VisionListen();
+  public static VisionListen vision_listen_arm = new VisionListen("VisionTable_ARM");
+  public static VisionListen vision_listen_hatch = new VisionListen("VisionTable_HATCH");
 
   // MISC
   Command m_autonomousCommand;
@@ -59,7 +63,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();  // Create an object of OI
-    //vision_listen.read_vision();
+    vision_listen_hatch.read_vision();
+   // linetracker.ultrasonic_ARM.setAutomaticMode(true);
+    //linetracker.ultrasonic_ARM.setEnabled(true);
+   //linetracker.ultrasonic_HATCH.setAutomaticMode(true);
+   //linetracker.ultrasonic_HATCH.setAutomaticMode(true);
+   //linetracker.ultrasonic_HATCH.setEnabled(true);
+   
+    
   }
 
 
@@ -111,6 +122,8 @@ public class Robot extends TimedRobot {
   
   @Override
   public void teleopPeriodic() {
+    Scheduler.getInstance().run();
+
     
 
     /* -- SHUFFLE BOARD DATA -- */
@@ -118,13 +131,13 @@ public class Robot extends TimedRobot {
     // Hatch Limit Switches
     SmartDashboard.putBoolean("Hatch FAR",limit_switch.getHatchFar());
     SmartDashboard.putBoolean("Hatch CLOSE", limit_switch.getHatchClose());
-
+/*
     SmartDashboard.putBoolean("Ball", FlyWheel.push_button.get());
     
     // Arm Limit Switches
     SmartDashboard.putBoolean("Arm TOP", limit_switch.getArmTop());
     SmartDashboard.putBoolean("Arm BOTTOM", limit_switch.getArmBottom());
-
+    */
     // Climb Limit Switches
     SmartDashboard.putBoolean("Climb ARM TOP", limit_switch.getClimbTopArm());
     SmartDashboard.putBoolean("Climb ARM BOTTOM", limit_switch.getClimbBottomArm());
@@ -137,17 +150,37 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("NavX PITCH ", Robot.climb.getNavX().getPitch());
 */
     // Values For Arm Data
-    SmartDashboard.putNumber("Arm PID Target", Arm.target);
+    /*SmartDashboard.putNumber("Arm PID Target", Arm.target);
     SmartDashboard.putNumber("Arm Encoder Position", Robot.arm.getTalon().getSelectedSensorPosition(0));
     //ultrasonics 
     SmartDashboard.putNumber("ULTRASONIC ARM", LineTracker.ultrasonic_ARM.getRangeInches());
     SmartDashboard.putNumber("ULTRASONIC HATCH", LineTracker.ultrasonic_ARM.getRangeInches());
-
+*/
     // Values For Climb Data
+    SmartDashboard.putNumber("PHASE ", Climb.phase);
     SmartDashboard.putNumber("Climb Arm PID Target", Climb.target_arm);
     SmartDashboard.putNumber("Climb HATCH PID Target", Climb.target_hatch);
     SmartDashboard.putNumber("Climb HATCH Encoder Position", Robot.climb.getTalon(0).getSelectedSensorPosition(0));
     SmartDashboard.putNumber("Climb ARM Encoder Position", Robot.climb.getTalon(1).getSelectedSensorPosition(0));
+    //linetracker.setUltrasonic(1);
+    //linetracker.setActiveUltrasonic(1);
+    linetracker.ultrasonic_ARM.setAutomaticMode(true);
+    linetracker.ultrasonic_ARM.setEnabled(false);
+    linetracker.ultrasonic_HATCH.setAutomaticMode(true);
+    linetracker.ultrasonic_HATCH.setEnabled(true);
+    //SmartDashboard.putNumber("Ultrasonic Hatch", linetracker.ultrasonic_HATCH.getRangeInches());
+    SmartDashboard.putNumber("Ultrasonic Arm", linetracker.ultrasonic_ARM.getRangeInches());
+    SmartDashboard.putNumber("Ultrasonic Hatch", linetracker.ultrasonic_HATCH.getRangeInches());
+
+    SmartDashboard.putNumber("Vision Mag", AutoAlign.drive_magnitude);
+    SmartDashboard.putNumber("Vision Rot", AutoAlign.drive_rotation);
+    SmartDashboard.putNumber("Vision Offset", AutoAlign.average_offset);
+    /*
+    SmartDashboard.putBoolean("EnabledA",  linetracker.getUltrasonic(0).isEnabled());
+    SmartDashboard.putBoolean("EnabledH",  linetracker.getUltrasonic(0).isEnabled());
+    SmartDashboard.putBoolean("IsValid", linetracker.getUltrasonic(0).isRangeValid());
+    SmartDashboard.putNumber("Static", linetracker.getUltrasonic(0).getRangeInches());
+    
     /*
     // Drivetrain Values
     SmartDashboard.putNumber("Drive Magnitude", DefaultDrive.magnitude);
@@ -168,7 +201,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Line Tracker Hatch Right", linetracker.rightLineTracker_HATCH.getAverageVoltage());
     */
     
-    Scheduler.getInstance().run();
   }
 
 

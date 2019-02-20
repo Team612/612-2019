@@ -27,13 +27,25 @@ public class LineTracker extends Subsystem {
   public AnalogInput centerLineTracker_HATCH = new AnalogInput(RobotMap.CENTER_LINE_TRACKER_PORT_HATCH);
   public AnalogInput rightLineTracker_HATCH = new AnalogInput(RobotMap.RIGHT_LINE_TRACKER_PORT_HATCH);
   // Ultrasonic Sensors
-  public static Ultrasonic ultrasonic_ARM = new Ultrasonic(RobotMap.PING_CHANNEL_ARM, RobotMap.ECHO_CHANNEL_ARM);
-  public static Ultrasonic ultrasonic_HATCH = new Ultrasonic(RobotMap.PING_CHANNEL_HATCH, RobotMap.ECHO_CHANNEL_HATCH);
+  public Ultrasonic ultrasonic_HATCH = new Ultrasonic(RobotMap.PING_CHANNEL_HATCH, RobotMap.ECHO_CHANNEL_HATCH);
+  public Ultrasonic ultrasonic_ARM = new Ultrasonic(RobotMap.PING_CHANNEL_ARM, RobotMap.ECHO_CHANNEL_ARM);
+  
 
   // NAVX 
   AHRS navx = new AHRS(I2C.Port.kMXP);
 
+  public void setActiveUltrasonic(int num){//1 for hatch
+   if(num == 1){
+    ultrasonic_ARM.setAutomaticMode(false);
+    ultrasonic_HATCH.setAutomaticMode(true);
+   } else{
+    ultrasonic_HATCH.setAutomaticMode(false);
+    ultrasonic_ARM.setAutomaticMode(true);
+   }
+  }
   @Override
   public void initDefaultCommand() {
+    //ultrasonic_ARM.setAutomaticMode(true);
+   //ultrasonic_HATCH.setAutomaticMode(true);
   }
 }
