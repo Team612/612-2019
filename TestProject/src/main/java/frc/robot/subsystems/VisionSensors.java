@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
-public class LineTracker extends Subsystem {
+public class VisionSensors extends Subsystem {
   
   // Arm side Line Trackers
   public AnalogInput leftLineTracker_ARM = new AnalogInput(RobotMap.LEFT_LINE_TRACKER_PORT_ARM);

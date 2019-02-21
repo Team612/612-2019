@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
   public static Arm arm = new Arm();
 
   // Auto Align object
-  public static LineTracker linetracker = new LineTracker();
+  public static VisionSensors vision_sensors = new VisionSensors();
 
   // Limit switch helper object
   public static LimitSwitchHelper limit_switch = new LimitSwitchHelper();
@@ -64,6 +64,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_oi = new OI();  // Create an object of OI
     vision_listen_hatch.read_vision();
+    vision_listen_arm.read_vision();
    // linetracker.ultrasonic_ARM.setAutomaticMode(true);
     //linetracker.ultrasonic_ARM.setEnabled(true);
    //linetracker.ultrasonic_HATCH.setAutomaticMode(true);
@@ -164,13 +165,13 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Climb ARM Encoder Position", Robot.climb.getTalon(1).getSelectedSensorPosition(0));
     //linetracker.setUltrasonic(1);
     //linetracker.setActiveUltrasonic(1);
-    linetracker.ultrasonic_ARM.setAutomaticMode(true);
-    linetracker.ultrasonic_ARM.setEnabled(false);
-    linetracker.ultrasonic_HATCH.setAutomaticMode(true);
-    linetracker.ultrasonic_HATCH.setEnabled(true);
+    vision_sensors.ultrasonic_ARM.setAutomaticMode(true);
+    vision_sensors.ultrasonic_ARM.setEnabled(false);
+    vision_sensors.ultrasonic_HATCH.setAutomaticMode(true);
+    vision_sensors.ultrasonic_HATCH.setEnabled(true);
     //SmartDashboard.putNumber("Ultrasonic Hatch", linetracker.ultrasonic_HATCH.getRangeInches());
-    SmartDashboard.putNumber("Ultrasonic Arm", linetracker.ultrasonic_ARM.getRangeInches());
-    SmartDashboard.putNumber("Ultrasonic Hatch", linetracker.ultrasonic_HATCH.getRangeInches());
+    SmartDashboard.putNumber("Ultrasonic Arm", vision_sensors.ultrasonic_ARM.getRangeInches());
+    SmartDashboard.putNumber("Ultrasonic Hatch", vision_sensors.ultrasonic_HATCH.getRangeInches());
 
     SmartDashboard.putNumber("Vision Mag", AutoAlign.drive_magnitude);
     SmartDashboard.putNumber("Vision Rot", AutoAlign.drive_rotation);

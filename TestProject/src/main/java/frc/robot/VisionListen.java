@@ -11,9 +11,9 @@ public class VisionListen {
     NetworkTableEntry angleEntry;
     NetworkTableEntry p1Entry;
     NetworkTableEntry p2Entry;
-    public static double vision_array[] = new double[3];
+    public double vision_array[] = new double[3];
 
-    public static boolean calculate_delta = false;
+    public boolean calculate_delta = false;
 
     VisionListen(String table_name) {
         //System.out.println("We heresssss");
