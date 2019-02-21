@@ -69,6 +69,8 @@ public class DefaultArm extends Command {
     }
 
     if (OI.ARM_PID) {  // Only run PID code if variable in OI is true
+
+      // Add button listeners for arm angles
       setArmAngle(-2300, OI.gunner_button_Y);
       setArmAngle(-964, OI.gunner_button_B);
       setArmAngle(-500, OI.gunner_button_X);

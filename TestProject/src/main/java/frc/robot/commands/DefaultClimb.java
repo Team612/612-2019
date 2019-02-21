@@ -18,7 +18,11 @@ import frc.robot.subsystems.Climb;
 
 public class DefaultClimb extends Command {
 
-  private final double DEADZONE = 0.1;  // Define joystick DEADZONE
+  private final double DEADZONE = 0.2;  // Define joystick DEADZONE
+
+  // Cimb side speeds
+  private final double HATCH_CLIMB_SPEED = 600;
+  private final double ARM_CLIMB_SPEED = 100;
 
   // Limit switch status booleans
   private boolean limit_switch_top_arm;
@@ -52,28 +56,33 @@ public class DefaultClimb extends Command {
     // Store the values for the joysticks before the logic, for effiency
     double left_joytick_value = OI.gunner.getY(Hand.kRight) * -1;
     double right_joytick_value = OI.gunner.getY(Hand.kLeft) * -1;
-    //SmartDashboard.putNumber("Left Stick", left_joytick_value); 
-    //SmartDashboard.putNumber("Right  Stick", right_joytick_value); 
+
     if (OI.CLIMB_PID) {  // If PID is enabled
-      // Apply the PID target values
-      if(Math.abs(right_joytick_value) > .2){
+
+      if (Math.abs(right_joytick_value) > DEADZONE) {  // PID code for hatch side climb
+
         if(limit_switch_top_hatch && right_joytick_value > 0){
 
-        }else if(limit_switch_bottom_hatch && right_joytick_value < 0){
+        } else if (limit_switch_bottom_hatch && right_joytick_value < 0) {
 
-        }else{
-          Climb.target_hatch += right_joytick_value * 600;
+        } else {
+          Climb.target_hatch += right_joytick_value * HATCH_CLIMB_SPEED;
         }
-        }
-        if(Math.abs(left_joytick_value) > .2){
-          if(limit_switch_top_arm && left_joytick_value > 0 ){
 
-          }else if(limit_switch_bottom_arm && left_joytick_value < 0 ){
-  
-          }else{
-            Climb.target_arm += left_joytick_value * 100;
-          }
+      }
+      if (Math.abs(left_joytick_value) > DEADZONE) {  // PID code for arm side climb
+
+        if (limit_switch_top_arm && left_joytick_value > 0 ) {
+
+        } else if (limit_switch_bottom_arm && left_joytick_value < 0 ) {
+
+        } else {
+          Climb.target_arm += left_joytick_value * ARM_CLIMB_SPEED;
         }
+
+      }
+
+      // Set the PID climb targets
       Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
       Robot.climb.getTalon(1).set(ControlMode.Position, Climb.target_arm);
 
