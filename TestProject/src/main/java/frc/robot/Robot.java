@@ -106,6 +106,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    //shuffleMain();
+    shuffleTest();
   }
 
 
@@ -124,9 +126,15 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    //shuffleMain();
+    shuffleTest();
+  }
 
-    
+  private void shuffleMain(){
 
+  }
+
+  private void shuffleTest(){
     /* -- SHUFFLE BOARD DATA -- */
 
     // Hatch Limit Switches
@@ -201,7 +209,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Line Tracker Hatch Middle", linetracker.centerLineTracker_HATCH.getAverageVoltage());
     SmartDashboard.putNumber("Line Tracker Hatch Right", linetracker.rightLineTracker_HATCH.getAverageVoltage());
     */
-    
   }
 
 
