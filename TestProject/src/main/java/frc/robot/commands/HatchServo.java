@@ -8,45 +8,39 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.OI;
 import frc.robot.Robot;
 
-public class DriveForward extends Command {
-
-  // Variables to control time and speed
-  int SECONDS = 1;
-  double DRIVE_MAGNITUDE = .99;
-
-  public DriveForward() {
-    requires(Robot.drivetrain);  // Require the drivetrain subsystem
+public class HatchServo extends Command {
+  public HatchServo() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
   }
 
+  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    setTimeout(SECONDS);  // Set an X amount of timeout for drive forward
   }
 
+  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
-    if (OI.isAutonomous) {  // Only run drive forward in autonomous
-      Robot.drivetrain.getDriveTrain().drivePolar(DRIVE_MAGNITUDE, 0, 0);  // Drive forward for X amount of magnitude
-    }
-
+    Robot.hatch.getservo().setAngle(180);
   }
 
+  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;  // Since there is a timeout, end after one iteration
+    return true;
   }
 
+  // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.drivetrain.getDriveTrain().drivePolar(0,0,0);
   }
 
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
   }
-  
 }

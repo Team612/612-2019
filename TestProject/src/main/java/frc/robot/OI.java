@@ -60,7 +60,7 @@ public class OI {
   public static boolean isAutonomous = false;
 
   public OI() {
-
+    gunner_button_RJ.whenPressed(new HatchServo());
     driver_button_RB.whenPressed(new DriveForward());
     driver_button_A.whileHeld(new AutoAlign());
     //driver_button_X.whenPressed(new AutoClimb());
