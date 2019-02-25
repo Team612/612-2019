@@ -23,9 +23,9 @@ public class Arm extends Subsystem {
   
   // Variables to PID values
   private double kF = 0.2;
-  private double kP = 1;
+  private double kP = .005;
   private double kI = 0;
-  private double kD = .3;
+  private double kD = 0;
 
   public WPI_TalonSRX getTalon(){
     return talon_arm;

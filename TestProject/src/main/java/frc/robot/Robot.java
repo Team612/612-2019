@@ -92,7 +92,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-
+    Arm.target = Robot.arm.getTalon().getSelectedSensorPosition(0);  // Set the arm target to lowest position at beginning of the round
     OI.isAutonomous = true;  // Set is autonomous boolean to true
 
     m_autonomousCommand = m_chooser.getSelected();
@@ -113,6 +113,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    Arm.target = Robot.arm.getTalon().getSelectedSensorPosition(0);  // Set the arm target to lowest position at beginning of the round
+
 
     OI.isAutonomous = false;  // At beginning of teleop, set autonomous to false
 
@@ -131,7 +133,7 @@ public class Robot extends TimedRobot {
   }
 
   private void shuffleMain(){
-
+    SmartDashboard.putBoolean("Ball In Intake", FlyWheel.BALL_IN_INTAKE);
   }
 
   private void shuffleTest(){
@@ -142,11 +144,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Hatch CLOSE", limit_switch.getHatchClose());
 /*
     SmartDashboard.putBoolean("Ball", FlyWheel.push_button.get());
-    
+    */
     // Arm Limit Switches
     SmartDashboard.putBoolean("Arm TOP", limit_switch.getArmTop());
     SmartDashboard.putBoolean("Arm BOTTOM", limit_switch.getArmBottom());
-    */
+    
     // Climb Limit Switches
     SmartDashboard.putBoolean("Climb ARM TOP", limit_switch.getClimbTopArm());
     SmartDashboard.putBoolean("Climb ARM BOTTOM", limit_switch.getClimbBottomArm());
@@ -159,12 +161,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("NavX PITCH ", Robot.climb.getNavX().getPitch());
 */
     // Values For Arm Data
-    /*SmartDashboard.putNumber("Arm PID Target", Arm.target);
-    SmartDashboard.putNumber("Arm Encoder Position", Robot.arm.getTalon().getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Arm PID Target", Arm.target);
+      SmartDashboard.putNumber("Arm Encoder Position", Robot.arm.getTalon().getSelectedSensorPosition(0));
     //ultrasonics 
-    SmartDashboard.putNumber("ULTRASONIC ARM", LineTracker.ultrasonic_ARM.getRangeInches());
-    SmartDashboard.putNumber("ULTRASONIC HATCH", LineTracker.ultrasonic_ARM.getRangeInches());
-*/
+    SmartDashboard.putNumber("ULTRASONIC ARM", vision_sensors.ultrasonic_ARM.getRangeInches());
+    SmartDashboard.putNumber("ULTRASONIC HATCH", vision_sensors.ultrasonic_ARM.getRangeInches());
+//
     // Values For Climb Data
     SmartDashboard.putNumber("PHASE ", Climb.phase);
     SmartDashboard.putNumber("Climb Arm PID Target", Climb.target_arm);
@@ -173,10 +175,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Climb ARM Encoder Position", Robot.climb.getTalon(1).getSelectedSensorPosition(0));
     //linetracker.setUltrasonic(1);
     //linetracker.setActiveUltrasonic(1);
-    vision_sensors.ultrasonic_ARM.setAutomaticMode(true);
+    /*vision_sensors.ultrasonic_ARM.setAutomaticMode(true);
     vision_sensors.ultrasonic_ARM.setEnabled(false);
     vision_sensors.ultrasonic_HATCH.setAutomaticMode(true);
-    vision_sensors.ultrasonic_HATCH.setEnabled(true);
+    vision_sensors.ultrasonic_HATCH.setEnabled(true);*/
     //SmartDashboard.putNumber("Ultrasonic Hatch", linetracker.ultrasonic_HATCH.getRangeInches());
     SmartDashboard.putNumber("Ultrasonic Arm", vision_sensors.ultrasonic_ARM.getRangeInches());
     SmartDashboard.putNumber("Ultrasonic Hatch", vision_sensors.ultrasonic_HATCH.getRangeInches());

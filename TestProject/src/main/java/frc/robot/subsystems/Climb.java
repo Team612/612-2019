@@ -36,7 +36,7 @@ public class Climb extends Subsystem {
 
   // Variables to PID values
   private double kF = 0.2;
-  private double kP = 3;
+  private double kP = .5;
   private double kI = 0;
   private double kD = 0;
 

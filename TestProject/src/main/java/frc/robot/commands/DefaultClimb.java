@@ -21,8 +21,8 @@ public class DefaultClimb extends Command {
   private final double DEADZONE = 0.2;  // Define joystick DEADZONE
 
   // Cimb side speeds
-  private final double HATCH_CLIMB_SPEED = 600;
-  private final double ARM_CLIMB_SPEED = 100;
+  private final double HATCH_CLIMB_SPEED = 1000;
+  private final double ARM_CLIMB_SPEED = 1000;
 
   // Limit switch status booleans
   private boolean limit_switch_top_arm;
@@ -46,7 +46,6 @@ public class DefaultClimb extends Command {
 
   @Override
   protected void execute() {
-
     // Update the status of limit switches
     limit_switch_top_arm = Robot.limit_switch.getClimbTopArm();
     limit_switch_bottom_arm = Robot.limit_switch.getClimbBottomArm();

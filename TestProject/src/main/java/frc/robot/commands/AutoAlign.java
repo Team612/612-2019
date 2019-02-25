@@ -7,6 +7,8 @@
 
 package frc.robot.commands;
 
+import java.util.Arrays;
+
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
@@ -37,15 +39,15 @@ public class AutoAlign extends Command {
   private double distance;  // Double to store the current distance from the ultrasonics
 
   // Deadband values for angle, position and line trackers
-  private int ANGLE_DEADBAND = 5;
-  private int POSITION_DEADBAND = 100;
+  private int ANGLE_DEADBAND = 3;
+  private int POSITION_DEADBAND = 40;
   private double LINETRACKER_DEADBAND = 3700;
 
   // Define KP & KD values for PID
-  private double KP_ANGLE = .0095;  // KP value for speed of angle displacement
-  private double KP_POSITION = .0025;  // KP value for speed of position displacement
+  private double KP_ANGLE = .015;  // KP value for speed of angle displacement
+  private double KP_POSITION = .0040;  // KP value for speed of position displacement
   private double KP_DISTANCE = .015;  // KP value for speed of distance from wall (Slow down as approaching wall)
-  private double KD_POSITION = 0; // KD value for slope over time of position offset
+  private double KD_POSITION = 0.001; // KD value for slope over time of position offset
 
   // Derivative function values for position offset
   private double pre_time;
@@ -94,7 +96,7 @@ public class AutoAlign extends Command {
   public void update_devices() {  // Function to switch references of device objects
 
     if (OI.isSideArm) {   // If the current orientation is the arm side
-
+      System.out.println("Hatch is front");
       current_vision_listen = Robot.vision_listen_arm;  // Assign the current vision listen to the network table data from the arm side
       current_vision_array = Robot.vision_listen_arm.vision_array;
       current_ultrasonic = Robot.vision_sensors.ultrasonic_ARM;  // Assign the current ultrasonic to the arm side
@@ -105,7 +107,7 @@ public class AutoAlign extends Command {
       current_right_line_tracker = Robot.vision_sensors.rightLineTracker_ARM;
 
     } else {  // If the current orientation is the hatch side
-
+      System.out.println("Arm is front");
       current_vision_listen = Robot.vision_listen_hatch;  // Assign the current vision listen to the network table data from the hatch side
       current_vision_array = Robot.vision_listen_hatch.vision_array;
       current_ultrasonic = Robot.vision_sensors.ultrasonic_HATCH;  // Assign the current ultrasonic to the hatch side
@@ -272,15 +274,11 @@ public class AutoAlign extends Command {
   @Override
   protected void execute() {
 
-    distance = current_ultrasonic.getRangeInches();  // Update the distance from the ultrasonic
-    update_linetrackers();  // Update the values from the line trackers
+    align_robot();
+    System.out.println(drive_magnitude + " | " +  drive_angle + " | " + drive_rotation);
+    System.out.println(Arrays.toString(current_vision_array));
+    Robot.drivetrain.getDriveTrain().drivePolar(drive_magnitude, drive_angle, drive_rotation);  // If nothing keep on aligning
 
-    if (!FOLLOW_LINE) {
-      align_robot();
-    } else {
-      follow_line();
-    }
-    
 
   }
 

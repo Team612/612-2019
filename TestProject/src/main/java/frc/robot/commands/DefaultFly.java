@@ -16,7 +16,6 @@ import frc.robot.subsystems.FlyWheel;
 
 public class DefaultFly extends Command {
 
-  private boolean BALL_IN_FLY = false;
 
   private final double DEADZONE = 0;  // Define the controller DEADZONE
 
@@ -41,13 +40,17 @@ public class DefaultFly extends Command {
 
     if (OI.gunner_button_LB.get() ){  // If the button is pressed and the user presses RB, push the ball out
       Robot.flyWheel.getTalon().set(flywheel_speed);  // Run the motors to push out the ball
+      FlyWheel.BALL_IN_INTAKE = false;
     } else if(bottom_limit_switch_hit && OI.gunner_button_RB.get() ){
-      if(FlyWheel.push_button.get()){
+      if(FlyWheel.push_button.get() && !FlyWheel.BALL_IN_INTAKE){
+        //BALL_IN_FLY = false;
         Robot.flyWheel.getTalon().set(flywheel_speed * -1);
       } else{
         Robot.flyWheel.getTalon().set(0);
+        FlyWheel.BALL_IN_INTAKE = true;
       }
     } else{
+      FlyWheel.BALL_IN_INTAKE = false;
       Robot.flyWheel.getTalon().set(0);
     }
 

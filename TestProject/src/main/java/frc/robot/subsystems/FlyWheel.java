@@ -15,7 +15,7 @@ import frc.robot.RobotMap;
 import frc.robot.commands.DefaultFly;
 
 public class FlyWheel extends Subsystem {
-
+  public static boolean BALL_IN_INTAKE = false;
   private WPI_TalonSRX flyer = new WPI_TalonSRX(RobotMap.TALON_PORT_FLY);  // Create flywheel talon
   public static DigitalInput push_button = new DigitalInput(RobotMap.DIO_PORT);
 
