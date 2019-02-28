@@ -34,10 +34,10 @@ public class DefaultHatch extends Command {
     double left_trigger_axis = OI.gunner.getTriggerAxis(Hand.kLeft);
     double right_trigger_axis = OI.gunner.getTriggerAxis(Hand.kRight);
     if(OI.gunner_button_X.get()){
-      Robot.hatch.getServo().set(180);
-    }
-    if(OI.gunner_button_Y.get()){
       Robot.hatch.getServo().set(0);
+    }
+    else{
+      Robot.hatch.getServo().set(180);
     }
     if (left_trigger_axis > DEADZONE) {  // If the left trigger value is greater than the deadzone
       Robot.hatch.hatchTalon.set(left_trigger_axis);  // Push out the hatch talon, based on the trigger value
