@@ -47,7 +47,7 @@ public class AutoAlign extends Command {
   private double KP_ANGLE = .015;  // KP value for speed of angle displacement
   private double KP_POSITION = .0040;  // KP value for speed of position displacement
   private double KP_DISTANCE = .015;  // KP value for speed of distance from wall (Slow down as approaching wall)
-  private double KD_POSITION = 0.001; // KD value for slope over time of position offset
+  private double KD_POSITION = 0; // KD value for slope over time of position offset
 
   // Derivative function values for position offset
   private double pre_time;
@@ -64,6 +64,7 @@ public class AutoAlign extends Command {
   private double WALL_STOP = 2;  // The distance in which the robot should stop to prevent hitting the wall
 
   private Timer position_timer = new Timer();  // Timer object to measure derivative rate
+  public static String AUTO_ALIGNMENT_STATUS;
 
   public AutoAlign() {
     

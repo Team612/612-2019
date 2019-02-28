@@ -9,6 +9,8 @@ package frc.robot;
 
 import javax.sound.sampled.Line;
 
+import edu.wpi.cscore.CameraServerJNI;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -17,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
 import frc.robot.POVConvert;
 import frc.robot.commands.AutoAlign;
+import frc.robot.commands.*;
 
 
 /**
@@ -27,7 +30,8 @@ import frc.robot.commands.AutoAlign;
  * project.
  */
 public class Robot extends TimedRobot {
-
+  //endosocope camera 
+  public static CameraServer endosocope;
   // Drivetrain object
   public static Drivetrain drivetrain = new Drivetrain();
 
@@ -62,6 +66,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    endosocope.getInstance().startAutomaticCapture();
     m_oi = new OI();  // Create an object of OI
     vision_listen_hatch.read_vision();
     vision_listen_arm.read_vision();
@@ -77,6 +82,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
+    //shuffleMain();
+    shuffleTest();
   }
 
 
@@ -105,9 +112,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    Scheduler.getInstance().run();
-    //shuffleMain();
     shuffleTest();
+    Scheduler.getInstance().run();
+    
   }
 
 
@@ -127,18 +134,29 @@ public class Robot extends TimedRobot {
   
   @Override
   public void teleopPeriodic() {
-    Scheduler.getInstance().run();
-    //shuffleMain();
     shuffleTest();
+    Scheduler.getInstance().run();
   }
 
   private void shuffleMain(){
     SmartDashboard.putBoolean("Ball In Intake", FlyWheel.BALL_IN_INTAKE);
+    SmartDashboard.putString("HATCH STATUS", DefaultHatch.HATCH_STATUS);
+    SmartDashboard.putString("ARM STATUS", DefaultArm.ARM_STATUS);
+   // SmartDashboard.putString("FLYWHEEL STATUS", DefaultFly.FLYWHEEL_STATUS);
+    //SmartDashboard.putString("HATCH SIDE CLIMB STATUS", DefaultClimb.HATCH_SIDE_CLIMB_STATUS);
+    //SmartDashboard.putString("ARM SIDE CLIMB STATUS", DefaultClimb.ARM_SIDE_CLIMB_STATUS);
+    SmartDashboard.putBoolean("ARM PID", OI.ARM_PID); 
+    SmartDashboard.putString("ROBOT ORIENTATION", ReverseRobot.ROBOT_ORIENTATION);
+    SmartDashboard.putString("AUTO ALIGNMENT", AutoAlign.AUTO_ALIGNMENT_STATUS); // LOGIC NEEDS TO BE WRITTEN IN AutoAlign.java
+    //SmartDashboard.putBoolean("ROCKET LEVEL 1",);
+    //SmartDashboard.putBoolean("ROCKET LEVEL 2",);
+    //SmartDashboard.putBoolean("CARGO SHIP",);
   }
 
   private void shuffleTest(){
+    SmartDashboard.putNumber("ARM GET VALUE",arm.getTalon().getMotorOutputPercent());
     /* -- SHUFFLE BOARD DATA -- */
-
+    /*
     // Hatch Limit Switches
     SmartDashboard.putBoolean("Hatch FAR",limit_switch.getHatchFar());
     SmartDashboard.putBoolean("Hatch CLOSE", limit_switch.getHatchClose());

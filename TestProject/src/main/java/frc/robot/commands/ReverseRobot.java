@@ -14,8 +14,9 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class ReverseRobot extends Command {
-
+  public static String ROBOT_ORIENTATION;
   public ReverseRobot() {
+    
   }
 
   @Override
@@ -34,11 +35,15 @@ public class ReverseRobot extends Command {
 
       DefaultDrive.invert_robot = -1;  // Invert the drivetrain
       set_servo_angle(180);  // Rotate the servo to hatch side
-
+      // TODO: Add vision toggle camera
+      ROBOT_ORIENTATION = "ARM SIDE";
+      
     } else {
 
       DefaultDrive.invert_robot = 1;
       set_servo_angle(0);
+      // TODO: Add vision toggle camera
+      ROBOT_ORIENTATION = "HATCH SIDE";
       
     }
 

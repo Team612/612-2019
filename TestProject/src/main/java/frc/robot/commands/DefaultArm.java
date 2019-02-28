@@ -29,10 +29,11 @@ public class DefaultArm extends Command {
   private double SHOOT_ANGLE = 250;  // Optimal shooting position for arm
 
   // PID speed variables (Increments)
-  private double PID_UP_SPEED = 3500;
-  private double PID_DOWN_SPEED = 3500;
+  private double PID_UP_SPEED = 17000;
+  private double PID_DOWN_SPEED = 17000;
 
   private double ARM_SPEED = 0.75;  // Define the NON-PID motor speed
+  public static String ARM_STATUS;
   
   public DefaultArm() {
     requires(Robot.arm);  // Require the arm object
@@ -42,6 +43,7 @@ public class DefaultArm extends Command {
   protected void initialize() {
    // Robot.arm.getTalon().getSensorCollection().setQuadraturePosition(0, 0);
     Arm.target = Robot.arm.getTalon().getSelectedSensorPosition(0);  // Set the arm target to lowest position at beginning of the round
+
   }
 
   private double countsToAngle() {  // Convert the PID count to an angle value
@@ -67,24 +69,23 @@ public class DefaultArm extends Command {
     if (OI.gunner_button_BCK.get()) {  // Toggle button to disable arm PID
       OI.ARM_PID = false;
     }
-
-    if (OI.ARM_PID) {  // Only run PID code if variable in OI is true
-
-      // Add button listeners for arm angles
+      if (OI.ARM_PID) {  // Only run PID code if variable in OI is true
+         // Add button listeners for arm angles
       //setArmAngle(-2300, OI.gunner_button_Y);
       //setArmAngle(-964, OI.gunner_button_B);
       //setArmAngle(-500, OI.gunner_button_X);
 
-      if (top_limit_switch_hit && pov_position.equals("North")) {  // If the gunner is trying to move the arm up while at the top position, do nothing
-        //Robot.arm.getTalon().getSensorCollection().setQuadraturePosition(0, 0);
-        //Arm.target =0; // set to zero
-      } else if (bottom_limit_switch_hit && pov_position.equals("South")) {  // If the gunner is trying to move the arm down while at the bottom position, do nothing
-      
-      } else if (pov_position.equals("North")) {  // Else do normal PID increments
-        Arm.target += PID_UP_SPEED;  // Increase the PID target value 
-      } else if (pov_position.equals("South")) {  // If D-Pad is down, decrease arm target
-        Arm.target -= PID_DOWN_SPEED;  // Decrease the PID target value 
-      }
+        if (top_limit_switch_hit && pov_position.equals("North")) {  // If the gunner is trying to move the arm up while at the top position, do nothing
+      ARM_STATUS = "UP";
+        } else if (bottom_limit_switch_hit && pov_position.equals("South")) {  // If the gunner is trying to move the arm down while at the bottom position, do nothing
+      ARM_STATUS = "DOWN";
+        } else if (pov_position.equals("North")) {  // Else do normal PID increments
+      Arm.target += PID_UP_SPEED;  // Increase the PID target value 
+      ARM_STATUS = "RISING";
+        } else if (pov_position.equals("South")) {  // If D-Pad is down, decrease arm target
+      Arm.target -= PID_DOWN_SPEED;  // Decrease the PID target value 
+      ARM_STATUS = "FALLING";
+        }
 
       Robot.arm.getTalon().set(ControlMode.Position, Arm.target);  // Set the ARM to a specific position value
 
@@ -92,11 +93,13 @@ public class DefaultArm extends Command {
       
       if (pov_position.equals("North")) {  // If the D-Pad is going up 
         Robot.arm.getTalon().set(ControlMode.PercentOutput, ARM_SPEED);  // Set the arm to specified arm speed
-      } else if (pov_position.equals("South")) {  // If the D-Pad is going down 
+        ARM_STATUS = "RISING";
+          } else if (pov_position.equals("South")) {  // If the D-Pad is going down 
         Robot.arm.getTalon().set(ControlMode.PercentOutput, ARM_SPEED * -1);
-      } else {
+        ARM_STATUS = "FALLING";
+          } else {
         Robot.arm.getTalon().set(0);  // Don't move the Arm
-      }
+          }
 
     }
 

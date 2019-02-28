@@ -18,17 +18,18 @@ import frc.robot.commands.DefaultHatch;;
 public class Hatch extends Subsystem {
 
   public WPI_TalonSRX hatchTalon = new WPI_TalonSRX(RobotMap.TALON_PORT_HATCH);  // Creates the Hatch Talon Object
-  private Servo Serv = new Servo(RobotMap.SERVO_PORT_HATCH);
+  private Servo hatch_servo = new Servo(RobotMap.SERVO_PORT_HATCH);
 
   public WPI_TalonSRX getTalon(){
     return hatchTalon;
   }
-  public Servo getservo(){
-    return Serv;
+  public Servo getServo(){
+    return hatch_servo;
   }
 
   @Override
   public void initDefaultCommand() {
+    hatch_servo.setAngle(180);
     setDefaultCommand(new DefaultHatch());
   }
   

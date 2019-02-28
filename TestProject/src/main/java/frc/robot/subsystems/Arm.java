@@ -22,8 +22,8 @@ public class Arm extends Subsystem {
   public static double target = 0;  // Define the target position of the arm
   
   // Variables to PID values
-  private double kF = 0.2;
-  private double kP = .005;
+  private double kF = 0;
+  private double kP = .05;
   private double kI = 0;
   private double kD = 0;
 
@@ -34,7 +34,7 @@ public class Arm extends Subsystem {
   private void configure_arm(WPI_TalonSRX talon) {
     talon_arm.setInverted(false);
     talon_arm.setNeutralMode(NeutralMode.Brake);  // Set talon arm to break mode
-    talon_arm.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 300);
+    talon_arm.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 100);
     talon_arm.selectProfileSlot(0, 0);  // Find out what THIS DOES
     talon_arm.config_kF(0, kF, 100);  // The 100 is the time out 
     talon_arm.config_kP(0, kP, 100);  // for setting  the configuration.(in milliseconds).

@@ -58,11 +58,9 @@ public class DefaultFly extends Command {
       if (bottom_limit_switch_hit && OI.gunner_button_LB.get() && !BALL_IN_FLY) {  // If the arm is at the bottom position and the intake button is pressed enable intake
         Robot.flyWheel.getTalon().set(flywheel_speed);  // Run the motors to intake the ball
       }
-
     } else if (OI.gunner_button_RB.get() ){  // If the button is pressed and the user presses RB, push the ball out
       Robot.flyWheel.getTalon().set(flywheel_speed * -1);  // Run the motors to push out the ball
       BALL_IN_FLY = true;
-
     } else {
       BALL_IN_FLY = false;
       if (OI.gunner_button_LB.get()) {  // If the ball is in the intake and gunner attempts to pull ball in, rumble
@@ -72,9 +70,7 @@ public class DefaultFly extends Command {
         OI.gunner.setRumble(RumbleType.kLeftRumble, 0);
         OI.gunner.setRumble(RumbleType.kRightRumble, 0); 
       }
-
       Robot.flyWheel.getTalon().set(0);  // Don't allow for motors to run
-
     }*/
 
   }
