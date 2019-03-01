@@ -33,7 +33,7 @@ public class DefaultArm extends Command {
   private double PID_DOWN_SPEED = 17000;
 
   private double ARM_SPEED = 0.75;  // Define the NON-PID motor speed
-  public static String ARM_STATUS;
+  public static String ARM_STATUS = "";
   
   public DefaultArm() {
     requires(Robot.arm);  // Require the arm object

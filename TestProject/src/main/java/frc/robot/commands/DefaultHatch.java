@@ -16,7 +16,7 @@ import frc.robot.Robot;
 public class DefaultHatch extends Command {
   
   private final double DEADZONE = 0.1;  // Define a trigger axis deadzone
-  public static String HATCH_STATUS;
+  public static String HATCH_STATUS = "";
 
   public DefaultHatch() {
     requires(Robot.hatch);  // Require the Hatch object

@@ -67,6 +67,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     endosocope.getInstance().startAutomaticCapture();
+    shuffleMain();
     m_oi = new OI();  // Create an object of OI
     vision_listen_hatch.read_vision();
     vision_listen_arm.read_vision();
@@ -83,7 +84,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     //shuffleMain();
-    shuffleTest();
+   // shuffleTest();
   }
 
 
@@ -112,7 +113,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    shuffleTest();
+    shuffleMain();
     Scheduler.getInstance().run();
     
   }
@@ -134,23 +135,31 @@ public class Robot extends TimedRobot {
   
   @Override
   public void teleopPeriodic() {
-    shuffleTest();
+    shuffleMain();
     Scheduler.getInstance().run();
   }
 
   private void shuffleMain(){
+   
     SmartDashboard.putBoolean("Ball In Intake", FlyWheel.BALL_IN_INTAKE);
-    SmartDashboard.putString("HATCH STATUS", DefaultHatch.HATCH_STATUS);
-    SmartDashboard.putString("ARM STATUS", DefaultArm.ARM_STATUS);
-    SmartDashboard.putString("FLYWHEEL STATUS", DefaultFly.FLYWHEEL_STATUS);
-    SmartDashboard.putString("HATCH SIDE CLIMB STATUS", DefaultClimb.HATCH_SIDE_CLIMB_STATUS);
-    SmartDashboard.putString("ARM SIDE CLIMB STATUS", DefaultClimb.ARM_SIDE_CLIMB_STATUS);
-    SmartDashboard.putBoolean("ARM PID", OI.ARM_PID); 
-    SmartDashboard.putString("ROBOT ORIENTATION", ReverseRobot.ROBOT_ORIENTATION);
-    SmartDashboard.putString("AUTO ALIGNMENT", AutoAlign.AUTO_ALIGNMENT_STATUS); // LOGIC NEEDS TO BE WRITTEN IN AutoAlign.java
+
+         SmartDashboard.putBoolean("ARM PID", OI.ARM_PID); 
+    
+         SmartDashboard.putString("ARM STATUS", DefaultArm.ARM_STATUS);
+         SmartDashboard.putString("FLYWHEEL STATUS", DefaultFly.FLYWHEEL_STATUS);
+         SmartDashboard.putString("HATCH SIDE CLIMB STATUS", DefaultClimb.HATCH_SIDE_CLIMB_STATUS);
+         SmartDashboard.putString("ARM SIDE CLIMB STATUS", DefaultClimb.ARM_SIDE_CLIMB_STATUS);
+            SmartDashboard.putString("HATCH STATUS", DefaultHatch.HATCH_STATUS);
+         
+       SmartDashboard.putString("ROBOT ORIENTATION", ReverseRobot.ROBOT_ORIENTATION);
+       SmartDashboard.putString("AUTO ALIGNMENT", AutoAlign.AUTO_ALIGNMENT_STATUS); // LOGIC NEEDS TO BE WRITTEN IN AutoAlign.java
+    try{
+      
     //SmartDashboard.putBoolean("ROCKET LEVEL 1",);
     //SmartDashboard.putBoolean("ROCKET LEVEL 2",);
     //SmartDashboard.putBoolean("CARGO SHIP",);
+    }
+    catch(Exception e){}
   }
 
   private void shuffleTest(){

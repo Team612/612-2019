@@ -14,7 +14,7 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class ReverseRobot extends Command {
-  public static String ROBOT_ORIENTATION;
+  public static String ROBOT_ORIENTATION = "";
   public ReverseRobot() {
     
   }

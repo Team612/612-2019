@@ -23,7 +23,7 @@ public class DefaultFly extends Command {
   
   private double flywheel_speed = 1;  // Variable to store flywheel motor speed
 
-  public static String FLYWHEEL_STATUS;
+  public static String FLYWHEEL_STATUS = "";
 
   public DefaultFly() {
     requires(Robot.flyWheel);  // Requires FlyWheel Object

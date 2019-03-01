@@ -64,7 +64,7 @@ public class AutoAlign extends Command {
   private double WALL_STOP = 2;  // The distance in which the robot should stop to prevent hitting the wall
 
   private Timer position_timer = new Timer();  // Timer object to measure derivative rate
-  public static String AUTO_ALIGNMENT_STATUS;
+  public static String AUTO_ALIGNMENT_STATUS = "";
 
   public AutoAlign() {
     
