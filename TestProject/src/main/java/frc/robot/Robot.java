@@ -142,9 +142,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Ball In Intake", FlyWheel.BALL_IN_INTAKE);
     SmartDashboard.putString("HATCH STATUS", DefaultHatch.HATCH_STATUS);
     SmartDashboard.putString("ARM STATUS", DefaultArm.ARM_STATUS);
-   // SmartDashboard.putString("FLYWHEEL STATUS", DefaultFly.FLYWHEEL_STATUS);
-    //SmartDashboard.putString("HATCH SIDE CLIMB STATUS", DefaultClimb.HATCH_SIDE_CLIMB_STATUS);
-    //SmartDashboard.putString("ARM SIDE CLIMB STATUS", DefaultClimb.ARM_SIDE_CLIMB_STATUS);
+    SmartDashboard.putString("FLYWHEEL STATUS", DefaultFly.FLYWHEEL_STATUS);
+    SmartDashboard.putString("HATCH SIDE CLIMB STATUS", DefaultClimb.HATCH_SIDE_CLIMB_STATUS);
+    SmartDashboard.putString("ARM SIDE CLIMB STATUS", DefaultClimb.ARM_SIDE_CLIMB_STATUS);
     SmartDashboard.putBoolean("ARM PID", OI.ARM_PID); 
     SmartDashboard.putString("ROBOT ORIENTATION", ReverseRobot.ROBOT_ORIENTATION);
     SmartDashboard.putString("AUTO ALIGNMENT", AutoAlign.AUTO_ALIGNMENT_STATUS); // LOGIC NEEDS TO BE WRITTEN IN AutoAlign.java

@@ -30,6 +30,9 @@ public class DefaultClimb extends Command {
   private boolean limit_switch_top_hatch;
   private boolean limit_switch_bottom_hatch;
 
+  public static String HATCH_SIDE_CLIMB_STATUS = "DOWN"; 
+  public static String ARM_SIDE_CLIMB_STATUS = "DOWN";
+
 
   public DefaultClimb() {
     requires(Robot.climb);  // Require the climb subsystem
@@ -57,26 +60,40 @@ public class DefaultClimb extends Command {
     double right_joytick_value = OI.gunner.getY(Hand.kLeft) * -1;
 
     if (OI.CLIMB_PID) {  // If PID is enabled
-
+      
       if (Math.abs(right_joytick_value) > DEADZONE) {  // PID code for hatch side climb
 
         if(limit_switch_top_hatch && right_joytick_value > 0){
-
+            HATCH_SIDE_CLIMB_STATUS = "UP";
         } else if (limit_switch_bottom_hatch && right_joytick_value < 0) {
-
+            HATCH_SIDE_CLIMB_STATUS = "DOWN";
         } else {
           Climb.target_hatch += right_joytick_value * HATCH_CLIMB_SPEED;
+            if(right_joytick_value > 0){
+              HATCH_SIDE_CLIMB_STATUS = "RISING";
+            } else if (right_joytick_value < 0) {
+              HATCH_SIDE_CLIMB_STATUS = "FALLING";
+            } else {
+              HATCH_SIDE_CLIMB_STATUS = "STATIONARY";
+            }
         }
 
       }
       if (Math.abs(left_joytick_value) > DEADZONE) {  // PID code for arm side climb
-
+          
         if (limit_switch_top_arm && left_joytick_value > 0 ) {
-
+            ARM_SIDE_CLIMB_STATUS = "UP"; 
         } else if (limit_switch_bottom_arm && left_joytick_value < 0 ) {
-
+            ARM_SIDE_CLIMB_STATUS = "DOWN";
         } else {
           Climb.target_arm += left_joytick_value * ARM_CLIMB_SPEED;
+          if (right_joytick_value > 0){
+            ARM_SIDE_CLIMB_STATUS = "RISING";
+          } else if (right_joytick_value < 0) {
+            ARM_SIDE_CLIMB_STATUS = "FALLING";
+          } else {
+            ARM_SIDE_CLIMB_STATUS = "STATIONARY";
+          }
         }
 
       }

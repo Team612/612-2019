@@ -85,7 +85,7 @@ public class DefaultArm extends Command {
         } else if (pov_position.equals("South")) {  // If D-Pad is down, decrease arm target
       Arm.target -= PID_DOWN_SPEED;  // Decrease the PID target value 
       ARM_STATUS = "FALLING";
-        }
+        } 
 
       Robot.arm.getTalon().set(ControlMode.Position, Arm.target);  // Set the ARM to a specific position value
 
@@ -99,6 +99,7 @@ public class DefaultArm extends Command {
         ARM_STATUS = "FALLING";
           } else {
         Robot.arm.getTalon().set(0);  // Don't move the Arm
+        ARM_STATUS = "STATIONARY";
           }
 
     }
