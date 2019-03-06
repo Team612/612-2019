@@ -21,12 +21,16 @@ public class DefaultArm extends Command {
   private boolean top_limit_switch_hit;
   private boolean bottom_limit_switch_hit;
 
+  // PID values for limit switches
+  private int LOWER_LIMIT_SWITCH_VALUE = -155000;
+  private int UPPER_LIMIT_SWITCH_VALUE = 0;
+
   // PID position variables
   private int MAX_POSITION = 500;  // Define to count at end of range of motion degrees
   private double MAX_ANGLE = 90;  // Degree value for unit conversion
 
   // Pre-defined positions for PID shooting
-  private double SHOOT_ANGLE = 250;  // Optimal shooting position for arm
+  //private double SHOOT_ANGLE = 250;  // Optimal shooting position for arm
 
   // PID speed variables (Increments)
   private double PID_UP_SPEED = 17000;
@@ -51,7 +55,7 @@ public class DefaultArm extends Command {
     return angle;
   }
 
-  private void setArmAngle(double target_position, JoystickButton button) {  // Set the arm to a certain position based on Joystick press of gunner
+  private void setArmAngle(double target_position,  JoystickButton button) {  // Set the arm to a certain position based on Joystick press of gunner
     if (button.get()) {  // If the button passed is clicked
       Arm.target = target_position;  // Set the target to the given angle
     }
@@ -71,18 +75,20 @@ public class DefaultArm extends Command {
     }
       if (OI.ARM_PID) {  // Only run PID code if variable in OI is true
          // Add button listeners for arm angles
-      //setArmAngle(-2300, OI.gunner_button_Y);
+      setArmAngle(-204000.0, OI.gunner_button_B);
       //setArmAngle(-964, OI.gunner_button_B);
       //setArmAngle(-500, OI.gunner_button_X);
 
         if (top_limit_switch_hit && pov_position.equals("North")) {  // If the gunner is trying to move the arm up while at the top position, do nothing
       ARM_STATUS = "UP";
+      Arm.target =0;
+      Robot.arm.getTalon().setSelectedSensorPosition(0, 0, 100);
         } else if (bottom_limit_switch_hit && pov_position.equals("South")) {  // If the gunner is trying to move the arm down while at the bottom position, do nothing
       ARM_STATUS = "DOWN";
         } else if (pov_position.equals("North")) {  // Else do normal PID increments
       Arm.target += PID_UP_SPEED;  // Increase the PID target value 
       ARM_STATUS = "RISING";
-        } else if (pov_position.equals("South")) {  // If D-Pad is down, decrease arm target
+        } else if (pov_position.equals("South")) {     // If D-Pad is down, decrease arm target
       Arm.target -= PID_DOWN_SPEED;  // Decrease the PID target value 
       ARM_STATUS = "FALLING";
         } 

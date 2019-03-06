@@ -13,6 +13,7 @@ import frc.robot.Robot;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 public class DefaultDrive extends Command {
+  public static String ROBOT_ORIENTATION = "";//for smartdashboard
 
   private final double DEADZONE = 0.2;  // Define controller deadzone
 
@@ -26,6 +27,7 @@ public class DefaultDrive extends Command {
   public static double direction_y; 
 
   public static int invert_robot = 1;  // Integer to invert the robot
+
 
   public DefaultDrive() {
     requires(Robot.drivetrain);  // Require the drivetrain object
@@ -70,23 +72,42 @@ public class DefaultDrive extends Command {
     angle = Math.atan2(direction_x , direction_y ) * (180 / Math.PI);  // arctan(y/x) Calculates the angle of the y and x point then converts to radians
 
   }
+ 
 
+
+  protected void set_servo_angle(double angle) {  // Function that will rotate camera servo to specified degree
+    Robot.drivercamera.getServo().set(angle);;
+  }
 
   @Override
   protected void execute() {
-  
-    if (!OI.LOCK_DRIVETRAIN) {
+
+
+    
+    //System.out.println("Angle: " + Robot.drivercamera.getServo().get() + " | " + ROTATE_ROBOT);
+      
+    
+
+    //if (!OI.LOCK_DRIVETRAIN) {
+
+      if (OI.isSideArm) {
+        set_servo_angle(180);  // Rotate the servo to hatch side
+        invert_robot = -1;  // Invert the drivetrain
+      } else {
+        set_servo_angle(0);
+        invert_robot = 1;  // Invert the drivetrain
+      }
 
       getInput(); // Fetches Joystick values
       doDead(); // Sets the DEADZONE value
       toPolar(); // Does calculations with Joystick values to drivetrain
 
       Robot.drivetrain.getDriveTrain().drivePolar(magnitude, angle, rotation); // Pass the calculated drive data into the drivetrain
-    } else {
+  } /*else {
       Robot.drivetrain.getDriveTrain().drivePolar(0, 0, 0); // Set the robot's wheels to 0
-    }
+    }*/
     
-  }
+  //}
 
   @Override
   protected boolean isFinished() {
