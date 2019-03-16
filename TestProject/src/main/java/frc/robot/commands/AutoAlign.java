@@ -98,8 +98,8 @@ public class AutoAlign extends Command {
 
     if (OI.isSideArm) {   // If the current orientation is the arm side
       System.out.println("Hatch is front");
-      current_vision_listen = Robot.vision_listen_arm;  // Assign the current vision listen to the network table data from the arm side
-      current_vision_array = Robot.vision_listen_arm.vision_array;
+      //current_vision_listen = Robot.vision_listen_arm;  // Assign the current vision listen to the network table data from the arm side
+      //current_vision_array = Robot.vision_listen_arm.vision_array;
       current_ultrasonic = Robot.vision_sensors.ultrasonic_ARM;  // Assign the current ultrasonic to the arm side
 
       // Assign the current line trackers to the arm side trackers
@@ -109,8 +109,8 @@ public class AutoAlign extends Command {
 
     } else {  // If the current orientation is the hatch side
       System.out.println("Arm is front");
-      current_vision_listen = Robot.vision_listen_hatch;  // Assign the current vision listen to the network table data from the hatch side
-      current_vision_array = Robot.vision_listen_hatch.vision_array;
+     // current_vision_listen = Robot.vision_listen_hatch;  // Assign the current vision listen to the network table data from the hatch side
+     // current_vision_array = Robot.vision_listen_hatch.vision_array;
       current_ultrasonic = Robot.vision_sensors.ultrasonic_HATCH;  // Assign the current ultrasonic to the hatch side
 
       // Assign the current line trackers to the hatch side trackers

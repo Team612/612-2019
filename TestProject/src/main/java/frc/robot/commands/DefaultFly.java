@@ -21,7 +21,7 @@ public class DefaultFly extends Command {
 
   private boolean bottom_limit_switch_hit;  // Initialize the bottom limit switch boolean for arm
   
-  private double flywheel_speed = 1;  // Variable to store flywheel motor speed
+  private double flywheel_speed = .40;  // Variable to store flywheel motor speed
 
   public static String FLYWHEEL_STATUS = "";
 
@@ -41,7 +41,7 @@ public class DefaultFly extends Command {
     bottom_limit_switch_hit = Robot.limit_switch.getArmBottom();  // Boolean to store bottom arm limit switch
 
     if (OI.gunner_button_LB.get() ){  // If the button is pressed and the user presses LB, push the ball out
-      Robot.flyWheel.getTalon().set(flywheel_speed);  // Run the motors to push out the ball
+      Robot.flyWheel.getTalon().set(1);  // Run the motors to push out the ball
       FlyWheel.BALL_IN_INTAKE = false;
     } else if(bottom_limit_switch_hit && OI.gunner_button_RB.get() ){
       if(FlyWheel.push_button.get() && !FlyWheel.BALL_IN_INTAKE){

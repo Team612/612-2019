@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -33,6 +34,9 @@ public class FlyWheel extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
+
+    flyer.setNeutralMode(NeutralMode.Brake);
+
     setDefaultCommand(new DefaultFly());  // Set the flywheel as a default command
   }
 

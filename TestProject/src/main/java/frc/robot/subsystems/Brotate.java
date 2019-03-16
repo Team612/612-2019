@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-/*
+
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -12,26 +12,22 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.DefaultHatch;;
+import frc.robot.commands.DefaultBrotate;
 
+/**
+ * Add your docs here.
+ */
+public class Brotate extends Subsystem {
+  // Put methods for controlling this subsystem
+  // here. Call these from Commands.
 
-public class Hatch extends Subsystem {
+  public Servo b_servo = new Servo(RobotMap.SERVO_PORT_HATCH);
 
   public WPI_TalonSRX hatchTalon = new WPI_TalonSRX(RobotMap.TALON_PORT_HATCH);  // Creates the Hatch Talon Object
-  private Servo hatch_servo = new Servo(RobotMap.SERVO_PORT_HATCH);
-
-  public WPI_TalonSRX getTalon(){
-    return hatchTalon;
-  }
-  public Servo getServo(){
-    return hatch_servo;
-  }
 
   @Override
   public void initDefaultCommand() {
-    hatch_servo.setAngle(180);
-    setDefaultCommand(new DefaultHatch());
+    // Set the default command for a subsystem here.
+    setDefaultCommand(new DefaultBrotate());
   }
-  
 }
-*/

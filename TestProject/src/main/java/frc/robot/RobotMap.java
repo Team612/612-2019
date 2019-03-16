@@ -27,7 +27,7 @@ public class RobotMap {
 
   // Servo ports
   public static final int SERVO_PORT                      = 9;
-  public static final int SERVO_PORT_HATCH                = 6;
+  //public static final int SERVO_PORT_HATCH                = 6;
 
   // Line tracker ports
   public static final int LEFT_LINE_TRACKER_PORT_ARM      = 1;
@@ -52,6 +52,8 @@ public class RobotMap {
   public static final int DIO_PORT                        = 5;
   // Soft robotics port
   public static final int TALON_SOFT_PORT                 = 99;
+
+  public static int SERVO_PORT_HATCH = 6;
   //for the LEDS 
   //public static final int ARDUINO_ADDRESS                 = 1;
   

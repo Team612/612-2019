@@ -30,6 +30,8 @@ import frc.robot.commands.*;
  * project.
  */
 public class Robot extends TimedRobot {
+  public static Brotate brotate = new Brotate();
+
   //endosocope camera 
   public static CameraServer endosocope;
   // Drivetrain object
@@ -44,7 +46,7 @@ public class Robot extends TimedRobot {
   public static Climb climb = new Climb();
   
   // Gunner object
-  public static Hatch hatch = new Hatch();
+  //public static Hatch hatch = new Hatch();
   public static FlyWheel flyWheel = new FlyWheel();
   public static Arm arm = new Arm();
 
@@ -57,8 +59,8 @@ public class Robot extends TimedRobot {
   // OI object
   public static OI m_oi;
 
-  public static VisionListen vision_listen_arm = new VisionListen("VisionTable_ARM");
-  public static VisionListen vision_listen_hatch = new VisionListen("VisionTable_HATCH");
+  //public static VisionListen vision_listen_arm = new VisionListen("VisionTable_ARM");
+  //public static VisionListen vision_listen_hatch = new VisionListen("VisionTable_HATCH");
 
   // MISC
   Command m_autonomousCommand;
@@ -69,8 +71,8 @@ public class Robot extends TimedRobot {
     endosocope.getInstance().startAutomaticCapture();
     shuffleMain();
     m_oi = new OI();  // Create an object of OI
-    vision_listen_hatch.read_vision();
-    vision_listen_arm.read_vision();
+    /*vision_listen_hatch.read_vision();
+    vision_listen_arm.read_vision();*/
    // linetracker.ultrasonic_ARM.setAutomaticMode(true);
     //linetracker.ultrasonic_ARM.setEnabled(true);
    //linetracker.ultrasonic_HATCH.setAutomaticMode(true);
@@ -121,7 +123,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    Arm.target = Robot.arm.getTalon().getSelectedSensorPosition(0);  // Set the arm target to lowest position at beginning of the round
+    //Arm.target = Robot.arm.getTalon().getSelectedSensorPosition(0);  // Set the arm target to lowest position at beginning of the round
 
 
     OI.isAutonomous = false;  // At beginning of teleop, set autonomous to false
@@ -135,7 +137,7 @@ public class Robot extends TimedRobot {
   
   @Override
   public void teleopPeriodic() {
-    shuffleMain();
+    shuffleTest();
     Scheduler.getInstance().run();
   }
 
@@ -149,10 +151,10 @@ public class Robot extends TimedRobot {
          SmartDashboard.putString("FLYWHEEL STATUS", DefaultFly.FLYWHEEL_STATUS);
          SmartDashboard.putString("HATCH SIDE CLIMB STATUS", DefaultClimb.HATCH_SIDE_CLIMB_STATUS);
          SmartDashboard.putString("ARM SIDE CLIMB STATUS", DefaultClimb.ARM_SIDE_CLIMB_STATUS);
-            SmartDashboard.putString("HATCH STATUS", DefaultHatch.HATCH_STATUS);
+           // SmartDashboard.putString("HATCH STATUS", DefaultHatch.HATCH_STATUS);
          
        //SmartDashboard.putString("ROBOT ORIENTATION", ReverseRobot.ROBOT_ORIENTATION);
-       SmartDashboard.putString("AUTO ALIGNMENT", AutoAlign.AUTO_ALIGNMENT_STATUS); // LOGIC NEEDS TO BE WRITTEN IN AutoAlign.java
+       SmartDashboard.putString("AUTO ALIGN%MENT", AutoAlign.AUTO_ALIGNMENT_STATUS); // LOGIC NEEDS TO BE WRITTEN IN AutoAlign.java
     try{
       
     //SmartDashboard.putBoolean("ROCKET LEVEL 1",);

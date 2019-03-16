@@ -10,6 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.*;
+import frc.robot.Autonomous.StrafeLeft;
+import frc.robot.Autonomous.StrafeRight;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -18,7 +20,7 @@ import frc.robot.commands.*;
 public class OI {
 
   // Booleans
-  public static boolean ARM_PID                     = true;
+  public static boolean ARM_PID                     = false;
   public static boolean CLIMB_PID                   = true;  // never change 
   public static boolean TOGGLE_SERVO_CLIMB_F        = true;
   public static boolean TOGGLE_SERVO_CLIMB_B        = true;
@@ -54,16 +56,18 @@ public class OI {
   public static JoystickButton gunner_button_RJ   	= new JoystickButton(gunner,10);
 
   // Servo position
-  public static boolean isSideArm                   = true;
+  public static boolean isSideArm      = true;
 
   // Boolean to tell if in autonomous period
   public static boolean isAutonomous = false;
 
   public OI() {
     driver_button_RB.whenPressed(new DriveForward());
-    driver_button_A.whileHeld(new AutoAlign());
+    //driver_button_A.whileHeld(new AutoAlign());
     //driver_button_X.whenPressed(new AutoClimb());
     driver_button_LB.whenPressed(new ReverseRobot());
+    driver_button_A.whileHeld(new StrafeRight());
+    driver_button_B.whileHeld(new StrafeLeft());
     
   }
 

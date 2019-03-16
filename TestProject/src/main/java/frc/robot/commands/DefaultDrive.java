@@ -81,14 +81,12 @@ public class DefaultDrive extends Command {
 
   @Override
   protected void execute() {
-
-
-    
     //System.out.println("Angle: " + Robot.drivercamera.getServo().get() + " | " + ROTATE_ROBOT);
-      
-    
-
     //if (!OI.LOCK_DRIVETRAIN) {
+
+  /* if (Robot.vision_sensors.leftLineTracker_ARM.getValue()  < TAPE_VALUE) {
+
+      }*/
 
       if (OI.isSideArm) {
         set_servo_angle(180);  // Rotate the servo to hatch side
@@ -97,7 +95,6 @@ public class DefaultDrive extends Command {
         set_servo_angle(0);
         invert_robot = 1;  // Invert the drivetrain
       }
-
       getInput(); // Fetches Joystick values
       doDead(); // Sets the DEADZONE value
       toPolar(); // Does calculations with Joystick values to drivetrain

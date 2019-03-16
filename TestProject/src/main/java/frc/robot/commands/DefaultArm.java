@@ -22,8 +22,8 @@ public class DefaultArm extends Command {
   private boolean bottom_limit_switch_hit;
 
   // PID values for limit switches
-  private int LOWER_LIMIT_SWITCH_VALUE = -155000;
-  private int UPPER_LIMIT_SWITCH_VALUE = 0;
+ // private int LOWER_LIMIT_SWITCH_VALUE = -155000;
+ // private int UPPER_LIMIT_SWITCH_VALUE = 0;
 
   // PID position variables
   private int MAX_POSITION = 500;  // Define to count at end of range of motion degrees
@@ -33,9 +33,8 @@ public class DefaultArm extends Command {
   //private double SHOOT_ANGLE = 250;  // Optimal shooting position for arm
 
   // PID speed variables (Increments)
-  private double PID_UP_SPEED = 17000;
-  private double PID_DOWN_SPEED = 17000;
-
+  private double PID_UP_SPEED = 100; // 17000
+  private double PID_DOWN_SPEED = 100; // 17000
   private double ARM_SPEED = 0.75;  // Define the NON-PID motor speed
   public static String ARM_STATUS = "";
   
@@ -74,7 +73,8 @@ public class DefaultArm extends Command {
       OI.ARM_PID = false;
     }
       if (OI.ARM_PID) {  // Only run PID code if variable in OI is true
-         // Add button listeners for arm angles
+        System.out.println(Robot.arm.getTalon().setSelectedSensorPosition(0));
+        // Add button listeners for arm angles
       setArmAngle(-204000.0, OI.gunner_button_B);
       //setArmAngle(-964, OI.gunner_button_B);
       //setArmAngle(-500, OI.gunner_button_X);

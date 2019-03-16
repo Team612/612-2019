@@ -22,14 +22,14 @@ public class LimitSwitchHelper {
     public boolean getArmTop(){
         return Robot.arm.getTalon().getSensorCollection().isFwdLimitSwitchClosed();
     }
-
+    /*
     public boolean getHatchFar(){//Guess
         return Robot.hatch.getTalon().getSensorCollection().isFwdLimitSwitchClosed();
     }
     public boolean getHatchClose(){//Guess
         return Robot.hatch.getTalon().getSensorCollection().isRevLimitSwitchClosed();
     }
-
+    */
     public boolean getClimbTopArm(){
         return Robot.climb.getTalon(1).getSensorCollection().isFwdLimitSwitchClosed();
     }

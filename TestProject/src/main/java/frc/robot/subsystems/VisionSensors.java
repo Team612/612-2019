@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.LinetrackerHelper;
 
 public class VisionSensors extends Subsystem {
   
@@ -45,6 +46,7 @@ public class VisionSensors extends Subsystem {
   }
   @Override
   public void initDefaultCommand() {
+    setDefaultCommand(new LinetrackerHelper());
     //ultrasonic_ARM.setAutomaticMode(true);
    //ultrasonic_HATCH.setAutomaticMode(true);
   }
