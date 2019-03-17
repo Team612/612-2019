@@ -16,11 +16,14 @@ import frc.robot.RobotMap;
 import frc.robot.commands.DefaultFly;
 
 public class FlyWheel extends Subsystem {
-  public static boolean BALL_IN_INTAKE = false;
-  private WPI_TalonSRX flyer = new WPI_TalonSRX(RobotMap.TALON_PORT_FLY);  // Create flywheel talon
-  public static DigitalInput push_button = new DigitalInput(RobotMap.DIO_PORT);
 
-  public FlyWheel(){
+  public static boolean BALL_IN_INTAKE = false;  // Define sensor state boolean for intake
+
+  private WPI_TalonSRX flyer = new WPI_TalonSRX(RobotMap.TALON_PORT_FLY);  // Construct new flywheel talon
+
+  public static DigitalInput push_button = new DigitalInput(RobotMap.DIO_PORT); // Construct intake button
+
+  public FlyWheel() {
     flyer.setInverted(true);  // Set the talon to run to reverse direction
   }
 
@@ -35,9 +38,9 @@ public class FlyWheel extends Subsystem {
   @Override
   public void initDefaultCommand() {
 
-    flyer.setNeutralMode(NeutralMode.Brake);
-
+    flyer.setNeutralMode(NeutralMode.Brake);  // Set the flyer talon in break mode
     setDefaultCommand(new DefaultFly());  // Set the flywheel as a default command
+
   }
 
 }

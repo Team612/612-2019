@@ -32,6 +32,7 @@ public class Arm extends Subsystem {
   }
 
   private void configure_arm(WPI_TalonSRX talon) {
+
     talon_arm.setInverted(false);
     talon_arm.setNeutralMode(NeutralMode.Brake);  // Set talon arm to break mode
     talon_arm.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 100);
@@ -46,7 +47,7 @@ public class Arm extends Subsystem {
   @Override
   public void initDefaultCommand() {
 
-    configure_arm(talon_arm);  // Call the configure arm method
+    configure_arm(talon_arm);  // Call the configure arm method for PID values
     setDefaultCommand(new DefaultArm());  // Set the ArmMover as a default command
 
   }

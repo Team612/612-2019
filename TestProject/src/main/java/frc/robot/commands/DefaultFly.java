@@ -7,7 +7,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
@@ -16,14 +15,10 @@ import frc.robot.subsystems.FlyWheel;
 
 public class DefaultFly extends Command {
 
-
-  private final double DEADZONE = 0;  // Define the controller DEADZONE
-
   private boolean bottom_limit_switch_hit;  // Initialize the bottom limit switch boolean for arm
   
-  private double flywheel_speed = .40;  // Variable to store flywheel motor speed
-
-  public static String FLYWHEEL_STATUS = "";
+  private double INTAKE_SPEED = .40;  // Variable to store flywheel intake motor speed
+  private double OUTTAKE_SPEED = .40;  // Variable to store flywheel outtake motor speed
 
   public DefaultFly() {
     requires(Robot.flyWheel);  // Requires FlyWheel Object
@@ -36,47 +31,33 @@ public class DefaultFly extends Command {
 
   @Override
   protected void execute() {
-  // System.out.println(Robot.flyWheel.getButton().get());
 
     bottom_limit_switch_hit = Robot.limit_switch.getArmBottom();  // Boolean to store bottom arm limit switch
 
-    if (OI.gunner_button_LB.get() ){  // If the button is pressed and the user presses LB, push the ball out
-      Robot.flyWheel.getTalon().set(1);  // Run the motors to push out the ball
-      FlyWheel.BALL_IN_INTAKE = false;
-    } else if(bottom_limit_switch_hit && OI.gunner_button_RB.get() ){
-      if(FlyWheel.push_button.get() && !FlyWheel.BALL_IN_INTAKE){
-        //BALL_IN_FLY = false;
-        Robot.flyWheel.getTalon().set(flywheel_speed * -1);
+    if (OI.gunner_button_LB.get()) {  // If the button is pressed and the user presses LB, push the ball out
+
+      Robot.flyWheel.getTalon().set(OUTTAKE_SPEED);  // Run the motors to push out the ball
+      FlyWheel.BALL_IN_INTAKE = false;  // Sensor state of intake (Ball is not in)
+
+    } else if (bottom_limit_switch_hit && OI.gunner_button_RB.get()) {  // Only allow intake when at bottom limit switch is hit
+
+      if (Robot.flyWheel.getButton().get() && !FlyWheel.BALL_IN_INTAKE) {  // If the ball is not button is hit, only allow outtake
+
+        Robot.flyWheel.getTalon().set(INTAKE_SPEED * -1);
         
-      } else{
+      } else {  // Else, dont allow intake
+
         Robot.flyWheel.getTalon().set(0);
         FlyWheel.BALL_IN_INTAKE = true;
-        FLYWHEEL_STATUS = "BALL IN";
-      }
-    } else{
-      FlyWheel.BALL_IN_INTAKE = false;
-      FLYWHEEL_STATUS = "BALL OUT"; 
-      Robot.flyWheel.getTalon().set(0);
-    }
 
-    /*if (!Robot.flyWheel.getButton().get()) {  // If the the ball is not touching the button allow for intake
-      if (bottom_limit_switch_hit && OI.gunner_button_LB.get() && !BALL_IN_FLY) {  // If the arm is at the bottom position and the intake button is pressed enable intake
-        Robot.flyWheel.getTalon().set(flywheel_speed);  // Run the motors to intake the ball
       }
-    } else if (OI.gunner_button_RB.get() ){  // If the button is pressed and the user presses RB, push the ball out
-      Robot.flyWheel.getTalon().set(flywheel_speed * -1);  // Run the motors to push out the ball
-      BALL_IN_FLY = true;
-    } else {
-      BALL_IN_FLY = false;
-      if (OI.gunner_button_LB.get()) {  // If the ball is in the intake and gunner attempts to pull ball in, rumble
-        OI.gunner.setRumble(RumbleType.kLeftRumble, 1);
-        OI.gunner.setRumble(RumbleType.kRightRumble, 1); 
-      } else {
-        OI.gunner.setRumble(RumbleType.kLeftRumble, 0);
-        OI.gunner.setRumble(RumbleType.kRightRumble, 0); 
-      }
-      Robot.flyWheel.getTalon().set(0);  // Don't allow for motors to run
-    }*/
+
+    } else {  // If nothing is moved, set the speed to 0
+
+      FlyWheel.BALL_IN_INTAKE = false;
+      Robot.flyWheel.getTalon().set(0);
+
+    }
 
   }
 

@@ -31,23 +31,22 @@ public class VisionSensors extends Subsystem {
   public Ultrasonic ultrasonic_HATCH = new Ultrasonic(RobotMap.PING_CHANNEL_HATCH, RobotMap.ECHO_CHANNEL_HATCH);
   public Ultrasonic ultrasonic_ARM = new Ultrasonic(RobotMap.PING_CHANNEL_ARM, RobotMap.ECHO_CHANNEL_ARM);
   
-
-  // NAVX 
+  // Construct Navx Oject
   AHRS navx = new AHRS(I2C.Port.kMXP);
 
-  public void setActiveUltrasonic(int num){//1 for hatch
-   if(num == 1){
-    ultrasonic_ARM.setAutomaticMode(false);
-    ultrasonic_HATCH.setAutomaticMode(true);
-   } else{
-    ultrasonic_HATCH.setAutomaticMode(false);
-    ultrasonic_ARM.setAutomaticMode(true);
-   }
+  public void setActiveUltrasonic(int num){  // 1: Hatch, else, Arm
+    if (num == 1) {
+      ultrasonic_ARM.setAutomaticMode(false);
+      ultrasonic_HATCH.setAutomaticMode(true);
+    } else {
+      ultrasonic_HATCH.setAutomaticMode(false);
+      ultrasonic_ARM.setAutomaticMode(true);
+    }
   }
+
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new LinetrackerHelper());
-    //ultrasonic_ARM.setAutomaticMode(true);
-   //ultrasonic_HATCH.setAutomaticMode(true);
   }
+
 }

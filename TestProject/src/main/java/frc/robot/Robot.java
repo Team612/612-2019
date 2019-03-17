@@ -9,7 +9,6 @@ package frc.robot;
 
 import javax.sound.sampled.Line;
 
-import edu.wpi.cscore.CameraServerJNI;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -30,10 +29,13 @@ import frc.robot.commands.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static Brotate brotate = new Brotate();
 
-  //endosocope camera 
+  // Hatch Subsystem
+  public static Hatch hatch = new Hatch();
+
+  // Initialize endoscope camera server
   public static CameraServer endosocope;
+
   // Drivetrain object
   public static Drivetrain drivetrain = new Drivetrain();
 
@@ -58,7 +60,8 @@ public class Robot extends TimedRobot {
 
   // OI object
   public static OI m_oi;
-
+  
+  // Vision Listeners
   //public static VisionListen vision_listen_arm = new VisionListen("VisionTable_ARM");
   //public static VisionListen vision_listen_hatch = new VisionListen("VisionTable_HATCH");
 
@@ -68,17 +71,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+
     endosocope.getInstance().startAutomaticCapture();
     shuffleMain();
     m_oi = new OI();  // Create an object of OI
-    /*vision_listen_hatch.read_vision();
-    vision_listen_arm.read_vision();*/
-   // linetracker.ultrasonic_ARM.setAutomaticMode(true);
-    //linetracker.ultrasonic_ARM.setEnabled(true);
-   //linetracker.ultrasonic_HATCH.setAutomaticMode(true);
-   //linetracker.ultrasonic_HATCH.setAutomaticMode(true);
-   //linetracker.ultrasonic_HATCH.setEnabled(true);
-   
+
+    // Activate Vision Listeners
+    /*
+    vision_listen_hatch.read_vision();
+    vision_listen_arm.read_vision();
+    */
     
   }
 
@@ -86,7 +88,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     //shuffleMain();
-   // shuffleTest();
+    // shuffleTest();
   }
 
 
@@ -102,6 +104,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+
     Arm.target = Robot.arm.getTalon().getSelectedSensorPosition(0);  // Set the arm target to lowest position at beginning of the round
     OI.isAutonomous = true;  // Set is autonomous boolean to true
 
@@ -141,37 +144,33 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   }
 
-  private void shuffleMain(){
+  private void shuffleMain() {  // ShuffleBoard setup for competition
    
     SmartDashboard.putBoolean("Ball In Intake", FlyWheel.BALL_IN_INTAKE);
+    SmartDashboard.putBoolean("ARM PID", OI.ARM_PID); 
+    SmartDashboard.putString("AUTO ALIGNMENT", AutoAlign.AUTO_ALIGNMENT_STATUS); // LOGIC NEEDS TO BE WRITTEN IN AutoAlign.java
+    // SmartDashboard.putString("ROBOT ORIENTATION", ReverseRobot.ROBOT_ORIENTATION);
 
-         SmartDashboard.putBoolean("ARM PID", OI.ARM_PID); 
-    
-         SmartDashboard.putString("ARM STATUS", DefaultArm.ARM_STATUS);
-         SmartDashboard.putString("FLYWHEEL STATUS", DefaultFly.FLYWHEEL_STATUS);
-         SmartDashboard.putString("HATCH SIDE CLIMB STATUS", DefaultClimb.HATCH_SIDE_CLIMB_STATUS);
-         SmartDashboard.putString("ARM SIDE CLIMB STATUS", DefaultClimb.ARM_SIDE_CLIMB_STATUS);
-           // SmartDashboard.putString("HATCH STATUS", DefaultHatch.HATCH_STATUS);
-         
-       //SmartDashboard.putString("ROBOT ORIENTATION", ReverseRobot.ROBOT_ORIENTATION);
-       SmartDashboard.putString("AUTO ALIGN%MENT", AutoAlign.AUTO_ALIGNMENT_STATUS); // LOGIC NEEDS TO BE WRITTEN IN AutoAlign.java
-    try{
-      
-    //SmartDashboard.putBoolean("ROCKET LEVEL 1",);
-    //SmartDashboard.putBoolean("ROCKET LEVEL 2",);
-    //SmartDashboard.putBoolean("CARGO SHIP",);
+    try {  
+      // SmartDashboard.putBoolean("ROCKET LEVEL 1",);
+      // SmartDashboard.putBoolean("ROCKET LEVEL 2",);
+      // SmartDashboard.putBoolean("CARGO SHIP",);
+    } catch(Exception e) {
+
     }
-    catch(Exception e){}
+
   }
 
-  private void shuffleTest(){
-    SmartDashboard.putNumber("ARM GET VALUE",arm.getTalon().getMotorOutputPercent());
+  private void shuffleTest() {  // Shuffleboard setup for testing
+
+    SmartDashboard.putNumber("ARM GET VALUE", arm.getTalon().getMotorOutputPercent());
     /* -- SHUFFLE BOARD DATA -- */
-    /*
+
     // Hatch Limit Switches
-    SmartDashboard.putBoolean("Hatch FAR",limit_switch.getHatchFar());
+    /*
+    SmartDashboard.putBoolean("Hatch FAR", limit_switch.getHatchFar());
     SmartDashboard.putBoolean("Hatch CLOSE", limit_switch.getHatchClose());
-/*
+    /*
     SmartDashboard.putBoolean("Ball", FlyWheel.push_button.get());
     */
     // Arm Limit Switches
@@ -183,19 +182,19 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Climb ARM BOTTOM", limit_switch.getClimbBottomArm());
     SmartDashboard.putBoolean("Climb HATCH TOP", limit_switch.getClimbTopHatch());
     SmartDashboard.putBoolean("Climb HATCH BOTTOM", limit_switch.getClimbBottomHatch());
-/*
+    /*
     // NavX Data Values
     SmartDashboard.putNumber("NavX ANGLE ", Robot.climb.getNavX().getAngle());
     SmartDashboard.putNumber("NavX ROLL ", Robot.climb.getNavX().getRoll());
     SmartDashboard.putNumber("NavX PITCH ", Robot.climb.getNavX().getPitch());
-*/
+    */
     // Values For Arm Data
     SmartDashboard.putNumber("Arm PID Target", Arm.target);
       SmartDashboard.putNumber("Arm Encoder Position", Robot.arm.getTalon().getSelectedSensorPosition(0));
     //ultrasonics 
     SmartDashboard.putNumber("ULTRASONIC ARM", vision_sensors.ultrasonic_ARM.getRangeInches());
     SmartDashboard.putNumber("ULTRASONIC HATCH", vision_sensors.ultrasonic_ARM.getRangeInches());
-//
+    //
     // Values For Climb Data
     SmartDashboard.putNumber("PHASE ", Climb.phase);
     SmartDashboard.putNumber("Climb Arm PID Target", Climb.target_arm);
@@ -240,6 +239,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Line Tracker Hatch Middle", linetracker.centerLineTracker_HATCH.getAverageVoltage());
     SmartDashboard.putNumber("Line Tracker Hatch Right", linetracker.rightLineTracker_HATCH.getAverageVoltage());
     */
+    
   }
 
 

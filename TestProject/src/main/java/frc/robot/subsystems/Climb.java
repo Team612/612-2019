@@ -72,11 +72,17 @@ public class Climb extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
+
+    // Configure PID values for each talon
     configure_arm(lift_talonHatch);
     configure_arm(lift_talonArm);
+
+    // Set mode to break
     lift_talonHatch.setNeutralMode(NeutralMode.Brake);  // Set talon arm to break mode
     lift_talonArm.setNeutralMode(NeutralMode.Brake);  // Set talon arm to break mode
-    setDefaultCommand(new DefaultClimb());
+
+    setDefaultCommand(new DefaultClimb());  // Set Climb as default command
+
   }
 
 }

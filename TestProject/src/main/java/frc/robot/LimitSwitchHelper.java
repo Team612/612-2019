@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-
 import frc.robot.Robot;
 
 /**
@@ -15,7 +14,7 @@ import frc.robot.Robot;
  */
 public class LimitSwitchHelper {
 
-    LimitSwitchHelper(){}
+    public LimitSwitchHelper(){}
     public boolean getArmBottom(){
         return Robot.arm.getTalon().getSensorCollection().isRevLimitSwitchClosed();
     }

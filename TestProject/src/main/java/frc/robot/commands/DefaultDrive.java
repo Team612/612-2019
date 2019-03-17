@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 public class DefaultDrive extends Command {
-  public static String ROBOT_ORIENTATION = "";//for smartdashboard
 
   private final double DEADZONE = 0.2;  // Define controller deadzone
 
@@ -28,7 +28,6 @@ public class DefaultDrive extends Command {
 
   public static int invert_robot = 1;  // Integer to invert the robot
 
-
   public DefaultDrive() {
     requires(Robot.drivetrain);  // Require the drivetrain object
   }
@@ -38,7 +37,6 @@ public class DefaultDrive extends Command {
   protected void initialize() {
   }
 
-
   protected void getInput() {  // Fetch the Joystick values, apply inversion if neccesary
 
     direction_y = OI.driver.getY(Hand.kLeft) * invert_robot;
@@ -47,7 +45,6 @@ public class DefaultDrive extends Command {
 
   }
 
-  // Called repeatedly when this Command is scheduled to run
   protected void doDead() {  // Calculate the DEADZONE of the direction values
 
     if(Math.abs(direction_x) < DEADZONE){
@@ -62,7 +59,6 @@ public class DefaultDrive extends Command {
 
   }
 
-
   protected void toPolar() {  // Calculate the Magnitude & Angle of the Mechanum drive
 
     magnitude = Math.sqrt((direction_x * direction_x) + (direction_y * direction_y)); // sqrt(X^2 + Y^2)
@@ -73,20 +69,24 @@ public class DefaultDrive extends Command {
 
   }
  
-
-
   protected void set_servo_angle(double angle) {  // Function that will rotate camera servo to specified degree
     Robot.drivercamera.getServo().set(angle);;
   }
 
   @Override
   protected void execute() {
-    //System.out.println("Angle: " + Robot.drivercamera.getServo().get() + " | " + ROTATE_ROBOT);
-    //if (!OI.LOCK_DRIVETRAIN) {
 
-  /* if (Robot.vision_sensors.leftLineTracker_ARM.getValue()  < TAPE_VALUE) {
-
-      }*/
+      // Set rumble of controllers based on linetracker values
+      if (LinetrackerHelper.center_linetracker_triggered) {  // If the center line tracker is triggered, rumble
+        OI.driver.setRumble(RumbleType.kLeftRumble, 0.3);
+        OI.driver.setRumble(RumbleType.kRightRumble, 0.3); 
+      } else if (LinetrackerHelper.right_linetracker_triggered || LinetrackerHelper.left_linetracker_triggered) {  // If the right/left line tracker is triggered, rumble a little less
+        OI.driver.setRumble(RumbleType.kLeftRumble, 0.1);
+        OI.driver.setRumble(RumbleType.kRightRumble, 0.1); 
+      } else {  // Else, don't rumble
+        OI.driver.setRumble(RumbleType.kLeftRumble, 0);
+        OI.driver.setRumble(RumbleType.kRightRumble, 0); 
+      }
 
       if (OI.isSideArm) {
         set_servo_angle(180);  // Rotate the servo to hatch side
@@ -95,16 +95,14 @@ public class DefaultDrive extends Command {
         set_servo_angle(0);
         invert_robot = 1;  // Invert the drivetrain
       }
+
       getInput(); // Fetches Joystick values
       doDead(); // Sets the DEADZONE value
       toPolar(); // Does calculations with Joystick values to drivetrain
 
       Robot.drivetrain.getDriveTrain().drivePolar(magnitude, angle, rotation); // Pass the calculated drive data into the drivetrain
-  } /*else {
-      Robot.drivetrain.getDriveTrain().drivePolar(0, 0, 0); // Set the robot's wheels to 0
-    }*/
-    
-  //}
+  
+  }
 
   @Override
   protected boolean isFinished() {
@@ -118,4 +116,5 @@ public class DefaultDrive extends Command {
   @Override
   protected void interrupted() {
   }
+  
 }

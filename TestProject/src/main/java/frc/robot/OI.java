@@ -56,18 +56,19 @@ public class OI {
   public static JoystickButton gunner_button_RJ   	= new JoystickButton(gunner,10);
 
   // Servo position
-  public static boolean isSideArm      = true;
+  public static boolean isSideArm                   = true;
 
   // Boolean to tell if in autonomous period
-  public static boolean isAutonomous = false;
+  public static boolean isAutonomous                = false;
 
   public OI() {
+
     driver_button_RB.whenPressed(new DriveForward());
-    //driver_button_A.whileHeld(new AutoAlign());
-    //driver_button_X.whenPressed(new AutoClimb());
     driver_button_LB.whenPressed(new ReverseRobot());
     driver_button_A.whileHeld(new StrafeRight());
     driver_button_B.whileHeld(new StrafeLeft());
+    //driver_button_A.whileHeld(new AutoAlign());
+    //driver_button_X.whenPressed(new AutoClimb());
     
   }
 
