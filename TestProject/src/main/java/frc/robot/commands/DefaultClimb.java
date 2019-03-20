@@ -23,6 +23,8 @@ public class DefaultClimb extends Command {
   private final double HATCH_PID_SPEED = 1000;
   private final double ARM_PID_SPEED = 1000;
 
+  private final int target_deadband = 10;
+
   // Limit switch status booleans
   private boolean limit_switch_top_arm;
   private boolean limit_switch_bottom_arm;
@@ -55,6 +57,9 @@ public class DefaultClimb extends Command {
     double left_joytick_value = OI.gunner.getY(Hand.kRight) * -1;
     double right_joytick_value = OI.gunner.getY(Hand.kLeft) * -1;
 
+    double arm_encoder_position = Robot.climb.getTalon(1).getSelectedSensorPosition(0);
+    double hatch_encoder_position = Robot.climb.getTalon(0).getSelectedSensorPosition(0);
+
     if (OI.CLIMB_PID) {  // If PID is enabled
       
       if (Math.abs(right_joytick_value) > DEADZONE) {  // PID code for hatch side climb
@@ -85,9 +90,20 @@ public class DefaultClimb extends Command {
 
       }
 
-      // Set the PID climb targets
-      Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
-      Robot.climb.getTalon(1).set(ControlMode.Position, Climb.target_arm);
+      double difference_arm = Math.abs(Climb.target_arm - arm_encoder_position);
+      double difference_hatch = Math.abs(Climb.target_hatch - hatch_encoder_position);
+
+      if (difference_arm < target_deadband) {
+
+      } else {
+        Robot.climb.getTalon(1).set(ControlMode.Position, Climb.target_arm);
+      }
+
+      if (difference_hatch < target_deadband) {
+
+      } else {
+        Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
+      }
 
     } else {  // If PID is not enabled
 
