@@ -59,21 +59,33 @@ public class Robot extends TimedRobot {
   public static LimitSwitchHelper limit_switch = new LimitSwitchHelper();
 
   // OI object
+  private int choice = 99; 
   public static OI m_oi;
   
+  public static RGBInterface rgbinterface = new RGBInterface();
+  RealRGB RGB = new RealRGB(); 
   // Vision Listeners
   //public static VisionListen vision_listen_arm = new VisionListen("VisionTable_ARM");
   //public static VisionListen vision_listen_hatch = new VisionListen("VisionTable_HATCH");
 
   // MISC
   Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  public static SendableChooser<Integer> m_chooser = new SendableChooser<>();
 
   @Override
   public void robotInit() {
 
+
     endosocope.getInstance().startAutomaticCapture();
+
     shuffleMain();
+    m_chooser.setDefaultOption("Fade", 1);
+    m_chooser.addOption("Red", 2);
+    m_chooser.addOption("Blue", 3);
+    m_chooser.addOption("Purple", 4);
+    m_chooser.addOption("random", 5);
+    // chooser.addOption("My Auto", new MyAutoCommand());
+    SmartDashboard.putData("Led ROB", m_chooser);
     m_oi = new OI();  // Create an object of OI
 
     // Activate Vision Listeners
@@ -100,6 +112,10 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
+    if(choice != m_chooser.getSelected().intValue()){
+      RGB.run();
+    }
+    choice = m_chooser.getSelected().intValue();
   }
 
   @Override
@@ -108,7 +124,7 @@ public class Robot extends TimedRobot {
     Arm.target = Robot.arm.getTalon().getSelectedSensorPosition(0);  // Set the arm target to lowest position at beginning of the round
     OI.isAutonomous = true;  // Set is autonomous boolean to true
 
-    m_autonomousCommand = m_chooser.getSelected();
+   // m_autonomousCommand = m_chooser.getSelected();
     if (m_autonomousCommand != null) {  // Start autonomous (No autonomous this year)
       m_autonomousCommand.start();
     }
@@ -120,7 +136,10 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     shuffleMain();
     Scheduler.getInstance().run();
-    
+    if(choice != m_chooser.getSelected().intValue()){
+      RGB.run();
+    }
+    choice = m_chooser.getSelected().intValue();
   }
 
 
@@ -142,6 +161,10 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     shuffleTest();
     Scheduler.getInstance().run();
+    if(choice != m_chooser.getSelected().intValue()){
+      RGB.run();
+    }
+    choice = m_chooser.getSelected().intValue();
   }
 
   private void shuffleMain() {  // ShuffleBoard setup for competition
@@ -164,15 +187,18 @@ public class Robot extends TimedRobot {
   private void shuffleTest() {  // Shuffleboard setup for testing
 
     SmartDashboard.putNumber("ARM GET VALUE", arm.getTalon().getMotorOutputPercent());
+    SmartDashboard.putBoolean("Ball", FlyWheel.push_button.get());
+    SmartDashboard.putNumber("INTAKE SPEED ", DefaultFly.INTAKE_SPEED);
+
     /* -- SHUFFLE BOARD DATA -- */
 
     // Hatch Limit Switches
     /*
     SmartDashboard.putBoolean("Hatch FAR", limit_switch.getHatchFar());
     SmartDashboard.putBoolean("Hatch CLOSE", limit_switch.getHatchClose());
-    /*
+    
     SmartDashboard.putBoolean("Ball", FlyWheel.push_button.get());
-    */
+    
     // Arm Limit Switches
     SmartDashboard.putBoolean("Arm TOP", limit_switch.getArmTop());
     SmartDashboard.putBoolean("Arm BOTTOM", limit_switch.getArmBottom());

@@ -78,14 +78,14 @@ public class DefaultDrive extends Command {
 
       // Set rumble of controllers based on linetracker values
       if (LinetrackerHelper.center_linetracker_triggered) {  // If the center line tracker is triggered, rumble
-        OI.driver.setRumble(RumbleType.kLeftRumble, 0.3);
-        OI.driver.setRumble(RumbleType.kRightRumble, 0.3); 
+        //OI.driver.setRumble(RumbleType.kLeftRumble, 0.3);
+        //OI.driver.setRumble(RumbleType.kRightRumble, 0.3); 
       } else if (LinetrackerHelper.right_linetracker_triggered || LinetrackerHelper.left_linetracker_triggered) {  // If the right/left line tracker is triggered, rumble a little less
-        OI.driver.setRumble(RumbleType.kLeftRumble, 0.1);
-        OI.driver.setRumble(RumbleType.kRightRumble, 0.1); 
+        //OI.driver.setRumble(RumbleType.kLeftRumble, 0.1);
+        //OI.driver.setRumble(RumbleType.kRightRumble, 0.1); 
       } else {  // Else, don't rumble
-        OI.driver.setRumble(RumbleType.kLeftRumble, 0);
-        OI.driver.setRumble(RumbleType.kRightRumble, 0); 
+        //OI.driver.setRumble(RumbleType.kLeftRumble, 0);
+        //OI.driver.setRumble(RumbleType.kRightRumble, 0); 
       }
 
       if (OI.isSideArm) {

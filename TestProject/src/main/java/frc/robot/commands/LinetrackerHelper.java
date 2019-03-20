@@ -47,11 +47,11 @@ public class LinetrackerHelper extends Command {
 
     }
 
-    /*
+    
     System.out.println(Robot.vision_sensors.leftLineTracker_ARM.getValue() + " | " + Robot.vision_sensors.centerLineTracker_ARM.getValue() + " | " + Robot.vision_sensors.rightLineTracker_ARM.getValue());
     System.out.println(Robot.vision_sensors.leftLineTracker_HATCH.getValue() + " | " + Robot.vision_sensors.centerLineTracker_HATCH.getValue() + " | " + Robot.vision_sensors.rightLineTracker_HATCH.getValue());
     System.out.println("---------");
-    */
+
 
   }
 
