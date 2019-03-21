@@ -8,6 +8,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -45,6 +46,12 @@ public class Drivetrain extends Subsystem {
   }
 
   public MecanumDrive getDriveTrain() {
+    talon_FL.setNeutralMode(NeutralMode.Brake);  // Set talon arm to break mode
+    talon_FR.setNeutralMode(NeutralMode.Brake);  // Set talon arm to break mode
+    talon_BL.setNeutralMode(NeutralMode.Brake);  // Set talon arm to break mode
+    talon_BR.setNeutralMode(NeutralMode.Brake);  // Set talon arm to break mode
+
+
       return drivetrain;
   }
 

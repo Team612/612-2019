@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Servo;
@@ -36,6 +37,7 @@ public class Hatch extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
+    hatchTalon.setNeutralMode(NeutralMode.Coast);  // Set talon arm to break mode
     // Set the default command for a subsystem here.
     setDefaultCommand(new DefaultHatch());
   }
