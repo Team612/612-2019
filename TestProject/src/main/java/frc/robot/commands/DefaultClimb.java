@@ -93,15 +93,11 @@ public class DefaultClimb extends Command {
       double difference_arm = Math.abs(Climb.target_arm - arm_encoder_position);
       double difference_hatch = Math.abs(Climb.target_hatch - hatch_encoder_position);
 
-      if (difference_arm < target_deadband) {
-
-      } else {
+      if (difference_arm > target_deadband) {
         Robot.climb.getTalon(1).set(ControlMode.Position, Climb.target_arm);
       }
 
-      if (difference_hatch < target_deadband) {
-
-      } else {
+      if (difference_hatch > target_deadband) {
         Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
       }
 
