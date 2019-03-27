@@ -20,16 +20,19 @@ public class DefaultClimb extends Command {
   private final double DEADZONE = 0.2;  // Define joystick DEADZONE
 
   // Cimb side speeds
-  private final double HATCH_PID_SPEED = 1000;
-  private final double ARM_PID_SPEED = 1000;
+  private final double HATCH_PID_SPEED = 1900;
+  private final double ARM_PID_SPEED = 1900;
 
-  private final int target_deadband = 10;
+  private final int target_deadband = 50;
 
   // Limit switch status booleans
   private boolean limit_switch_top_arm;
   private boolean limit_switch_bottom_arm;
   private boolean limit_switch_top_hatch;
   private boolean limit_switch_bottom_hatch;
+
+  boolean NO_JOYSTICK_PRESS_HATCH = false;
+  boolean NO_JOYSTICK_PRESS_ARM = false;
 
   public DefaultClimb() {
     requires(Robot.climb);  // Require the climb subsystem
@@ -57,68 +60,88 @@ public class DefaultClimb extends Command {
     double left_joytick_value = OI.gunner.getY(Hand.kRight) * -1;
     double right_joytick_value = OI.gunner.getY(Hand.kLeft) * -1;
 
-    double arm_encoder_position = Robot.climb.getTalon(1).getSelectedSensorPosition(0);
-    double hatch_encoder_position = Robot.climb.getTalon(0).getSelectedSensorPosition(0);
+    int arm_encoder_position = Robot.climb.getTalon(1).getSelectedSensorPosition(0);
+    int hatch_encoder_position = Robot.climb.getTalon(0).getSelectedSensorPosition(0);
 
     if (OI.CLIMB_PID) {  // If PID is enabled
       
       if (Math.abs(right_joytick_value) > DEADZONE) {  // PID code for hatch side climb
+        NO_JOYSTICK_PRESS_HATCH = true;
 
         if(limit_switch_top_hatch && right_joytick_value > 0) {  // If at top limit switch and still trying to go up, don't change target
-        
+          Climb.target_hatch = hatch_encoder_position;
+          Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
+          System.out.println("TOP AND UP");
         } else if (limit_switch_bottom_hatch && right_joytick_value < 0) {  // If at bottom limit switch and still trying to go down, don't change target
-        
+          Climb.target_hatch = hatch_encoder_position;
+          Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
+          System.out.println("BOTTOM AND DOWN");
+
         } else {
-
-          Climb.target_hatch += right_joytick_value * HATCH_PID_SPEED;  // Adjust climb target based on trigger value
-
+          Climb.target_hatch  += right_joytick_value * HATCH_PID_SPEED;  // Adjust climb target based on trigger value
+          Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
+          System.out.println("REGULER");
         }
 
+      } else if (NO_JOYSTICK_PRESS_HATCH) {
+        System.out.println("ONE TIME");
+        Climb.target_hatch = hatch_encoder_position;
+        Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
+        NO_JOYSTICK_PRESS_HATCH = false;
       }
 
-      if (Math.abs(right_joytick_value) > DEADZONE) {  // PID code for arm side climb (Same as above)
-
+      if (Math.abs(left_joytick_value) > DEADZONE) {  // PID code for arm side climb (Same as above)
+        NO_JOYSTICK_PRESS_ARM = true;
         if(limit_switch_top_arm && left_joytick_value > 0) {  // If at top limit switch and still trying to go up, don't change target
-        
+        Climb.target_arm = arm_encoder_position;
+        Robot.climb.getTalon(1).set(ControlMode.Position, Climb.target_arm);
         } else if (limit_switch_bottom_arm && left_joytick_value < 0) {  // If at bottom limit switch and still trying to go down, don't change target
-        
+          Climb.target_arm = arm_encoder_position;
+          Robot.climb.getTalon(1).set(ControlMode.Position, Climb.target_arm);
         } else {
-
           Climb.target_arm += left_joytick_value * ARM_PID_SPEED;  // Adjust climb target based on trigger value
+          Robot.climb.getTalon(1).set(ControlMode.Position, Climb.target_arm);
 
         }
 
+      } else if (NO_JOYSTICK_PRESS_ARM) {
+        Climb.target_arm = arm_encoder_position;
+        Robot.climb.getTalon(1).set(ControlMode.Position, Climb.target_arm);
+        NO_JOYSTICK_PRESS_ARM = false;
       }
+      
+      
+      /*
+      double difference_arm = Math.abs(Math.abs(Climb.target_arm) - Math.abs(arm_encoder_position));
+      double difference_hatch =  Math.abs(Math.abs(Climb.target_hatch) - Math.abs(hatch_encoder_position));
 
-      double difference_arm = Math.abs(Climb.target_arm - arm_encoder_position);
-      double difference_hatch = Math.abs(Climb.target_hatch - hatch_encoder_position);
+      System.out.println(difference_arm);
+      System.out.println(difference_hatch);
+      System.out.println();
 
-      if (difference_arm > target_deadband) {
+      if (Math.abs(difference_arm) > target_deadband) {
         Robot.climb.getTalon(1).set(ControlMode.Position, Climb.target_arm);
       }
 
       if (difference_hatch > target_deadband) {
         Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
       }
+      */
 
     } else {  // If PID is not enabled
 
       // Left joystick button controls the HATCH side
-      if (left_joytick_value > DEADZONE) {  // If the joystick value is positive
-        Robot.climb.getTalon(0).set(ControlMode.PercentOutput, left_joytick_value);  // Set the motor to joystick value
-      } else if (left_joytick_value < DEADZONE) {  // If the joystick value is negative
-        Robot.climb.getTalon(0).set(ControlMode.PercentOutput, left_joytick_value);  // Set the motor to joystick value
+      if (Math.abs(left_joytick_value) > DEADZONE) {  // If the joystick value is positive
+        Robot.climb.getTalon(1).set(ControlMode.PercentOutput, left_joytick_value);  // Set the motor to joystick value
       } else {
-        Robot.climb.getTalon(0).set(ControlMode.PercentOutput, 0);  // Stop the motors if no joystick values
+        Robot.climb.getTalon(1).set(ControlMode.PercentOutput, 0);  // Stop the motors if no joystick values
       }
       
       // Right joystick button controls the ARM side
-      if (right_joytick_value > DEADZONE) {  // If the joystick value is positive
-        Robot.climb.getTalon(1).set(ControlMode.PercentOutput, right_joytick_value);  // Set the motor to joystick value
-      } else if (right_joytick_value < DEADZONE) {  // If the joystick value is negative
-        Robot.climb.getTalon(1).set(ControlMode.PercentOutput, right_joytick_value);  // Set the motor to joystick value
+      if (Math.abs(right_joytick_value) > DEADZONE) {  // If the joystick value is positive
+        Robot.climb.getTalon(0).set(ControlMode.PercentOutput, right_joytick_value);  // Set the motor to joystick value
       } else {
-        Robot.climb.getTalon(1).set(ControlMode.PercentOutput, 0);  // Stop the motors if no joystick values
+        Robot.climb.getTalon(0).set(ControlMode.PercentOutput, 0);  // Stop the motors if no joystick values
       }
 
     }

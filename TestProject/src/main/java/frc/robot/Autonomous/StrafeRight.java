@@ -13,7 +13,6 @@ import frc.robot.Robot;
 import frc.robot.commands.LinetrackerHelper;
 
 public class StrafeRight extends Command {
-  int TAPE_VALUE = 3750;
   double STRAFE_SPEED = .5;
   int direction = 1;
 
@@ -32,23 +31,31 @@ public class StrafeRight extends Command {
   @Override
   protected void execute() {
 
+   
     /*System.out.println(Robot.vision_sensors.centerLineTracker_HATCH.getAverageValue());
     System.out.println(TAPE_VALUE);
     System.out.println("-------");*/
     if(OI.isSideArm){
+      /*
+       right_linetracker_triggered = Robot.vision_sensors.rightLineTracker_ARM.getValue() < TAPE_VALUE_ARM;
+       center_linetracker_triggered = Robot.vision_sensors.centerLineTracker_ARM.getValue() < TAPE_VALUE_ARM;
+       left_linetracker_triggered = Robot.vision_sensors.leftLineTracker_ARM.getValue() < TAPE_VALUE_ARM;
+       */
        direction = -1;
       }else{
+        /*
+        right_linetracker_triggered = Robot.vision_sensors.rightLineTracker_HATCH.getValue() < TAPE_VALUE_HATCH;
+        center_linetracker_triggered = Robot.vision_sensors.centerLineTracker_HATCH.getValue() < TAPE_VALUE_HATCH;
+        left_linetracker_triggered = Robot.vision_sensors.leftLineTracker_HATCH.getValue() < TAPE_VALUE_HATCH;
+        */
         direction = 1;
       }
-    
-    if (LinetrackerHelper.center_linetracker_triggered) {
-      Robot.drivetrain.getDriveTrain().drivePolar(0, 0, 0);
-    } else if (LinetrackerHelper.right_linetracker_triggered || LinetrackerHelper.left_linetracker_triggered) {
-      Robot.drivetrain.getDriveTrain().drivePolar(.25, 90 * direction, 0);
-    } else {
-      Robot.drivetrain.getDriveTrain().drivePolar(.75, 90 * direction, 0);
-    }
-
+      if(LinetrackerHelper.center_linetracker_triggered) {
+        Robot.drivetrain.getDriveTrain().drivePolar(0, 0, 0);
+      } else {
+        Robot.drivetrain.getDriveTrain().drivePolar(STRAFE_SPEED, 90 * direction, 0);
+      }
+     
   }
 
   // Make this return true when this Command no longer needs to run execute()

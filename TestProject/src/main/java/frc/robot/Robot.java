@@ -75,10 +75,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-
     endosocope.getInstance().startAutomaticCapture();
 
-    shuffleMain();
     m_chooser.setDefaultOption("Fade", 1);
     m_chooser.addOption("Red", 2);
     m_chooser.addOption("Blue", 3);
@@ -111,11 +109,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    shuffleTest();
     Scheduler.getInstance().run();
     if(choice != m_chooser.getSelected().intValue()){
       RGB.run();
     }
     choice = m_chooser.getSelected().intValue();
+
   }
 
   @Override
@@ -174,7 +174,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("AUTO ALIGNMENT", AutoAlign.AUTO_ALIGNMENT_STATUS); // LOGIC NEEDS TO BE WRITTEN IN AutoAlign.java
     // SmartDashboard.putString("ROBOT ORIENTATION", ReverseRobot.ROBOT_ORIENTATION);
 
-    try {  
+    try {                                                                                                                       
       // SmartDashboard.putBoolean("ROCKET LEVEL 1",);
       // SmartDashboard.putBoolean("ROCKET LEVEL 2",);
       // SmartDashboard.putBoolean("CARGO SHIP",);
@@ -186,10 +186,10 @@ public class Robot extends TimedRobot {
 
   private void shuffleTest() {  // Shuffleboard setup for testing
 
-    SmartDashboard.putNumber("ARM GET VALUE", arm.getTalon().getMotorOutputPercent());
+   /* SmartDashboard.putNumber("ARM GET VALUE", arm.getTalon().getMotorOutputPercent());
     SmartDashboard.putBoolean("Ball", FlyWheel.push_button.get());
     SmartDashboard.putNumber("INTAKE SPEED ", DefaultFly.INTAKE_SPEED);
-
+    */
     /* -- SHUFFLE BOARD DATA -- */
 
     // Hatch Limit Switches
@@ -202,8 +202,12 @@ public class Robot extends TimedRobot {
     // Arm Limit Switches
     SmartDashboard.putBoolean("Arm TOP", limit_switch.getArmTop());
     SmartDashboard.putBoolean("Arm BOTTOM", limit_switch.getArmBottom());
-    
+    */
     // Climb Limit Switches
+    SmartDashboard.putNumber("voltage moter FL",drivetrain.getTalon(1).getMotorOutputVoltage());
+    SmartDashboard.putNumber("voltage moter FR",drivetrain.getTalon(2).getMotorOutputVoltage());
+    SmartDashboard.putNumber("voltage moter BL",drivetrain.getTalon(3).getMotorOutputVoltage());
+    SmartDashboard.putNumber("voltage moter BR",drivetrain.getTalon(4).getMotorOutputVoltage());
     SmartDashboard.putBoolean("Climb ARM TOP", limit_switch.getClimbTopArm());
     SmartDashboard.putBoolean("Climb ARM BOTTOM", limit_switch.getClimbBottomArm());
     SmartDashboard.putBoolean("Climb HATCH TOP", limit_switch.getClimbTopHatch());
@@ -215,14 +219,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("NavX PITCH ", Robot.climb.getNavX().getPitch());
     */
     // Values For Arm Data
-    SmartDashboard.putNumber("Arm PID Target", Arm.target);
+   /* SmartDashboard.putNumber("Arm PID Target", Arm.target);
       SmartDashboard.putNumber("Arm Encoder Position", Robot.arm.getTalon().getSelectedSensorPosition(0));
     //ultrasonics 
     SmartDashboard.putNumber("ULTRASONIC ARM", vision_sensors.ultrasonic_ARM.getRangeInches());
     SmartDashboard.putNumber("ULTRASONIC HATCH", vision_sensors.ultrasonic_ARM.getRangeInches());
-    //
+    // */
     // Values For Climb Data
-    SmartDashboard.putNumber("PHASE ", Climb.phase);
+    //SmartDashboard.putNumber("PHASE ", Climb.phase);
     SmartDashboard.putNumber("Climb Arm PID Target", Climb.target_arm);
     SmartDashboard.putNumber("Climb HATCH PID Target", Climb.target_hatch);
     SmartDashboard.putNumber("Climb HATCH Encoder Position", Robot.climb.getTalon(0).getSelectedSensorPosition(0));
@@ -234,12 +238,12 @@ public class Robot extends TimedRobot {
     vision_sensors.ultrasonic_HATCH.setAutomaticMode(true);
     vision_sensors.ultrasonic_HATCH.setEnabled(true);*/
     //SmartDashboard.putNumber("Ultrasonic Hatch", linetracker.ultrasonic_HATCH.getRangeInches());
-    SmartDashboard.putNumber("Ultrasonic Arm", vision_sensors.ultrasonic_ARM.getRangeInches());
-    SmartDashboard.putNumber("Ultrasonic Hatch", vision_sensors.ultrasonic_HATCH.getRangeInches());
+   // SmartDashboard.putNumber("Ultrasonic Arm", vision_sensors.ultrasonic_ARM.getRangeInches());
+    //SmartDashboard.putNumber("Ultrasonic Hatch", vision_sensors.ultrasonic_HATCH.getRangeInches());
 
-    SmartDashboard.putNumber("Vision Mag", AutoAlign.drive_magnitude);
-    SmartDashboard.putNumber("Vision Rot", AutoAlign.drive_rotation);
-    SmartDashboard.putNumber("Vision Offset", AutoAlign.average_offset);
+    //SmartDashboard.putNumber("Vision Mag", AutoAlign.drive_magnitude);
+    //SmartDashboard.putNumber("Vision Rot", AutoAlign.drive_rotation);
+    //SmartDashboard.putNumber("Vision Offset", AutoAlign.average_offset);
     /*
     SmartDashboard.putBoolean("EnabledA",  linetracker.getUltrasonic(0).isEnabled());
     SmartDashboard.putBoolean("EnabledH",  linetracker.getUltrasonic(0).isEnabled());

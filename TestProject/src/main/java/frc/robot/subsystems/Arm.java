@@ -23,7 +23,7 @@ public class Arm extends Subsystem {
   
   // Variables to PID values
   private double kF = 0;
-  private double kP = .02;
+  private double kP = .01;
   private double kI = 0;
   private double kD = 0;
 

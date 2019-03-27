@@ -15,12 +15,12 @@ import frc.robot.Autonomous.StrafeRight;
 
 /**
  * This class is the glue that binds the controls on the physical operator
- * interface to the commands and command groups that allow control of the robot.
+ * interface to the commterands and command groups that allow control of the robot.
  */
 public class OI {
 
   // Booleans
-  public static boolean ARM_PID                     = false;
+  public static boolean ARM_PID                     = true;
   public static boolean CLIMB_PID                   = true;  // never change 
   public static boolean TOGGLE_SERVO_CLIMB_F        = true;
   public static boolean TOGGLE_SERVO_CLIMB_B        = true;
@@ -56,7 +56,9 @@ public class OI {
   public static JoystickButton gunner_button_RJ   	= new JoystickButton(gunner,10);
 
   // Servo position
-  public static boolean isSideArm                   = true;
+  public static boolean isSideArm                   = false;
+
+  public static boolean KILL_RUMBLE = false;
 
   // Boolean to tell if in autonomous period
   public static boolean isAutonomous                = false;
@@ -65,8 +67,8 @@ public class OI {
 
     driver_button_RB.whenPressed(new DriveForward());
     driver_button_LB.whenPressed(new ReverseRobot());
-    driver_button_A.whileHeld(new StrafeRight());
-    driver_button_B.whileHeld(new StrafeLeft());
+    driver_button_B.whileHeld(new StrafeRight());
+    driver_button_X.whileHeld(new StrafeLeft());
     //driver_button_A.whileHeld(new AutoAlign());
     //driver_button_X.whenPressed(new AutoClimb());
     

@@ -10,12 +10,9 @@ package frc.robot.Autonomous;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.commands.LinetrackerHelper;
 
 public class StrafeLeft extends Command {
-  private boolean center_linetracker_triggered = false;
-  private boolean right_linetracker_triggered = false;
-  private boolean left_linetracker_triggered = false;
-  int TAPE_VALUE = 3750;
   double STRAFE_SPEED = .5;
   int direction = 1;
 
@@ -38,18 +35,29 @@ public class StrafeLeft extends Command {
     System.out.println(TAPE_VALUE);
     System.out.println("-------");*/
     if(OI.isSideArm){
-       right_linetracker_triggered = Robot.vision_sensors.rightLineTracker_ARM.getValue() < TAPE_VALUE;
-       center_linetracker_triggered = Robot.vision_sensors.centerLineTracker_ARM.getValue() < TAPE_VALUE;
-       left_linetracker_triggered = Robot.vision_sensors.leftLineTracker_ARM.getValue() < TAPE_VALUE;
+      /*
+       right_linetracker_triggered = Robot.vision_sensors.rightLineTracker_ARM.getValue() < TAPE_VALUE_ARM;
+       center_linetracker_triggered = Robot.vision_sensors.centerLineTracker_ARM.getValue() < TAPE_VALUE_ARM;
+       left_linetracker_triggered = Robot.vision_sensors.leftLineTracker_ARM.getValue() < TAPE_VALUE_ARM;
+       */
        direction = 1;
       }else{
-        right_linetracker_triggered = Robot.vision_sensors.rightLineTracker_HATCH.getValue() < TAPE_VALUE;
-        center_linetracker_triggered = Robot.vision_sensors.centerLineTracker_HATCH.getValue() < TAPE_VALUE;
-        left_linetracker_triggered = Robot.vision_sensors.leftLineTracker_HATCH.getValue() < TAPE_VALUE;
+        /*
+        right_linetracker_triggered = Robot.vision_sensors.rightLineTracker_HATCH.getValue() < TAPE_VALUE_HATCH;
+        center_linetracker_triggered = Robot.vision_sensors.centerLineTracker_HATCH.getValue() < TAPE_VALUE_HATCH;
+        left_linetracker_triggered = Robot.vision_sensors.leftLineTracker_HATCH.getValue() < TAPE_VALUE_HATCH;
+        */
         direction = -1;
       }
-      System.out.println(Robot.vision_sensors.centerLineTracker_HATCH.getValue() + " | " + TAPE_VALUE);
-    System.out.println(center_linetracker_triggered + " | " + direction);
+      if(LinetrackerHelper.center_linetracker_triggered) {
+        Robot.drivetrain.getDriveTrain().drivePolar(0, 0, 0);
+      } else {
+        Robot.drivetrain.getDriveTrain().drivePolar(STRAFE_SPEED, 90 * direction, 0);
+      }
+      
+
+    //System.out.println(Robot.vision_sensors.centerLineTracker_HATCH.getValue() + " | " + TAPE_VALUE);
+    //System.out.println(center_linetracker_triggered + " | " + direction);
     /*
     if (center_linetracker_triggered) {
       Robot.drivetrain.getDriveTrain().drivePolar(0, 0, 0);

@@ -22,11 +22,11 @@ public class DefaultArm extends Command {
   private boolean bottom_limit_switch_hit;
 
   // Pre-defined positions for PID shooting
-  private double SHOOT_POSITION = -204000.0;  // Optimal shooting position for arm
+  //private double SHOOT_POSITION = -204000.0;  // Optimal shooting position for arm
 
   // PID speed variables (Increments)
-  private double PID_UP_SPEED = 100; // 17000
-  private double PID_DOWN_SPEED = 100; // 17000
+  private double PID_UP_SPEED = 17000; // 17000
+  private double PID_DOWN_SPEED = 17000; // 17000
   private double ARM_SPEED = 0.75;  // Define the NON-PID motor speed
 
   
@@ -63,7 +63,7 @@ public class DefaultArm extends Command {
     if (OI.ARM_PID) {  // Only run PID code if variable in OI is true
       
       // Add button listeners for arm angles
-      setArmPosition(SHOOT_POSITION, OI.gunner_button_B);
+      //setArmPosition(SHOOT_POSITION, OI.gunner_button_B);
 
       if (top_limit_switch_hit && pov_position.equals("North")) {  // If the gunner is trying to move the arm up while at the top position, do nothing
         

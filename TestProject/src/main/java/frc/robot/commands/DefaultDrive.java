@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 public class DefaultDrive extends Command {
+  int TAPE_VALUE_ARM = 3840;
+
 
   private final double DEADZONE = 0.2;  // Define controller deadzone
 
@@ -76,18 +78,6 @@ public class DefaultDrive extends Command {
   @Override
   protected void execute() {
 
-      // Set rumble of controllers based on linetracker values
-      if (LinetrackerHelper.center_linetracker_triggered) {  // If the center line tracker is triggered, rumble
-        //OI.driver.setRumble(RumbleType.kLeftRumble, 0.3);
-        //OI.driver.setRumble(RumbleType.kRightRumble, 0.3); 
-      } else if (LinetrackerHelper.right_linetracker_triggered || LinetrackerHelper.left_linetracker_triggered) {  // If the right/left line tracker is triggered, rumble a little less
-        //OI.driver.setRumble(RumbleType.kLeftRumble, 0.1);
-        //OI.driver.setRumble(RumbleType.kRightRumble, 0.1); 
-      } else {  // Else, don't rumble
-        //OI.driver.setRumble(RumbleType.kLeftRumble, 0);
-        //OI.driver.setRumble(RumbleType.kRightRumble, 0); 
-      }
-
       if (OI.isSideArm) {
         set_servo_angle(180);  // Rotate the servo to hatch side
         invert_robot = -1;  // Invert the drivetrain
@@ -95,7 +85,7 @@ public class DefaultDrive extends Command {
         set_servo_angle(0);
         invert_robot = 1;  // Invert the drivetrain
       }
-
+      //doRubble(); // rumble if on the line 
       getInput(); // Fetches Joystick values
       doDead(); // Sets the DEADZONE value
       toPolar(); // Does calculations with Joystick values to drivetrain

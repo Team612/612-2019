@@ -17,7 +17,7 @@ public class DefaultFly extends Command {
 
   private boolean bottom_limit_switch_hit;  // Initialize the bottom limit switch boolean for arm
   
-  public static double INTAKE_SPEED = .40;  // Variable to store flywheel intake motor speed
+  public static double INTAKE_SPEED = .6;  // Variable to store flywheel intake motor speed
   private double OUTTAKE_SPEED = -1;  // Variable to store flywheel outtake motor speed
 
   public DefaultFly() {

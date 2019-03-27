@@ -50,8 +50,6 @@ public class Drivetrain extends Subsystem {
     talon_FR.setNeutralMode(NeutralMode.Brake);  // Set talon arm to break mode
     talon_BL.setNeutralMode(NeutralMode.Brake);  // Set talon arm to break mode
     talon_BR.setNeutralMode(NeutralMode.Brake);  // Set talon arm to break mode
-
-
       return drivetrain;
   }
 

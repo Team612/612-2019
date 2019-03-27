@@ -7,13 +7,15 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
 
 public class LinetrackerHelper extends Command {
 
-  private int TAPE_VALUE = 3700;  // Integer value to determine if over tape
+  private int TAPE_VALUE_ARM = 3840;  // Integer value to determine if over tape
+  private int TAPE_VALUE_HATCH = 311;  // Integer value to determine if over tape
 
   // Initialize line tracker booleans for current state
   public static boolean center_linetracker_triggered;
@@ -35,22 +37,40 @@ public class LinetrackerHelper extends Command {
     // Swap the linetracker feedback side depending on orientation
     if (OI.isSideArm) {
 
-      right_linetracker_triggered = Robot.vision_sensors.rightLineTracker_ARM.getValue() < TAPE_VALUE;
-      center_linetracker_triggered = Robot.vision_sensors.centerLineTracker_ARM.getValue() < TAPE_VALUE;
-      left_linetracker_triggered = Robot.vision_sensors.leftLineTracker_ARM.getValue() < TAPE_VALUE;
+      right_linetracker_triggered = Robot.vision_sensors.rightLineTracker_ARM.getValue() < TAPE_VALUE_ARM;
+      center_linetracker_triggered = Robot.vision_sensors.centerLineTracker_ARM.getValue() < TAPE_VALUE_ARM;
+      left_linetracker_triggered = Robot.vision_sensors.leftLineTracker_ARM.getValue() < TAPE_VALUE_ARM;
 
     } else {
 
-      right_linetracker_triggered = Robot.vision_sensors.rightLineTracker_HATCH.getValue() < TAPE_VALUE;
-      center_linetracker_triggered = Robot.vision_sensors.centerLineTracker_HATCH.getValue() < TAPE_VALUE;
-      left_linetracker_triggered = Robot.vision_sensors.leftLineTracker_HATCH.getValue() < TAPE_VALUE;
+      right_linetracker_triggered = Robot.vision_sensors.rightLineTracker_HATCH.getValue() < TAPE_VALUE_HATCH;
+      center_linetracker_triggered = Robot.vision_sensors.centerLineTracker_HATCH.getValue() < TAPE_VALUE_HATCH;
+      left_linetracker_triggered = Robot.vision_sensors.leftLineTracker_HATCH.getValue() < TAPE_VALUE_HATCH;
 
     }
-
     
     System.out.println(Robot.vision_sensors.leftLineTracker_ARM.getValue() + " | " + Robot.vision_sensors.centerLineTracker_ARM.getValue() + " | " + Robot.vision_sensors.rightLineTracker_ARM.getValue());
     System.out.println(Robot.vision_sensors.leftLineTracker_HATCH.getValue() + " | " + Robot.vision_sensors.centerLineTracker_HATCH.getValue() + " | " + Robot.vision_sensors.rightLineTracker_HATCH.getValue());
+    System.out.println(center_linetracker_triggered);
     System.out.println("---------");
+    
+    if (!OI.KILL_RUMBLE) {
+      if(center_linetracker_triggered) {
+        OI.driver.setRumble(RumbleType.kLeftRumble, 0.1);
+        OI.driver.setRumble(RumbleType.kRightRumble, 0.1);     
+      } else{
+        OI.driver.setRumble(RumbleType.kLeftRumble, 0);
+        OI.driver.setRumble(RumbleType.kRightRumble, 0);  
+      }
+      
+    }
+
+    if (OI.driver_button_STRT.get()) {
+      OI.driver.setRumble(RumbleType.kLeftRumble, 0);
+      OI.driver.setRumble(RumbleType.kRightRumble, 0);
+      OI.KILL_RUMBLE = true;
+    }
+    
 
 
   }

@@ -25,7 +25,7 @@ public class Climb extends Subsystem {
   private WPI_TalonSRX lift_talonArm = new WPI_TalonSRX(RobotMap.TALON_PORT_CLIMB_ARM);//Back
 
   // PID Target values for hatch and arm sides
-  public static  int target_hatch = 0;
+  public static int target_hatch = 0;
   public static int target_arm = 0;
 
   // Define an object that stores the NavX on the roboRio as an object
@@ -35,8 +35,8 @@ public class Climb extends Subsystem {
 
 
   // Variables to PID values
-  private double kF = 0.2;
-  private double kP = .5;
+  private double kF = 0;
+  private double kP = .5; //.5
   private double kI = 0;
   private double kD = 0;
 
