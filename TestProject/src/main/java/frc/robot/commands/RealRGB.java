@@ -26,33 +26,39 @@ public class RealRGB {
     i2c.writeBulk(convert("0"));
     choice = Robot.m_chooser.getSelected().intValue();
     System.out.println(choice);
-    if (choice == 1 ) { // Fade
+    switch(choice){
+    case 1: // Fade
         sendRGB(0, 0, 0, 0);
       end = true;
       System.out.println("[RGB] Color invalid, setting to RAINBOW");
       sendCommand("SET_RAIN");
       sendCommand("1");
       System.out.println("fade");
-    } else if (choice == 2) {  // Red
+      break;
+    case 2:  // Red
       end = false;
       sendRGB(0, 0, 0, 0);
       System.out.println("[RGB] Set color to RED");
       sendRGB(0, 255, 0, 0);
       System.out.println("red");
-    }  else if(choice == 3) {  // Blue
+      break;
+    case 3:  // Blue
         sendRGB(0, 0, 0, 0);
       end = false;
       System.out.println("[RGB] Set color to BLUE");
       sendRGB(0, 0, 0, 255);
       System.out.println("blue");
-    } else if(choice == 4){
+      break;
+    case 4:
         sendRGB(0, 0, 0, 0);
         System.out.println("[RGB] Set color to PURPLE");
         sendRGB(0, 255, 0, 255);
-    } else if(choice == 5){
+        break;
+    case 5:
         sendRGB(0, 0, 0, 0);
         System.out.println("RANDOM");
         sendRGB(0, (int)(Math.random()*256), (int)(Math.random()*256), (int)(Math.random()*256));
+        break;
     }
   }
   private void sendCommand(String command){//Sends general I2C command

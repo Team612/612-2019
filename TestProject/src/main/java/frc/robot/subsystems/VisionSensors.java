@@ -34,16 +34,6 @@ public class VisionSensors extends Subsystem {
   // Construct Navx Oject
   AHRS navx = new AHRS(I2C.Port.kMXP);
 
-  public void setActiveUltrasonic(int num){  // 1: Hatch, else, Arm
-    if (num == 1) {
-      ultrasonic_ARM.setAutomaticMode(false);
-      ultrasonic_HATCH.setAutomaticMode(true);
-    } else {
-      ultrasonic_HATCH.setAutomaticMode(false);
-      ultrasonic_ARM.setAutomaticMode(true);
-    }
-  }
-
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new LinetrackerHelper());

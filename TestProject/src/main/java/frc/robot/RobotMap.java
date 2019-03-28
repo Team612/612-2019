@@ -53,6 +53,6 @@ public class RobotMap {
   public static final int DIO_PORT                        = 5;
 
   // LED Variables 
-  // public static final int ARDUINO_ADDRESS                 = 1;
+  public static final int ARDUINO_ADDRESS                 = 1;
   
 }

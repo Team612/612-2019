@@ -85,7 +85,6 @@ public class DefaultDrive extends Command {
         set_servo_angle(0);
         invert_robot = 1;  // Invert the drivetrain
       }
-      //doRubble(); // rumble if on the line 
       getInput(); // Fetches Joystick values
       doDead(); // Sets the DEADZONE value
       toPolar(); // Does calculations with Joystick values to drivetrain

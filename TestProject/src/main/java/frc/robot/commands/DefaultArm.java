@@ -21,9 +21,6 @@ public class DefaultArm extends Command {
   private boolean top_limit_switch_hit;
   private boolean bottom_limit_switch_hit;
 
-  // Pre-defined positions for PID shooting
-  //private double SHOOT_POSITION = -204000.0;  // Optimal shooting position for arm
-
   // PID speed variables (Increments)
   private double PID_UP_SPEED = 17000; // 17000
   private double PID_DOWN_SPEED = 17000; // 17000

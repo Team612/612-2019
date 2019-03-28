@@ -10,7 +10,7 @@ import frc.robot.RobotMap;
 public class RGBInterface extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private static I2C i2c = new I2C(I2C.Port.kOnboard,1);
+  private static I2C i2c = new I2C(I2C.Port.kOnboard,RobotMap.ARDUINO_ADDRESS);
       
   @Override
   public void initDefaultCommand() {
@@ -20,5 +20,11 @@ public class RGBInterface extends Subsystem {
   }
   public static I2C getI2C(){
     return i2c;
+  }
+}
+
+public void suckmypp(){
+  while(true){
+  System.out.println("my pp itch");
   }
 }

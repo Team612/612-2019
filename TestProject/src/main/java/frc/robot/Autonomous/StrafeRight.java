@@ -31,23 +31,11 @@ public class StrafeRight extends Command {
   @Override
   protected void execute() {
 
-   
-    /*System.out.println(Robot.vision_sensors.centerLineTracker_HATCH.getAverageValue());
-    System.out.println(TAPE_VALUE);
-    System.out.println("-------");*/
     if(OI.isSideArm){
-      /*
-       right_linetracker_triggered = Robot.vision_sensors.rightLineTracker_ARM.getValue() < TAPE_VALUE_ARM;
-       center_linetracker_triggered = Robot.vision_sensors.centerLineTracker_ARM.getValue() < TAPE_VALUE_ARM;
-       left_linetracker_triggered = Robot.vision_sensors.leftLineTracker_ARM.getValue() < TAPE_VALUE_ARM;
-       */
+      
        direction = -1;
       }else{
-        /*
-        right_linetracker_triggered = Robot.vision_sensors.rightLineTracker_HATCH.getValue() < TAPE_VALUE_HATCH;
-        center_linetracker_triggered = Robot.vision_sensors.centerLineTracker_HATCH.getValue() < TAPE_VALUE_HATCH;
-        left_linetracker_triggered = Robot.vision_sensors.leftLineTracker_HATCH.getValue() < TAPE_VALUE_HATCH;
-        */
+        
         direction = 1;
       }
       if(LinetrackerHelper.center_linetracker_triggered) {

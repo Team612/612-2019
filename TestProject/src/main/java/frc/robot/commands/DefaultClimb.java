@@ -71,20 +71,16 @@ public class DefaultClimb extends Command {
         if(limit_switch_top_hatch && right_joytick_value > 0) {  // If at top limit switch and still trying to go up, don't change target
           Climb.target_hatch = hatch_encoder_position;
           Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
-          System.out.println("TOP AND UP");
         } else if (limit_switch_bottom_hatch && right_joytick_value < 0) {  // If at bottom limit switch and still trying to go down, don't change target
           Climb.target_hatch = hatch_encoder_position;
           Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
-          System.out.println("BOTTOM AND DOWN");
 
         } else {
           Climb.target_hatch  += right_joytick_value * HATCH_PID_SPEED;  // Adjust climb target based on trigger value
           Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
-          System.out.println("REGULER");
         }
 
       } else if (NO_JOYSTICK_PRESS_HATCH) {
-        System.out.println("ONE TIME");
         Climb.target_hatch = hatch_encoder_position;
         Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
         NO_JOYSTICK_PRESS_HATCH = false;
@@ -110,23 +106,6 @@ public class DefaultClimb extends Command {
         NO_JOYSTICK_PRESS_ARM = false;
       }
       
-      
-      /*
-      double difference_arm = Math.abs(Math.abs(Climb.target_arm) - Math.abs(arm_encoder_position));
-      double difference_hatch =  Math.abs(Math.abs(Climb.target_hatch) - Math.abs(hatch_encoder_position));
-
-      System.out.println(difference_arm);
-      System.out.println(difference_hatch);
-      System.out.println();
-
-      if (Math.abs(difference_arm) > target_deadband) {
-        Robot.climb.getTalon(1).set(ControlMode.Position, Climb.target_arm);
-      }
-
-      if (difference_hatch > target_deadband) {
-        Robot.climb.getTalon(0).set(ControlMode.Position, Climb.target_hatch);
-      }
-      */
 
     } else {  // If PID is not enabled
 
