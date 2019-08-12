@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
+/*
 package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -63,3 +63,4 @@ public class StrafeRight extends Command {
   protected void interrupted() {
   }
 }
+*/

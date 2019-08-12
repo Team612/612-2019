@@ -10,8 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.*;
-import frc.robot.Autonomous.StrafeLeft;
-import frc.robot.Autonomous.StrafeRight;
+//import frc.robot.Autonomous.StrafeLeft;
+//import frc.robot.Autonomous.StrafeRight;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -66,9 +66,9 @@ public class OI {
   public OI() {
 
     driver_button_RB.whenPressed(new DriveForward());
-    driver_button_LB.whenPressed(new ReverseRobot());
-    driver_button_B.whileHeld(new StrafeRight());
-    driver_button_X.whileHeld(new StrafeLeft());
+    driver_button_A.whenPressed(new ReverseRobot());
+    //driver_button_B.whileHeld(new StrafeRight());
+    //driver_button_X.whileHeld(new StrafeLeft());
     //driver_button_A.whileHeld(new AutoAlign());
     //driver_button_X.whenPressed(new AutoClimb());
     

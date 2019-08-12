@@ -23,8 +23,3 @@ public class RGBInterface extends Subsystem {
   }
 }
 
-public void suckmypp(){
-  while(true){
-  System.out.println("my pp itch");
-  }
-}

@@ -20,13 +20,13 @@ public class DefaultDrive extends Command {
   private final double DEADZONE = 0.2;  // Define controller deadzone
 
   // Variables for mechanum drive
-  public static double magnitude;  // The power the of the drive system
-  public static double angle;  // The translation angle relative to the robot's body vector
-  public static double rotation;  // The rotation is the magnitude of the robot's rotation rate
+  public double magnitude;  // The power the of the drive system
+  public double angle;  // The translation angle relative to the robot's body vector
+  public double rotation;  // The rotation is the magnitude of the robot's rotation rate
 
   // Variables for Joystick movements 
-  public static double direction_x;
-  public static double direction_y; 
+  public double direction_x;
+  public double direction_y; 
 
   public static int invert_robot = 1;  // Integer to invert the robot
 
@@ -40,10 +40,26 @@ public class DefaultDrive extends Command {
   }
 
   protected void getInput() {  // Fetch the Joystick values, apply inversion if neccesary
+    
+    String joystick_type = OI.driver.getType().toString();
+    
+    switch (joystick_type) {
+      
+      case "kHIDJoystick":
 
-    direction_y = OI.driver.getY(Hand.kLeft) * invert_robot;
-    direction_x = OI.driver.getX(Hand.kLeft) * invert_robot;
-    rotation = OI.driver.getX(Hand.kRight);
+        this.direction_y = OI.driver.getRawAxis(1) * invert_robot;
+        this.direction_x = OI.driver.getRawAxis(0) * invert_robot;
+        this.rotation = OI.driver.getRawAxis(2);
+        break;
+
+      default:
+
+        this.direction_y = OI.driver.getY(Hand.kLeft) * invert_robot;
+        this.direction_x = OI.driver.getX(Hand.kLeft) * invert_robot;
+        this.rotation = OI.driver.getX(Hand.kRight);
+        break;
+
+    }
 
   }
 
@@ -89,7 +105,7 @@ public class DefaultDrive extends Command {
       doDead(); // Sets the DEADZONE value
       toPolar(); // Does calculations with Joystick values to drivetrain
 
-      Robot.drivetrain.getDriveTrain().drivePolar(magnitude, angle, rotation); // Pass the calculated drive data into the drivetrain
+      Robot.drivetrain.getDriveTrain().drivePolar(this.magnitude, this.angle, this.rotation); // Pass the calculated drive data into the drivetrain
   
   }
 

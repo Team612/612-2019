@@ -111,14 +111,14 @@ public class DefaultClimb extends Command {
 
       // Left joystick button controls the HATCH side
       if (Math.abs(left_joytick_value) > DEADZONE) {  // If the joystick value is positive
-        Robot.climb.getTalon(1).set(ControlMode.PercentOutput, left_joytick_value);  // Set the motor to joystick value
+        Robot.climb.getTalon(1).set(ControlMode.PercentOutput, left_joytick_value * .3);  // Set the motor to joystick value
       } else {
         Robot.climb.getTalon(1).set(ControlMode.PercentOutput, 0);  // Stop the motors if no joystick values
       }
       
       // Right joystick button controls the ARM side
       if (Math.abs(right_joytick_value) > DEADZONE) {  // If the joystick value is positive
-        Robot.climb.getTalon(0).set(ControlMode.PercentOutput, right_joytick_value);  // Set the motor to joystick value
+        Robot.climb.getTalon(0).set(ControlMode.PercentOutput, right_joytick_value * .3);  // Set the motor to joystick value
       } else {
         Robot.climb.getTalon(0).set(ControlMode.PercentOutput, 0);  // Stop the motors if no joystick values
       }

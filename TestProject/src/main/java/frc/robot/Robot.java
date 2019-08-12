@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.*;
 import frc.robot.POVConvert;
-import frc.robot.commands.AutoAlign;
+//import frc.robot.commands.AutoAlign;
 import frc.robot.commands.*;
 
 
@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
   public static Arm arm = new Arm();
 
   // Auto Align object
-  public static VisionSensors vision_sensors = new VisionSensors();
+  // public static VisionSensors vision_sensors = new VisionSensors();
 
   // Limit switch helper object
   public static LimitSwitchHelper limit_switch = new LimitSwitchHelper();
@@ -171,7 +171,7 @@ public class Robot extends TimedRobot {
    
     SmartDashboard.putBoolean("Ball In Intake", FlyWheel.BALL_IN_INTAKE);
     SmartDashboard.putBoolean("ARM PID", OI.ARM_PID); 
-    SmartDashboard.putString("AUTO ALIGNMENT", AutoAlign.AUTO_ALIGNMENT_STATUS); // LOGIC NEEDS TO BE WRITTEN IN AutoAlign.java
+    //SmartDashboard.putString("AUTO ALIGNMENT", AutoAlign.AUTO_ALIGNMENT_STATUS); // LOGIC NEEDS TO BE WRITTEN IN AutoAlign.java
     // SmartDashboard.putString("ROBOT ORIENTATION", ReverseRobot.ROBOT_ORIENTATION);
 
     try {                                                                                                                       

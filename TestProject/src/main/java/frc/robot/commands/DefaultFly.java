@@ -62,6 +62,8 @@ public class DefaultFly extends Command {
 
     }
 
+    //System.out.println(INTAKE_SPEED);
+
   }
 
   @Override
