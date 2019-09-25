@@ -17,7 +17,7 @@ public class RobotMap {
   public static int TALON_PORT_BR                         = 2;
 
   // Climb Talons
-  public static final int TALON_PORT_CLIMB_HATCH          = 10;
+  public static final int TALON_PORT_CLIMB_HATCH          = 4;
   public static final int TALON_PORT_CLIMB_ARM            = 8;
 
   // Gunner Talons

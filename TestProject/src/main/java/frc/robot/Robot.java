@@ -29,6 +29,7 @@ import frc.robot.commands.*;
  * project.
  */
 public class Robot extends TimedRobot {
+  public static GameController control=new GameController(0);
 
   // Hatch Subsystem
   public static Hatch hatch = new Hatch();
@@ -165,6 +166,7 @@ public class Robot extends TimedRobot {
       RGB.run();
     }
     choice = m_chooser.getSelected().intValue();
+    System.out.println(control.getType()+"/"+control.getX()+"/"+control.getY());
   }
 
   private void shuffleMain() {  // ShuffleBoard setup for competition
