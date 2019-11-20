@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.profiles.ProfileManager;
 import frc.robot.subsystems.Arm;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -53,7 +54,7 @@ public class DefaultArm extends Command {
 
     String pov_position = Robot.gunnerPOV.get_direction();  // Get the position of the D-PAD before the logic, for effiency
 
-    if (OI.gunner_button_BCK.get()) {  // Toggle button to disable arm PID
+    if (ProfileManager.getGunnerButton("BCK").get()) {  // Toggle button to disable arm PID
       OI.ARM_PID = false;
     }
 

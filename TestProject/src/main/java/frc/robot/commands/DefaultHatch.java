@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.profiles.Loader;
+import frc.robot.profiles.ProfileManager;
 
 public class DefaultHatch extends Command {
 
@@ -28,8 +30,8 @@ public class DefaultHatch extends Command {
   protected void execute() {
 
     // Variables to store trigger data, for effiency
-    double left_trigger_axis = OI.gunner.getTriggerAxis(Hand.kLeft);
-    double right_trigger_axis = OI.gunner.getTriggerAxis(Hand.kRight);
+    double left_trigger_axis = Loader.getGunnerController().getController().getRawAxis(2);
+    double right_trigger_axis = Loader.getGunnerController().getController().getRawAxis(3);
 
     if (left_trigger_axis > DEADZONE) {  // If the left trigger value is greater than the deadzone
       Robot.hatch.getTalon().set(left_trigger_axis);  // Push out the hatch talon, based on the trigger value
@@ -40,7 +42,7 @@ public class DefaultHatch extends Command {
     }
 
     // While held logic for hatch servo
-    if (OI.gunner_button_X.get()) {  // While the X button is held, open the hatch
+    if (ProfileManager.getGunnerButton("X").get()) {  // While the X button is held, open the hatch
       Robot.hatch.getServo().setAngle(100);
     } else {  // Else, reset the hatch back to closed position
       Robot.hatch.getServo().setAngle(0);

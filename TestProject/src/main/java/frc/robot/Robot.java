@@ -7,8 +7,6 @@
 
 package frc.robot;
 
-import javax.sound.sampled.Line;
-
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -19,6 +17,9 @@ import frc.robot.subsystems.*;
 import frc.robot.POVConvert;
 //import frc.robot.commands.AutoAlign;
 import frc.robot.commands.*;
+import frc.robot.profiles.JSONMap;
+import frc.robot.profiles.Loader;
+import frc.robot.profiles.GameController;
 
 
 /**
@@ -41,8 +42,8 @@ public class Robot extends TimedRobot {
   public static Drivetrain drivetrain = new Drivetrain();
 
   // Driver servo camera objects
-  public static POVConvert driverPOV = new POVConvert(OI.driver);
-  public static POVConvert gunnerPOV = new POVConvert(OI.gunner);
+  public static POVConvert driverPOV;
+  public static POVConvert gunnerPOV;
   public static DriverCamera drivercamera = new DriverCamera(); 
 
   // Climb object
@@ -72,6 +73,8 @@ public class Robot extends TimedRobot {
   // MISC
   Command m_autonomousCommand;
   public static SendableChooser<Integer> m_chooser = new SendableChooser<>();
+  private SendableChooser<String> driverProfiles = new SendableChooser<>();
+  private SendableChooser<String> gunnerProfiles = new SendableChooser<>();
 
   @Override
   public void robotInit() {
@@ -87,13 +90,35 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Led ROB", m_chooser);
     m_oi = new OI();  // Create an object of OI
 
+    Loader.loadJSON("profiles.json", new GameController(RobotMap.DRIVER_PORT), new GameController(RobotMap.GUNNER_PORT));
+
+    driverPOV = new POVConvert(Loader.getDriverController());
+    gunnerPOV = new POVConvert(Loader.getGunnerController());
+
+    fillChooser(driverProfiles, JSONMap.getDriverProfileNames());
+    fillChooser(gunnerProfiles, JSONMap.getGunnerProfileNames());
+    SmartDashboard.putData("Driver Profile", driverProfiles);
+    SmartDashboard.putData("Gunner Profile", gunnerProfiles);
+
     // Activate Vision Listeners
     /*
     vision_listen_hatch.read_vision();
     vision_listen_arm.read_vision();
     */
+
+    System.out.println("********************DRIVER CONTROLLER: <"+Loader.getDriverController()+"> **********");
+    System.out.println("********************GUNNER CONTROLLER: <"+Loader.getGunnerController()+"> **********");
+
     
   }
+
+  private void fillChooser(SendableChooser<String> choose, String[] profiles){
+    if(profiles.length==0)return;
+    for(String profile:profiles){
+        choose.addOption(profile, profile);
+    }
+    choose.setDefaultOption(profiles[0], profiles[0]);
+}
 
 
   @Override
@@ -148,6 +173,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     //Arm.target = Robot.arm.getTalon().getSelectedSensorPosition(0);  // Set the arm target to lowest position at beginning of the round
 
+    Loader.loadJSON("profiles.json", new GameController(RobotMap.DRIVER_PORT), new GameController(RobotMap.GUNNER_PORT));
 
     OI.isAutonomous = false;  // At beginning of teleop, set autonomous to false
 

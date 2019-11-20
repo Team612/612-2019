@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.profiles.Loader;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
@@ -41,9 +42,9 @@ public class DefaultDrive extends Command {
 
   protected void getInput() {  // Fetch the Joystick values, apply inversion if neccesary
     
-    String joystick_type = OI.driver.getType().toString();
+    //String joystick_type = OI.driver.getType().toString();
     
-    switch (joystick_type) {
+    /*switch (joystick_type) {
       
       case "kHIDJoystick":
 
@@ -59,7 +60,11 @@ public class DefaultDrive extends Command {
         this.rotation = OI.driver.getX(Hand.kRight);
         break;
 
-    }
+    }*/
+
+    direction_y = Loader.getDriverController().getY();
+    direction_x = Loader.getDriverController().getX();
+    rotation = Loader.getDriverController().getZ();
 
   }
 

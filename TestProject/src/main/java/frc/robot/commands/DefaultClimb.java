@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.profiles.Loader;
 import frc.robot.subsystems.Climb;
 
 public class DefaultClimb extends Command {
@@ -57,8 +58,8 @@ public class DefaultClimb extends Command {
     limit_switch_bottom_hatch = Robot.limit_switch.getClimbBottomHatch();
 
     // Store the values for the joysticks before the logic, for effiency
-    double left_joytick_value = OI.gunner.getY(Hand.kRight) * -1;
-    double right_joytick_value = OI.gunner.getY(Hand.kLeft) * -1;
+    double left_joytick_value = Loader.getGunnerController().getController().getY(Hand.kLeft) * -1;
+    double right_joytick_value = Loader.getGunnerController().getController().getY(Hand.kLeft) * -1;
 
     int arm_encoder_position = Robot.climb.getTalon(1).getSelectedSensorPosition(0);
     int hatch_encoder_position = Robot.climb.getTalon(0).getSelectedSensorPosition(0);

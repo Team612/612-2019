@@ -10,6 +10,7 @@ package frc.robot;
 import java.util.HashMap;
 
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.profiles.GameController;
 
 /**
  * Add your docs here.
@@ -17,7 +18,7 @@ import edu.wpi.first.wpilibj.XboxController;
 public class POVConvert {
     
     
-    private XboxController controller;  // Initialize Joystick
+    private GameController controller;  // Initialize Joystick
     private boolean preferredDir = true;  // If true, preference given to up/down. If false, preference given to left/right
     
     public HashMap<Integer, String> pov_values = new HashMap<Integer, String>();  // Dictionary to store direction values
@@ -34,7 +35,7 @@ public class POVConvert {
     int NORTH_WEST = 315;
     int NORTH_EAST = 45;
 
-    POVConvert(XboxController controller) {  // Constructor
+    POVConvert(GameController controller) {  // Constructor
         this.controller = controller;  // Store existing controller value to extend value
         populate_dictionary();  // Populate the dictionary with direction values
     }
@@ -63,8 +64,7 @@ public class POVConvert {
     }
 
     public String get_direction() {
-
-        int currentPOV = controller.getPOV();  // Get the current POV from the controller
+        int currentPOV = controller.getController().getPOV();  // Get the current POV from the controller
 
         if (currentPOV == NORTH || currentPOV == SOUTH || currentPOV == EAST || currentPOV == WEST) {  // If a cardinal angle run normal loop
             return pov_values.get(currentPOV);
@@ -76,7 +76,7 @@ public class POVConvert {
 
     public String get_exact_direction() {
 
-        int currentPOV = controller.getPOV();  // Get the current POV from the controller
+        int currentPOV = controller.getController().getPOV();  // Get the current POV from the controller
         return pov_values.get(currentPOV);
 
     }

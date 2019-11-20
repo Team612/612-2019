@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.profiles.ProfileManager;
 import frc.robot.subsystems.FlyWheel;
 
 
@@ -34,12 +35,12 @@ public class DefaultFly extends Command {
 
     bottom_limit_switch_hit = Robot.limit_switch.getArmBottom();  // Boolean to store bottom arm limit switch
 
-    if (OI.gunner_button_LB.get()) {  // If the button is pressed and the user presses LB, push the ball out
+    if (ProfileManager.getGunnerButton("LB").get()) {  // If the button is pressed and the user presses LB, push the ball out
       INTAKE_SPEED = .4;
       Robot.flyWheel.getTalon().set(OUTTAKE_SPEED);  // Run the motors to push out the ball
       FlyWheel.BALL_IN_INTAKE = false;  // Sensor state of intake (Ball is not in)
 
-    } else if (bottom_limit_switch_hit && OI.gunner_button_RB.get()) {  // Only allow intake when at bottom limit switch is hit
+    } else if (bottom_limit_switch_hit && ProfileManager.getGunnerButton("RB").get()) {  // Only allow intake when at bottom limit switch is hit
 
       if (Robot.flyWheel.getButton().get() && !FlyWheel.BALL_IN_INTAKE) {  // If the ball is not button is hit, only allow outtake
         Robot.flyWheel.getTalon().set(INTAKE_SPEED);
