@@ -30,10 +30,8 @@ import frc.robot.profiles.GameController;
  * project.
  */
 public class Robot extends TimedRobot {
-  public static GameController control=new GameController(0);
-
   // Hatch Subsystem
-  public static Hatch hatch = new Hatch();
+  public static Hatch hatch;
 
   // Initialize endoscope camera server
   public static CameraServer endosocope;
@@ -51,8 +49,8 @@ public class Robot extends TimedRobot {
   
   // Gunner object
   //public static Hatch hatch = new Hatch();
-  public static FlyWheel flyWheel = new FlyWheel();
-  public static Arm arm = new Arm();
+  public static FlyWheel flyWheel;
+  public static Arm arm;
 
   // Auto Align object
   // public static VisionSensors vision_sensors = new VisionSensors();
@@ -91,6 +89,11 @@ public class Robot extends TimedRobot {
     m_oi = new OI();  // Create an object of OI
 
     Loader.loadJSON("profiles.json", new GameController(RobotMap.DRIVER_PORT), new GameController(RobotMap.GUNNER_PORT));
+
+    // INIT ALL CLASSES THAT RELY ON CONTROLLERS AFTER THIS LINE
+    hatch = new Hatch();
+    flyWheel = new FlyWheel();
+    arm = new Arm();
 
     driverPOV = new POVConvert(Loader.getDriverController());
     gunnerPOV = new POVConvert(Loader.getGunnerController());
@@ -192,7 +195,6 @@ public class Robot extends TimedRobot {
       RGB.run();
     }
     choice = m_chooser.getSelected().intValue();
-    System.out.println(control.getType()+"/"+control.getX()+"/"+control.getY());
   }
 
   private void shuffleMain() {  // ShuffleBoard setup for competition
